@@ -23,7 +23,7 @@ const COPPER = "#e66c3f";
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
 
 /** URL publique du site (liens « Télécharger » de l'e-mail). Sans elle, les boutons sont omis. */
-const siteUrl = () => (process.env.SITE_URL || (process.env.NODE_ENV !== "production" ? "http://localhost:3000" : "")).replace(/\/$/, "");
+const siteUrl = () => (process.env.SITE_URL || (process.env.NODE_ENV !== "production" ? "http://localhost:3000" : "https://lateufelectronic.com")).replace(/\/$/, "");
 
 function renderEmail(order: OrderRow, event: EventRow, tokens: string[]) {
   const place = [event.venue, event.city, event.country].filter(Boolean).join(", ");
@@ -107,7 +107,8 @@ export async function sendTicketsEmail(orderId: string): Promise<boolean> {
 
   const apiKey = process.env.RESEND_API_KEY;
   const secret = process.env.TICKET_SIGNING_SECRET;
-  const from = process.env.EMAIL_FROM || (process.env.NODE_ENV !== "production" ? "LA TEUF <onboarding@resend.dev>" : undefined);
+  // Domaine lateufelectronic.com vérifié chez Resend : l'adresse billets@ n'est pas une boîte mail, c'est un expéditeur
+  const from = process.env.EMAIL_FROM || "LA TEUF <billets@lateufelectronic.com>";
   if (!apiKey || !secret || !from) {
     console.warn("[ticketing] e-mail du billet non envoyé : RESEND_API_KEY, TICKET_SIGNING_SECRET ou EMAIL_FROM manquant");
     return false;
@@ -166,7 +167,8 @@ export async function sendTicketsEmail(orderId: string): Promise<boolean> {
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ from, to: [data.buyer_email], subject, html, text, attachments }),
+      // Les réponses des acheteurs arrivent sur la vraie boîte de l'équipe
+      body: JSON.stringify({ from, reply_to: "hello@lateufelectronic.com", to: [data.buyer_email], subject, html, text, attachments }),
     });
     if (!res.ok) throw new Error(`Resend ${res.status} ${await res.text()}`);
     return true;
