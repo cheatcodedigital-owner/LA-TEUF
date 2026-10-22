@@ -1,0 +1,118 @@
+@import "tailwindcss";
+
+/* Design tokens LA TEUF — voir DESIGN.md */
+@theme {
+  --color-cosmic-black: #090a10;
+  --color-deep-indigo: #202052;
+  --color-warm-ivory: #f3e9d5;
+  --color-solar-copper: #e66c3f;
+  --color-copper-deep: #a8451a; /* ❓ copper sur fond Ivory (contraste) */
+  --color-ultraviolet: #7655ff;
+
+  --font-display: var(--font-tropic), serif;
+  --font-title: var(--font-dizzy), sans-serif;
+  --font-label: var(--font-anton), sans-serif;
+  --font-body: var(--font-pain), sans-serif;
+
+  --radius-card: 28px;
+
+  --shadow-glow: 0 0 0 1px rgb(118 85 255 / 0.6), 0 0 32px rgb(118 85 255 / 0.55);
+
+  --ease-wave: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@layer base {
+  html {
+    background: var(--color-cosmic-black);
+    color: var(--color-warm-ivory);
+    font-family: var(--font-body);
+    font-size: 17px;
+    scroll-behavior: smooth;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-solar-copper);
+    outline-offset: 3px;
+  }
+}
+
+@layer components {
+  .section-light {
+    background: var(--color-warm-ivory);
+    color: var(--color-deep-indigo);
+  }
+  .accent-word {
+    color: var(--color-solar-copper);
+  }
+  .section-light .accent-word {
+    color: var(--color-copper-deep);
+  }
+  .hover-glow {
+    transition: transform 0.4s var(--ease-wave), box-shadow 0.3s ease;
+  }
+  .hover-glow:hover {
+    transform: scale(1.025);
+    box-shadow: var(--shadow-glow);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hover-glow:hover {
+    transform: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Intro portail (WebGL) + révélation du hero (voir DESIGN.md §7) */
+.intro-scope {
+  --intro-delay: 3.2s;
+}
+
+@keyframes word-in {
+  from { transform: translateY(110%); }
+  to { transform: translateY(0); }
+}
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+/* La page « remonte » vers nous quand le tunnel s'ouvre */
+@keyframes home-zoom {
+  from { transform: scale(1.22); }
+  to { transform: scale(1); }
+}
+
+.reveal-word,
+.reveal-fade,
+.home-reveal {
+  animation-fill-mode: both;
+}
+/* Uniquement pendant l'intro : une fois `data-seen` posé, un changement de langue
+   ou un retour sur l'accueil ne rejoue rien */
+.intro-scope:not([data-seen]) .reveal-word {
+  animation: word-in 0.9s var(--ease-wave) both;
+  animation-delay: calc(var(--intro-delay) + var(--i, 0) * 110ms);
+}
+.intro-scope:not([data-seen]) .reveal-fade {
+  animation: fade-up 0.8s ease-out both;
+  animation-delay: calc(var(--intro-delay) + 0.45s);
+}
+.intro-scope:not([data-seen]) .home-reveal {
+  animation: home-zoom 1.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: max(0s, calc(var(--intro-delay) - 0.7s));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #portal-intro {
+    display: none;
+  }
+  .intro-scope {
+    --intro-delay: 0s;
+  }
+  .intro-scope:not([data-seen]) .reveal-word,
+  .intro-scope:not([data-seen]) .reveal-fade,
+  .intro-scope:not([data-seen]) .home-reveal {
+    animation: none;
+  }
+}

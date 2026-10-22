@@ -1,0 +1,287 @@
+{
+  "Meta": {
+    "title": "LA TEUF ÉLECTRONIQUE",
+    "description": "Electronic music nights in Lomé and Cotonou. Tickets online."
+  },
+  "Nav": {
+    "events": "Events",
+    "djs": "DJs",
+    "gallery": "Gallery",
+    "shop": "Shop",
+    "contact": "Contact",
+    "tickets": "Tickets",
+    "home": "LA TEUF home",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "mainNav": "Main navigation",
+    "language": "Language"
+  },
+  "Footer": {
+    "tagline": "The gateway to free partying. Electronic music, art and connection in Lomé and Cotonou.",
+    "explore": "Explore",
+    "contact": "Contact",
+    "booking": "Booking",
+    "follow": "Follow",
+    "legal": "Legal notice",
+    "terms": "Terms of sale",
+    "privacy": "Privacy",
+    "rights": "All rights reserved."
+  },
+  "Intro": {
+    "skip": "Skip"
+  },
+  "Hero": {
+    "titleAccent": "portal",
+    "imageAlt": "Crowd dancing under purple lights at a LA TEUF night",
+    "tickets": "Tickets",
+    "agenda": "See the lineup",
+    "countdown": {
+      "label": "Countdown to the night",
+      "days": "Days",
+      "hours": "Hours",
+      "minutes": "Min",
+      "seconds": "Sec",
+      "started": "It's tonight"
+    },
+    "title1": "Step through",
+    "title2": "the portal"
+  },
+  "Events": {
+    "metaTitle": "Events",
+    "metaDescription": "Upcoming LA TEUF nights in Lomé and Cotonou, and archives of past editions.",
+    "eyebrow": "Lineup",
+    "title": "The nights",
+    "intro": "One night a month, changing venues, always the same energy.",
+    "upcoming": "Upcoming",
+    "archives": "Archives",
+    "archivesEmpty": "Photos and videos from past editions are coming soon.",
+    "status": {
+      "bientot": "Soon",
+      "en-vente": "On sale",
+      "complet": "Sold out",
+      "termine": "Ended"
+    },
+    "tickets": "Tickets",
+    "notify": "Notify me",
+    "soldOut": "Sold out",
+    "details": "See the night",
+    "about": "The night",
+    "lineup": "Lineup",
+    "lineupTbd": "The lineup will be announced soon.",
+    "practical": "Practical info",
+    "date": "Date",
+    "venue": "Venue",
+    "city": "City",
+    "capacity": "Capacity",
+    "capacityValue": "{count} people",
+    "venueTbd": "To be announced",
+    "ticketsSoon": "Tickets open soon.",
+    "items": {
+      "la-teuf-karma": {
+        "description": "LA TEUF takes over KARMA in Lomé. DJs and live musicians, carefully crafted staging around the keyhole, light shows: a warm, relaxed night to break out of your routine, with respect for everyone."
+      },
+      "la-teuf-cotonou": {
+        "description": "LA TEUF crosses the border for an edition in Cotonou. Venue and lineup will be announced soon."
+      }
+    },
+    "close": "Close"
+  },
+  "Concept": {
+    "title": "What is LA TEUF?",
+    "text": "A festive electronic music night in Lomé to break out of the routine: DJs, live musicians and carefully crafted staging, in a warm atmosphere open to everyone.",
+    "missions": [
+      "Give every form of art a place to express itself",
+      "Bring electronic music to the African scene",
+      "Cultivate the art of partying freely, with respect",
+      "Gather around art and support artistic works"
+    ]
+  },
+  "HomeEvents": {
+    "title": "Upcoming nights",
+    "all": "All events"
+  },
+  "Gallery": {
+    "title": "Seen on the dancefloor",
+    "alt": [
+      "The DJ set under blue lights, facing the LA TEUF logo",
+      "A DJ at the decks in front of the LA TEUF banner",
+      "Silhouettes in red smoke in front of the stage",
+      "A percussionist on stage in front of the LA TEUF logo",
+      "Two friends at a LA TEUF night",
+      "A close couple on the dancefloor"
+    ]
+  },
+  "Community": {
+    "title": "Join the movement",
+    "text": "Follow LA TEUF so you never miss a thing: night announcements, lineups, behind the scenes.",
+    "contactTitle": "Contact and booking",
+    "contactText": "A question, a wish to play with us, a collaboration? Write to us or call.",
+    "email": "Send an email",
+    "call": "Call",
+    "booking": "Booking"
+  },
+  "Ticketing": {
+    "metaTitle": "Tickets",
+    "back": "All events",
+    "sampleNotice": "Demo mode: Supabase is not configured, nothing is actually reserved.",
+    "unavailableTitle": "Ticketing unavailable",
+    "unavailableText": "Ticketing is temporarily unavailable. Please try again in a moment.",
+    "soonTitle": "Tickets soon",
+    "soonText": "Tickets for this night open soon.",
+    "endedTitle": "Night is over",
+    "endedText": "This night is over.",
+    "soldOutTitle": "Sold out",
+    "soldOutText": "All tickets have been sold. Follow LA TEUF for the next date.",
+    "remaining": "{count, plural, one {# ticket left} other {# tickets left}}",
+    "tier": "Ticket type",
+    "tierKinds": {
+      "early_bird": "Early bird",
+      "standard": "Standard"
+    },
+    "tierRemaining": "{count} left",
+    "quantity": "Quantity",
+    "decrease": "Less",
+    "increase": "More",
+    "you": "Your details",
+    "name": "Full name",
+    "email": "Email",
+    "whatsapp": "WhatsApp",
+    "whatsappHint": "With country code, e.g. +228 90 00 00 00",
+    "country": "Country",
+    "countryOther": "Other",
+    "promo": "Promo code (optional)",
+    "terms": "I accept the <link>terms of sale</link>",
+    "total": "Total",
+    "submit": "Reserve my tickets",
+    "submitting": "Reserving…",
+    "invalidField": "Check this field",
+    "errors": {
+      "sold_out": "This ticket type is sold out.",
+      "not_enough": "{count, plural, one {Only # ticket left for this type.} other {Only # tickets left for this type.}}",
+      "type_unavailable": "This ticket type is no longer available. Refresh the page.",
+      "sales_closed": "Sales are closed for this night.",
+      "invalid_quantity": "Invalid quantity.",
+      "invalid_promo": "Invalid or expired promo code.",
+      "promo_exhausted": "This promo code can no longer be used.",
+      "event_not_found": "Night not found.",
+      "unavailable": "Ticketing is temporarily unavailable. Please try again in a moment.",
+      "unknown": "Something went wrong. Please try again.",
+      "form": "Some fields are incomplete or invalid.",
+      "promo_not_allowed": "Promo codes do not apply to early birds."
+    },
+    "held": "Tickets reserved",
+    "heldFor": "Your tickets are held for another",
+    "summary": "Summary",
+    "discount": "Discount",
+    "pay": "Pay {amount}",
+    "expiredTitle": "Reservation expired",
+    "expiredText": "The tickets have been put back on sale.",
+    "restart": "Start over",
+    "availableFrom": "Available from {date}",
+    "soldOutTier": "Sold out",
+    "closedTier": "Sale ended",
+    "earlyNoPromo": "Promo codes do not apply to early birds.",
+    "promoEarly": "Not applicable to early birds",
+    "groupHint": "Automatic discount on the standard ticket: −10% from 5 tickets, −15% from 8 tickets, −20% for 10 tickets.",
+    "groupDiscountLine": "Group discount −{pct}%",
+    "subtotal": "Subtotal",
+    "noneOnSale": "No ticket type is on sale right now. Come back on the opening date shown.",
+    "modify": "Edit my details",
+    "modifying": "Releasing tickets…",
+    "modifyHint": "Your tickets will be released and you will return to the form.",
+    "verifyTitle": "Security check",
+    "verifyText": "Confirm you are not a robot to continue.",
+    "checking": "Checking…",
+    "payErrors": {
+      "antibot": "The check failed. Please try again.",
+      "not_payable": "This reservation has expired or was cancelled. Return to the form.",
+      "unavailable": "Payment is temporarily unavailable. Please try again in a moment.",
+      "failed": "The payment failed or was cancelled. You can try again.",
+      "not_confirmed": "We could not confirm the payment. If you were charged, contact us with the order reference: your tickets will be issued as soon as it is confirmed."
+    },
+    "hold": "Reservation in progress",
+    "payHint": "An anti-robot check is requested, then payment opens in Kkiapay's secure window.",
+    "payWaiting": "Payment is open in the Kkiapay window (Mobile Money or card). Your seats are held during the countdown. Window closed? Click “Pay” again.",
+    "confirming": "Confirming payment…",
+    "paidTitle": "Payment confirmed",
+    "paidText": "Your {count, plural, one {# ticket is confirmed} other {# tickets are confirmed}}. They will be sent to {email}.",
+    "refundTitle": "Payment received, but no seats left",
+    "refundText": "Your reservation had expired and the seats were taken in the meantime. You will be refunded: contact us with the reference below.",
+    "reference": "Order reference:"
+  },
+  "Cgv": {
+    "metaTitle": "Terms of sale",
+    "title": "Terms of sale",
+    "updated": "Last updated: October 22, 2026",
+    "sections": [
+      {
+        "title": "1. Organizer and purpose",
+        "body": [
+          "These terms of sale govern the sale of admission tickets to LA TEUF nights, organized by LA TEUF ÉLECTRONIQUE (the \"organizer\") in Lomé (Togo) and Cotonou (Benin).",
+          "They apply to any order placed on lateufelectronic.com. Tickets can still be sold on site on the night, subject to availability.",
+          "By confirming an order, the buyer acknowledges having read and accepted these terms."
+        ]
+      },
+      {
+        "title": "2. Tickets and prices",
+        "body": [
+          "Prices are in CFA francs (FCFA). Capacity is limited to 160 people per night.",
+          "Early bird: 3,000 FCFA, 60 tickets, on sale from three weeks to one week before the night, while the quota lasts.",
+          "Standard: 5,000 FCFA, 100 tickets, on sale from one week before the night (or as soon as the early birds sell out) until the night.",
+          "An order includes at most 10 tickets.",
+          "A group discount is applied automatically to the standard ticket: −10% from 5 tickets, −15% from 8 tickets, −20% for 10 tickets.",
+          "Promo codes do not apply to early birds. They cannot be combined with the group discount: the most favorable discount is applied."
+        ]
+      },
+      {
+        "title": "3. Order and ticket reservation",
+        "body": [
+          "As soon as the form is submitted, the tickets are held for 10 minutes. Without payment within this time, the reservation is cancelled and the tickets are put back on sale.",
+          "The buyer can cancel the reservation and return to the form at any time before payment.",
+          "The order is final only once payment is confirmed."
+        ]
+      },
+      {
+        "title": "4. Payment",
+        "body": [
+          "Payment is made online by Mobile Money (Flooz, T-Money, MTN, Moov) or by Visa or Mastercard card, through the secure Kkiapay platform. A robot check is required before payment.",
+          "If a payment is received when tickets are no longer available, notably after the reservation has expired, it is refunded."
+        ]
+      },
+      {
+        "title": "5. Electronic tickets",
+        "body": [
+          "After payment, each place produces an electronic ticket with a unique QR code, sent by email and WhatsApp to the details provided. The buyer checks that this information is correct.",
+          "The QR code is single-use: only the first scan at the entrance is accepted. The buyer must not share or copy the ticket; the organizer is not responsible for the use of a QR code shared by the buyer.",
+          "If a ticket is not received, the buyer contacts the organizer."
+        ]
+      },
+      {
+        "title": "6. Access to the night",
+        "body": [
+          "The ticket grants access to the night on the date and at the venue shown, within the venue's capacity.",
+          "The organizer may refuse entry to or remove anyone who does not follow the rules of the night, notably respect for others and their boundaries."
+        ]
+      },
+      {
+        "title": "7. Cancellation, postponement and refunds",
+        "body": [
+          "Tickets are neither exchangeable nor refundable, except if the organizer cancels the night: they are then refunded.",
+          "If the night is postponed, tickets remain valid for the new date."
+        ]
+      },
+      {
+        "title": "8. Personal data",
+        "body": [
+          "The information requested when ordering (name, email, WhatsApp number, country) is used to process the order and send the tickets. How it is handled is detailed in the privacy policy."
+        ]
+      },
+      {
+        "title": "9. Contact",
+        "body": [
+          "For any question about an order: hello@lateufelectronic.com, or by phone at +228 91 95 01 93 (Shayn) and +228 93 70 62 42 (booking, AK2M)."
+        ]
+      }
+    ]
+  }
+}
