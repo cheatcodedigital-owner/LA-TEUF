@@ -6,6 +6,8 @@
    - `migrations/0002_sales_rules.sql` (fenêtres de vente, remises de groupe, annulation)
    - `migrations/0003_standard_quota_early_open.sql` (ouverture anticipée du standard, remise 15 %)
    - `migrations/0004_ticket_email_expiry.sql` (suivi de l'envoi de l'e-mail, expiration du billet au scan)
+   - `migrations/0005_offline_scan.sql` (scan différé `scan_ticket_at`, appareil de scan)
+   - `migrations/0006_revoke_api_roles.sql` (retire l'accès de `anon`/`authenticated` aux fonctions)
    - `seed.sql` (événements de départ — prix : early bird 3 000, standard 5 000 FCFA)
 2. Copier `.env.example` en `.env.local` et renseigner `SUPABASE_URL` et `SUPABASE_SERVICE_ROLE_KEY`
    (Project Settings → API). La clé service_role reste côté serveur uniquement.
@@ -47,3 +49,17 @@ Limite : un seul client, donc la concurrence réelle repose sur le verrou `FOR U
 - Fonctions (clé service_role uniquement) : `event_sales`, `create_order`, `mark_order_paid`,
   `expire_stale_orders`, `scan_ticket`.
 - À planifier : `select expire_stale_orders();` toutes les minutes (pg_cron ou Vercel Cron).
+
+## Admin et scan (`/admin`)
+- Accès par mot de passe : `ADMIN_PASSWORD` (tableau de bord, exports, scan) ou `STAFF_PASSWORD` (scan seulement). Cookie de session HttpOnly signé, 24 h, 8 essais par IP et par 10 min. Pages en français, hors next-intl, `noindex`.
+- Tableau de bord `/admin?event=<slug>` : recettes, places, entrées, ventes par tarif, commandes par statut, paiements **à rembourser**, dernières commandes et scans.
+- Exports CSV (`/api/admin/export?event=<slug>&type=commandes|billets|scans`, admin seulement) : séparateur `;`, BOM UTF-8 pour Excel, formules neutralisées.
+- Scanner `/admin/scan` (mobile, caméra) : fonctionne **sans réseau**.
+  - Avant la soirée, avec du réseau : choisir l'événement et « Mettre à jour la liste ». L'appareil stocke un manifeste (`/api/admin/scan/manifest`) : pour chaque billet, id, **signature du QR**, nom, tarif et état. Ni nonce ni secret n'y figurent.
+  - En ligne, chaque scan est tranché par le serveur (`/api/admin/scan/sync` → `scan_ticket_at`, usage unique entre tous les appareils).
+  - Hors ligne, le scan est contrôlé sur le manifeste (signature, annulé, déjà utilisé, expiré), marqué utilisé localement et mis en file. Au retour du réseau (événement `online`, toutes les 20 s, ou bouton) la file est envoyée : le serveur revérifie la signature HMAC et applique l'usage unique. Le premier appareil synchronisé l'emporte ; un refus apparaît dans « À vérifier » avec l'appareil du premier scan.
+  - Un QR absent de la liste (billet vendu après la dernière mise à jour) s'affiche en orange « Absent de la liste » : l'agent décide, le scan est mis en file et contrôlé à la synchronisation.
+  - Le service worker `public/admin-sw.js` (portée `/admin/`) met en cache la page du scanner et les fichiers `/_next/static/` : **ouvrir `/admin/scan` une fois avec du réseau** sur chaque téléphone avant la soirée. Caméra : HTTPS obligatoire (ou localhost).
+
+## Droits des fonctions (important)
+Sur Supabase, `revoke ... from public` ne retire pas l'accès de `anon` et `authenticated` (privilèges par défaut du schéma `public`) : sans la migration 0006, la clé publique pouvait appeler `mark_order_paid` via l'API REST. **Toute nouvelle fonction du schéma doit être suivie de `revoke all on function ... from anon, authenticated;`.** Vérification : `select p.oid::regprocedure, has_function_privilege('anon', p.oid, 'execute') from pg_proc p join pg_namespace n on n.oid = p.pronamespace where n.nspname = 'public';` (seule `rls_auto_enable`, fournie par Supabase, peut rester ouverte).

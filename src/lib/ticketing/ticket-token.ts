@@ -13,6 +13,9 @@ export function ticketValidUntil(startsAt: string | Date): Date {
 
 const sign = (secret: string, payload: string) => createHmac("sha256", secret).update(payload).digest("base64url").slice(0, 22);
 
+/** Signature seule (3e segment du QR) : permet au scanner hors ligne de contrôler un QR sans connaître le secret. */
+export const ticketSignature = (ticketId: string, nonce: string, secret: string) => sign(secret, `${ticketId}.${nonce}`);
+
 /** Contenu du QR : `idBillet.nonce.signature`. La signature empêche de forger un QR sans connaître le secret. */
 export function signTicketToken(ticketId: string, nonce: string, secret: string) {
   const payload = `${ticketId}.${nonce}`;

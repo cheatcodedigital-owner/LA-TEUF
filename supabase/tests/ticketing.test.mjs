@@ -163,6 +163,35 @@ await q("update events set starts_at = now() - interval '1 day' where slug='la-t
 ok("scan : le lendemain de la soirée → ok", (await scan2()) === "ok");
 await q("update events set starts_at = $1 where slug='la-teuf-karma'", [startsBefore]);
 
+// --- Scan hors ligne : synchronisation différée (scan_ticket_at) -------------------------------
+await resetOrders();
+const off = await order(std.id, 3, { email: "off@x.com" });
+await q("select mark_order_paid($1,'txoff',$2)", [off.orderId, off.totalXof]);
+const [o1, o2, o3] = await q("select id, nonce, event_id from tickets where order_id=$1 order by id", [off.orderId]);
+const scanAt = async (t, at, device = "Entrée 1", nonce = t.nonce) =>
+  (await q("select scan_ticket_at($1,$2,$3,$4,$5) as r", [t.id, nonce, t.event_id, at, device]))[0].r;
+const earlier = new Date(Date.now() - 3600_000).toISOString();
+ok("scan différé : faux nonce → invalid", (await scanAt(o1, earlier, "Entrée 1", "bad")).result === "invalid");
+ok("scan différé : ok, daté de l'instant réel", (await scanAt(o1, earlier)).result === "ok");
+const row = (await q("select scanned_at, scanned_device from tickets where id=$1", [o1.id]))[0];
+ok("scan différé : heure et appareil enregistrés", new Date(row.scanned_at).toISOString() === earlier && row.scanned_device === "Entrée 1");
+ok("scan différé : rejeu du même appareil → ok idempotent", (await scanAt(o1, earlier)).result === "ok");
+const dup = await scanAt(o1, new Date().toISOString(), "Entrée 2");
+ok("scan différé : autre appareil → already_used avec l'appareil du premier", dup.result === "already_used" && dup.scannedDevice === "Entrée 1", JSON.stringify(dup));
+ok("scan différé : l'heure future est bornée à maintenant", (await scanAt(o2, new Date(Date.now() + 86400_000).toISOString())).result === "ok"
+  && new Date((await q("select scanned_at from tickets where id=$1", [o2.id]))[0].scanned_at) <= new Date());
+await q("update events set starts_at = now() - interval '3 days' where slug='la-teuf-karma'");
+ok("scan différé : expiré selon l'instant du scan", (await scanAt(o3, new Date().toISOString())).result === "expired");
+const during = (await q("select (starts_at + interval '1 hour') as at from events where slug='la-teuf-karma'"))[0].at;
+ok("scan différé : scan fait pendant la validité, synchronisé après → ok (heure du scan retenue)", (await scanAt(o3, during)).result === "ok");
+await q("update events set starts_at = $1 where slug='la-teuf-karma'", [startsBefore]);
+ok("journal : les scans différés sont tracés avec l'appareil", (await q("select count(*)::int n from scan_log where device is not null"))[0].n >= 4);
+ok("scan_ticket_at interdit à anon, permis à service_role", await (async () => {
+  const r = (await q(`select has_function_privilege('anon','scan_ticket_at(uuid,text,uuid,timestamptz,text,uuid)','execute') a,
+    has_function_privilege('service_role','scan_ticket_at(uuid,text,uuid,timestamptz,text,uuid)','execute') s`))[0];
+  return !r.a && r.s;
+})());
+
 // --- Pas de survente : paiement tardif sans place ---------------------------------------------
 await resetOrders();
 await q("update events set capacity = 3 where slug = 'la-teuf-karma'");
