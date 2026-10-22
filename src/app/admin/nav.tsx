@@ -2,7 +2,7 @@ import Link from "next/link";
 import { logout } from "./login/actions";
 import type { Role } from "@/lib/admin/session";
 
-export function AdminNav({ role, active }: { role: Role; active: "dashboard" | "scan" }) {
+export function AdminNav({ role, active }: { role: Role; active: "dashboard" | "codes" | "influenceurs" | "scan" }) {
   const item = (href: string, label: string, key: string) => (
     <Link
       href={href}
@@ -21,6 +21,8 @@ export function AdminNav({ role, active }: { role: Role; active: "dashboard" | "
       </p>
       <nav aria-label="Admin" className="flex flex-wrap items-center gap-2">
         {role === "admin" && item("/admin", "Tableau de bord", "dashboard")}
+        {role === "admin" && item("/admin/codes", "Codes promo", "codes")}
+        {role === "admin" && item("/admin/influenceurs", "Influenceurs", "influenceurs")}
         {item("/admin/scan", "Scan", "scan")}
         <form action={logout}>
           <button type="submit" className="inline-flex min-h-11 items-center rounded-full px-4 text-sm text-warm-ivory/70 underline">

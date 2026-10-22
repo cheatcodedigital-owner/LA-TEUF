@@ -87,7 +87,8 @@ export async function getEventSales(slug: string): Promise<SalesResult> {
   return data ? { kind: "ok", sales: data as EventSales, sample: false } : { kind: "not_found" };
 }
 
-export async function reserve(input: ReservationInput): Promise<ReserveResult> {
+/** `affiliateRef` : valeur du cookie d'attribution (`slug` ou `slug:campagne`), déjà posé par /r/<slug>. */
+export async function reserve(input: ReservationInput, affiliateRef?: string | null): Promise<ReserveResult> {
   if (sampleMode()) {
     const sales = sampleSales(input.slug);
     const tier = sales?.tiers.find((t) => t.id === input.ticketTypeId && t.onSale);
@@ -123,7 +124,7 @@ export async function reserve(input: ReservationInput): Promise<ReserveResult> {
     p_whatsapp: input.whatsapp,
     p_country: input.country,
     p_promo: input.promo ?? null,
-    p_affiliate: null,
+    p_affiliate: affiliateRef ?? null,
     p_hold_minutes: HOLD_MINUTES,
     p_max_per_order: MAX_PER_ORDER,
   });

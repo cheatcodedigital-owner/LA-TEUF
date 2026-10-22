@@ -118,6 +118,49 @@ await q("insert into promo_codes (code, kind, value, max_uses) values ('ONCE','p
 await order(std.id, 1, { promo: "ONCE" });
 ok("promo limitée à 1 usage → épuisée", (await err(() => order(std.id, 1, { promo: "ONCE" }))) === "promo_exhausted");
 
+// --- Affiliation par lien : rattachement, commission 20 % sur le total ------------------------
+await q("insert into affiliates (name, slug) values ('Marie', 'marie'), ('Inactif', 'old-influ')");
+await q("update affiliates set active = false where slug = 'old-influ'");
+const aff = (await q("select id, rate_pct from affiliates where slug='marie'"))[0];
+ok("affilié : taux 20 % par défaut", aff.rate_pct === 20);
+ok("slug en majuscules refusé", (await err(() => q("insert into affiliates (name, slug) values ('X', 'ABC')"))) !== null);
+ok("slug trop court refusé", (await err(() => q("insert into affiliates (name, slug) values ('X', 'ab')"))) !== null);
+const withRef = async (type, qty, ref, over = {}) => (await q(
+  "select create_order('la-teuf-karma',$1,$2,'Test',$3,'+22890000000','TG',$4,$5) as o",
+  [type, qty, over.email ?? `buyer${n++}@x.com`, over.promo ?? null, ref]))[0].o;
+r = await withRef(std.id, 2, "marie");
+let ro = (await q("select affiliate_id, affiliate_commission_xof, affiliate_ref from orders where id=$1", [r.orderId]))[0];
+ok("lien d'affilié : aucune remise pour l'acheteur", r.discountXof === 0 && r.totalXof === 10000, JSON.stringify(r));
+ok("commission 20 % du total (2000 sur 10000), figée sur la commande", ro.affiliate_id === aff.id && ro.affiliate_commission_xof === 2000 && ro.affiliate_ref === null, JSON.stringify(ro));
+r = await withRef(std.id, 1, "MARIE:Instagram Story!");
+ro = (await q("select affiliate_id, affiliate_ref from orders where id=$1", [r.orderId]))[0];
+ok("campagne nettoyée (minuscules, caractères sûrs) et slug insensible à la casse", ro.affiliate_id === aff.id && ro.affiliate_ref === "instagramstory", JSON.stringify(ro));
+r = await withRef(std.id, 5, "marie");
+ok("commission sur le total après remise de groupe (22500 → 4500)", r.totalXof === 22500 && (await q("select affiliate_commission_xof c from orders where id=$1", [r.orderId]))[0].c === 4500, JSON.stringify(r));
+r = await withRef(std.id, 2, "marie", { promo: "TEUF10" });
+ok("commission sur le total après code promo (9000 → 1800)", r.totalXof === 9000 && (await q("select affiliate_commission_xof c from orders where id=$1", [r.orderId]))[0].c === 1800, JSON.stringify(r));
+r = await withRef(std.id, 1, "inconnu");
+ok("slug inconnu ignoré (pas d'erreur, pas de commission)", (await q("select affiliate_id, affiliate_commission_xof c from orders where id=$1", [r.orderId]))[0].affiliate_id === null);
+r = await withRef(std.id, 1, "old-influ");
+ok("affilié inactif ignoré", (await q("select affiliate_id from orders where id=$1", [r.orderId]))[0].affiliate_id === null);
+await setEventIn(15);
+const e15 = tier(await sales(), "early_bird");
+r = await withRef(e15.id, 2, "marie");
+ok("l'early bird compte aussi : 20 % de 6000 = 1200", (await q("select affiliate_commission_xof c from orders where id=$1", [r.orderId]))[0].c === 1200, JSON.stringify(r));
+await setEventIn(3);
+await resetOrders();
+const pa = await withRef(std.id, 2, "marie", { email: "pa@x.com" });
+await withRef(std.id, 3, "marie", { email: "pb@x.com" });
+await q("select mark_order_paid($1,'txa1',$2)", [pa.orderId, pa.totalXof]);
+const due = (await q("select coalesce(sum(affiliate_commission_xof),0)::int as c, count(*)::int as n, coalesce(sum(total_xof),0)::int as t from orders where affiliate_id=$1 and status='paid'", [aff.id]))[0];
+ok("commission comptée seulement sur les commandes payées (2000 sur 1 commande de 10000)", due.c === 2000 && due.n === 1 && due.t === 10000, JSON.stringify(due));
+await q("insert into affiliate_clicks (affiliate_id, campaign, visitor_id) values ($1,'ig','v1'), ($1,'ig','v1'), ($1,null,'v2')", [aff.id]);
+ok("clics comptés, visiteurs uniques distincts", (await q("select count(*)::int c, count(distinct visitor_id)::int u from affiliate_clicks where affiliate_id=$1", [aff.id]))[0].u === 2);
+await q("insert into affiliate_payouts (affiliate_id, amount_xof) values ($1, 1500)", [aff.id]);
+ok("versement enregistré", (await q("select sum(amount_xof)::int s from affiliate_payouts where affiliate_id=$1", [aff.id]))[0].s === 1500);
+ok("versement nul refusé", (await err(() => q("insert into affiliate_payouts (affiliate_id, amount_xof) values ($1, 0)", [aff.id]))) !== null);
+await resetOrders();
+
 // --- Annulation par l'acheteur et contrôle avant paiement -----------------------------------
 await resetOrders();
 const mine = await order(std.id, 3, { email: "me@x.com" });
@@ -208,6 +251,8 @@ await q("update events set capacity = 160 where slug = 'la-teuf-karma'");
 // --- RLS et droits ----------------------------------------------------------------------------
 const rls = await q("select relrowsecurity from pg_class where relname in ('events','ticket_types','promo_codes','orders','tickets','scan_log')");
 ok("RLS activée sur les 6 tables", rls.length === 6 && rls.every((r) => r.relrowsecurity));
+const rls2 = await q("select relrowsecurity from pg_class where relname in ('affiliates','affiliate_payouts','affiliate_clicks')");
+ok("RLS activée sur affiliates, affiliate_payouts et affiliate_clicks", rls2.length === 3 && rls2.every((r) => r.relrowsecurity));
 const pol = await q("select cmd from pg_policies");
 ok("seules 2 policies, en lecture", pol.length === 2 && pol.every((p) => p.cmd === "SELECT"));
 const g = await q(`select

@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { toCsv } from "@/lib/admin/csv";
+import { listAffiliates } from "@/lib/affiliate/stats";
 import { exportOrders, exportScans, exportTickets, getEvents, kindLabel } from "@/lib/admin/data";
 import { hasRole } from "@/lib/admin/session";
 import { isSupabaseConfigured } from "@/lib/ticketing/supabase";
@@ -14,6 +15,19 @@ export async function GET(request: NextRequest) {
 
   const slug = request.nextUrl.searchParams.get("event");
   const type = request.nextUrl.searchParams.get("type");
+
+  // Récapitulatif des influenceurs : tous événements confondus
+  if (type === "influenceurs") {
+    const affiliates = await listAffiliates();
+    return text(
+      toCsv(
+        ["Influenceur", "Identifiant", "Taux (%)", "Contact", "Actif", "Clics", "Visiteurs uniques", "Achats démarrés", "Achats complétés", "Ventes générées (FCFA)", "Commission gagnée (FCFA)", "Déjà versé (FCFA)", "Reste à verser (FCFA)"],
+        affiliates.map((a) => [a.name, a.slug, a.rate_pct, a.contact, a.active ? "oui" : "non", a.stats.clicks, a.stats.visitors, a.stats.started, a.stats.completed, a.stats.sales, a.stats.earned, a.stats.paidOut, a.stats.balance]),
+      ),
+      200,
+      { "Content-Type": "text/csv; charset=utf-8", "Content-Disposition": 'attachment; filename="influenceurs.csv"' },
+    );
+  }
   const event = (await getEvents()).find((e) => e.slug === slug);
   if (!event) return text("Événement introuvable", 404);
 
@@ -21,8 +35,8 @@ export async function GET(request: NextRequest) {
   if (type === "commandes") {
     const orders = await exportOrders(event.id);
     csv = toCsv(
-      ["Commande", "Créée le", "Payée le", "Statut", "Canal", "Palier", "Billets", "Prix unitaire (FCFA)", "Sous-total", "Remise", "Total", "Nom", "E-mail", "WhatsApp", "Pays", "Code promo", "Affilié", "Transaction Kkiapay", "E-mail billets envoyé le"],
-      orders.map((o) => [o.id, o.created_at, o.paid_at, o.status, o.channel, kindLabel(o.ticket_types?.kind), o.quantity, o.unit_price_xof, o.subtotal_xof, o.discount_xof, o.total_xof, o.buyer_name, o.buyer_email, o.buyer_whatsapp, o.buyer_country, o.promo_codes?.code, o.affiliate_ref, o.kkiapay_transaction_id, o.tickets_emailed_at]),
+      ["Commande", "Créée le", "Payée le", "Statut", "Canal", "Palier", "Billets", "Prix unitaire (FCFA)", "Sous-total", "Remise", "Total", "Nom", "E-mail", "WhatsApp", "Pays", "Code promo", "Influenceur", "Campagne", "Commission influenceur (FCFA)", "Transaction Kkiapay", "E-mail billets envoyé le"],
+      orders.map((o) => [o.id, o.created_at, o.paid_at, o.status, o.channel, kindLabel(o.ticket_types?.kind), o.quantity, o.unit_price_xof, o.subtotal_xof, o.discount_xof, o.total_xof, o.buyer_name, o.buyer_email, o.buyer_whatsapp, o.buyer_country, o.promo_codes?.code, o.affiliates?.slug, o.affiliate_ref, o.affiliate_commission_xof, o.kkiapay_transaction_id, o.tickets_emailed_at]),
     );
   } else if (type === "billets") {
     const tickets = await exportTickets(event.id);

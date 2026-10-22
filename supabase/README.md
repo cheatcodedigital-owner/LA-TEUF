@@ -8,6 +8,8 @@
    - `migrations/0004_ticket_email_expiry.sql` (suivi de l'envoi de l'e-mail, expiration du billet au scan)
    - `migrations/0005_offline_scan.sql` (scan différé `scan_ticket_at`, appareil de scan)
    - `migrations/0006_revoke_api_roles.sql` (retire l'accès de `anon`/`authenticated` aux fonctions)
+   - `migrations/0007_affiliates_promos.sql` (tables d'affiliation, libellé des codes promo)
+   - `migrations/0008_affiliate_links.sql` (affiliation par liens, clics, commission 20 %)
    - `seed.sql` (événements de départ — prix : early bird 3 000, standard 5 000 FCFA)
 2. Copier `.env.example` en `.env.local` et renseigner `SUPABASE_URL` et `SUPABASE_SERVICE_ROLE_KEY`
    (Project Settings → API). La clé service_role reste côté serveur uniquement.
@@ -63,3 +65,11 @@ Limite : un seul client, donc la concurrence réelle repose sur le verrou `FOR U
 
 ## Droits des fonctions (important)
 Sur Supabase, `revoke ... from public` ne retire pas l'accès de `anon` et `authenticated` (privilèges par défaut du schéma `public`) : sans la migration 0006, la clé publique pouvait appeler `mark_order_paid` via l'API REST. **Toute nouvelle fonction du schéma doit être suivie de `revoke all on function ... from anon, authenticated;`.** Vérification : `select p.oid::regprocedure, has_function_privilege('anon', p.oid, 'execute') from pg_proc p join pg_namespace n on n.oid = p.pronamespace where n.nspname = 'public';` (seule `rls_auto_enable`, fournie par Supabase, peut rester ouverte).
+
+## Codes promo et affiliation
+- **Codes promo** (`/admin/codes`) : générés depuis l'admin, nombre d'utilisations limité (commandes payées), `%` ou montant fixe, événement et date de fin optionnels. Standard uniquement, non cumulables avec la remise de groupe (la meilleure est retenue). Lien partageable `/billetterie/<événement>?code=XXXX` (préremplit le champ).
+- **Affiliation par liens** (`/admin/influenceurs`, migration 0008) :
+  - Lien `https://<site>/r/<identifiant>[?c=<campagne>]` (route `src/app/r/[slug]/route.ts`) : compte le clic (`affiliate_clicks`, robots et aperçus de lien ignorés, un même visiteur n'est compté qu'une fois par 30 min), pose les cookies `teuf_vid` (visiteur) et `teuf_ref` (`slug` ou `slug:campagne`, 30 jours, dernier clic gagnant) puis redirige vers la billetterie de l'événement choisi (par défaut le prochain en vente).
+  - À la réservation, `POST /api/billetterie/reserve` lit `teuf_ref` et le passe à `create_order(p_affiliate)`. Aucune remise pour l'acheteur. La commission (`rate_pct`, 20 %) est calculée sur le **total de la commande** (après remise de groupe ou code promo) et figée dans `orders.affiliate_commission_xof` ; elle ne compte que si la commande est **payée** (une commande remboursée ou annulée sort du décompte).
+  - Espace influenceur `/influenceur` (connexion `/influenceur/login`, identifiant = celui du lien + mot de passe généré par l'admin, affiché une seule fois, stocké en scrypt) : clics, visiteurs uniques, achats démarrés (acheteurs distincts ayant validé le formulaire), achats complétés, conversion, par campagne, ventes, commission, versements. Générateur de lien par campagne.
+  - Versements : enregistrés dans l'admin (`affiliate_payouts`), dans la limite du solde dû.

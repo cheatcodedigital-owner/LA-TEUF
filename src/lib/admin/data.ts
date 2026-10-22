@@ -15,10 +15,10 @@ export type AdminEvent = {
   status: "soon" | "on_sale" | "ended";
 };
 
-type Page<T> = PromiseLike<{ data: T[] | null; error: { message: string } | null }>;
+export type Page<T> = PromiseLike<{ data: T[] | null; error: { message: string } | null }>;
 
 // PostgREST plafonne chaque réponse (1000 lignes par défaut) : on lit par tranches
-async function fetchAll<T>(page: (from: number, to: number) => Page<T>): Promise<T[]> {
+export async function fetchAll<T>(page: (from: number, to: number) => Page<T>): Promise<T[]> {
   const size = 1000;
   const rows: T[] = [];
   for (let from = 0; ; from += size) {
@@ -51,6 +51,7 @@ type OrderRow = {
   buyer_email: string;
   buyer_whatsapp: string;
   buyer_country: string;
+  affiliate_commission_xof: number;
   affiliate_ref: string | null;
   kkiapay_transaction_id: string | null;
   expires_at: string | null;
@@ -59,10 +60,11 @@ type OrderRow = {
   tickets_emailed_at: string | null;
   ticket_types: { kind: string } | null;
   promo_codes: { code: string } | null;
+  affiliates: { slug: string } | null;
 };
 
 const ORDER_COLUMNS =
-  "id, status, channel, quantity, unit_price_xof, subtotal_xof, discount_xof, total_xof, buyer_name, buyer_email, buyer_whatsapp, buyer_country, affiliate_ref, kkiapay_transaction_id, expires_at, created_at, paid_at, tickets_emailed_at, ticket_types(kind), promo_codes(code)";
+  "id, status, channel, quantity, unit_price_xof, subtotal_xof, discount_xof, total_xof, buyer_name, buyer_email, buyer_whatsapp, buyer_country, affiliate_commission_xof, affiliate_ref, kkiapay_transaction_id, expires_at, created_at, paid_at, tickets_emailed_at, ticket_types(kind), promo_codes(code), affiliates(slug)";
 
 const eventOrders = (eventId: string) =>
   fetchAll<OrderRow>((from, to) =>

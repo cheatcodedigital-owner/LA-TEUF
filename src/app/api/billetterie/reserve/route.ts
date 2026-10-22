@@ -19,7 +19,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ status: "error", fieldErrors } satisfies ReserveResponse, { status: 400 });
   }
 
-  const result = await reserve(parsed.data);
+  // Attribution : cookie posé par le lien d'affiliation /r/<slug> (format validé, jamais transmis tel quel sinon)
+  const ref = request.cookies.get("teuf_ref")?.value;
+  const result = await reserve(parsed.data, ref && /^[a-z0-9-]{3,30}(:[a-z0-9_-]{1,40})?$/.test(ref) ? ref : null);
   if (!result.ok) {
     const status = result.code === "unavailable" || result.code === "unknown" ? 503 : 409;
     return NextResponse.json(

@@ -313,13 +313,13 @@ function Hold({
 
 type CheckoutErrors = { antibot: true; not_payable: true; unavailable: true; failed: true; not_confirmed: true };
 
-export function TicketForm({ slug, tiers, sample }: { slug: string; tiers: Tier[]; sample: boolean }) {
+export function TicketForm({ slug, tiers, sample, initialPromo }: { slug: string; tiers: Tier[]; sample: boolean; initialPromo?: string }) {
   const t = useTranslations("Ticketing");
   const locale = useLocale();
   const [response, setResponse] = useState<ReserveResponse | null>(null);
   const [pending, setPending] = useState(false);
   const [restarted, setRestarted] = useState(0);
-  const [saved, setSaved] = useState<Saved>({});
+  const [saved, setSaved] = useState<Saved>(initialPromo ? { promo: initialPromo } : {});
   const [tierId, setTierId] = useState(tiers.find((x) => x.onSale)?.id ?? "");
   const [quantity, setQuantity] = useState(1);
 

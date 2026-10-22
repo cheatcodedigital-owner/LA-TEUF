@@ -99,3 +99,9 @@ export function recordFailedAttempt(ip: string) {
 export function clearAttempts(ip: string) {
   attempts.delete(ip);
 }
+
+/** Server Action : refuse l'appel sans session suffisante (une action est un point d'entrée public, comme une route). */
+export async function assertRole(need: Role): Promise<void> {
+  const role = readSessionValue((await cookies()).get(SESSION_COOKIE)?.value);
+  if (!allowed(role, need)) throw new Error("unauthorized");
+}

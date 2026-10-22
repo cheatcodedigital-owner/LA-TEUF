@@ -21,10 +21,20 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/billette
   return { title: t("metaTitle"), robots: { index: false } };
 }
 
-async function Sales({ params }: { params: PageProps<"/[locale]/billetterie/[slug]">["params"] }) {
+async function Sales({
+  params,
+  searchParams,
+}: {
+  params: PageProps<"/[locale]/billetterie/[slug]">["params"];
+  searchParams: PageProps<"/[locale]/billetterie/[slug]">["searchParams"];
+}) {
   // `params` et les places restantes sont lus ici, dans <Suspense> : la coque statique reste instantanée
   // et l'état change à chaque achat (jamais de cache).
   const { locale, slug } = await params;
+  // Lien partagé par un influenceur ou sur un visuel : ?code=XXXX préremplit le champ code promo
+  const rawCode = (await searchParams).code;
+  const code = (Array.isArray(rawCode) ? rawCode[0] : rawCode)?.trim().toUpperCase();
+  const initialPromo = code && /^[A-Z0-9_-]{1,32}$/.test(code) ? code : undefined;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
   await connection();
@@ -77,17 +87,17 @@ async function Sales({ params }: { params: PageProps<"/[locale]/billetterie/[slu
           <p className="mt-4 max-w-xl text-warm-ivory/80">{state.text}</p>
         </Section>
       ) : (
-        <TicketForm slug={event.slug} tiers={sales.tiers} sample={sample} />
+        <TicketForm slug={event.slug} tiers={sales.tiers} sample={sample} initialPromo={initialPromo} />
       )}
     </>
   );
 }
 
-export default function TicketingPage({ params }: PageProps<"/[locale]/billetterie/[slug]">) {
+export default function TicketingPage({ params, searchParams }: PageProps<"/[locale]/billetterie/[slug]">) {
   return (
     <PageMain>
       <Suspense fallback={<Section><div className="h-64" aria-hidden /></Section>}>
-        <Sales params={params} />
+        <Sales params={params} searchParams={searchParams} />
       </Suspense>
     </PageMain>
   );
