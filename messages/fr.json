@@ -7,7 +7,6 @@
     "events": "Événements",
     "djs": "DJs",
     "gallery": "Galerie",
-    "shop": "Boutique",
     "contact": "Contact",
     "tickets": "Billets",
     "home": "Accueil LA TEUF",
@@ -32,7 +31,7 @@
   },
   "Hero": {
     "titleAccent": "portail",
-    "imageAlt": "Public dansant sous les lumières violettes d'une soirée LA TEUF",
+    "imageAlt": "Cabine DJ LA TEUF baignée de fumée et de lumière bleue",
     "tickets": "Billets",
     "agenda": "Voir l'agenda",
     "countdown": {
@@ -86,6 +85,24 @@
     },
     "close": "Fermer"
   },
+  "Djs": {
+    "metaTitle": "DJs",
+    "metaDescription": "Les DJs et musiciens live qui ont fait vibrer LA TEUF à Lomé et Cotonou.",
+    "title": "Les DJs",
+    "subtitle": "{count, plural, one {# artiste} other {# artistes}} · Lomé & Cotonou",
+    "hint": "Fais défiler pour rencontrer le line-up",
+    "eyebrow": "Line-up",
+    "lineup": "Ils ont fait danser LA TEUF",
+    "intro": "DJs et musiciens live qui ont déjà joué chez nous. Chaque soirée en ajoute de nouveaux.",
+    "kind": {
+      "dj": "DJ",
+      "live": "Live"
+    },
+    "photoAlt": "Portrait de {name}",
+    "ctaTitle": "Viens les voir <accent>en vrai</accent>",
+    "ctaText": "Le line-up de chaque soirée est annoncé sur la page de l'événement.",
+    "ctaButton": "Prochaines soirées"
+  },
   "Concept": {
     "title": "Qu'est-ce que LA TEUF ?",
     "text": "Un rendez-vous festif de musique électronique à Lomé, pour sortir de la routine : DJs, instrumentistes live et scénographies soignées, dans une ambiance chaleureuse et ouverte à tous.",
@@ -98,10 +115,12 @@
   },
   "HomeEvents": {
     "title": "Prochains rendez-vous",
+    "hint": "Touche une carte pour la passer devant",
     "all": "Tous les événements"
   },
   "Gallery": {
     "title": "Vu sur le dancefloor",
+    "hint": "Fais glisser pour explorer",
     "alt": [
       "Le DJ set sous les lumières bleues, face au logo LA TEUF",
       "Un DJ derrière ses platines devant la bannière LA TEUF",
@@ -308,5 +327,129 @@
     "followTitle": "Suis-nous",
     "followText": "Rejoins la communauté sur nos réseaux pour les line-ups, les coulisses et les prochaines dates.",
     "allEvents": "Tous les événements"
+  },
+  "LegalNotice": {
+    "metaTitle": "Mentions légales",
+    "title": "Mentions légales",
+    "updated": "Dernière mise à jour : 22 octobre 2026 (texte provisoire, en attente de validation)",
+    "sections": [
+      {
+        "title": "1. Éditeur du site",
+        "body": [
+          "Le site lateufelectronic.com est édité par LA TEUF ÉLECTRONIQUE, organisateur de soirées de musique électronique à Lomé (Togo) et à Cotonou (Bénin).",
+          "Forme juridique et numéro d'immatriculation : [À compléter]",
+          "Adresse du siège : [À compléter]",
+          "E-mail : hello@lateufelectronic.com. Téléphone : +228 91 95 01 93 (Shayn) ; booking : +228 93 70 62 42.",
+          "Directeur de la publication : [À compléter]"
+        ]
+      },
+      {
+        "title": "2. Hébergement",
+        "body": [
+          "Le site est hébergé par Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, États-Unis (vercel.com).",
+          "Les données de la billetterie sont stockées par Supabase (supabase.com)."
+        ]
+      },
+      {
+        "title": "3. Propriété intellectuelle",
+        "body": [
+          "Le nom LA TEUF, le logo, l'identité graphique, les textes, les photographies et les vidéos présents sur le site sont la propriété de LA TEUF ÉLECTRONIQUE ou utilisés avec l'accord de leurs auteurs.",
+          "Toute reproduction ou réutilisation, totale ou partielle, sans autorisation écrite préalable est interdite."
+        ]
+      },
+      {
+        "title": "4. Billetterie et paiement",
+        "body": [
+          "La vente de billets en ligne est régie par les conditions générales de vente. Les paiements par Mobile Money ou carte bancaire sont traités par Kkiapay : l'organisateur ne conserve aucune donnée de paiement."
+        ]
+      },
+      {
+        "title": "5. Responsabilité",
+        "body": [
+          "L'organisateur s'efforce de fournir des informations exactes et à jour, mais ne garantit pas l'absence d'erreurs ou d'interruptions du site. Programmation, horaires et lieux peuvent évoluer ; les informations officielles sont celles publiées sur le site et sur nos réseaux sociaux.",
+          "Le site peut contenir des liens vers des sites tiers (réseaux sociaux, Linktree, WhatsApp) dont l'organisateur n'est pas responsable."
+        ]
+      },
+      {
+        "title": "6. Données personnelles",
+        "body": [
+          "Le traitement des données personnelles est détaillé dans la politique de confidentialité."
+        ]
+      },
+      {
+        "title": "7. Droit applicable et contact",
+        "body": [
+          "Les présentes mentions sont soumises au droit applicable à l'éditeur ([À compléter] : Togo ou Bénin). Pour toute question : hello@lateufelectronic.com."
+        ]
+      }
+    ]
+  },
+  "Privacy": {
+    "metaTitle": "Politique de confidentialité",
+    "title": "Politique de confidentialité",
+    "updated": "Dernière mise à jour : 22 octobre 2026 (texte provisoire, en attente de validation)",
+    "sections": [
+      {
+        "title": "1. Responsable du traitement",
+        "body": [
+          "LA TEUF ÉLECTRONIQUE est responsable du traitement des données personnelles collectées sur lateufelectronic.com. Contact : hello@lateufelectronic.com."
+        ]
+      },
+      {
+        "title": "2. Données collectées",
+        "body": [
+          "Lors d'une commande de billets : nom, adresse e-mail, numéro WhatsApp, pays de résidence, contenu et montant de la commande, identifiant de la transaction de paiement.",
+          "Lors de la navigation : adresse IP et données techniques de connexion (sécurité, anti-robot, statistiques de fonctionnement), et un cookie d'attribution de 30 jours si vous arrivez par le lien d'un partenaire.",
+          "Nous ne collectons ni numéro de carte bancaire ni code Mobile Money : le paiement est saisi chez Kkiapay."
+        ]
+      },
+      {
+        "title": "3. Finalités et bases légales",
+        "body": [
+          "Traiter votre commande, émettre et vous envoyer vos billets par e-mail, et contrôler l'accès à la soirée (exécution du contrat).",
+          "Vous contacter au sujet de votre commande, d'un remboursement ou d'une modification de la soirée (exécution du contrat et intérêt légitime).",
+          "Protéger le site contre les abus et la fraude, par un contrôle anti-robot (intérêt légitime).",
+          "Mesurer les ventes issues des liens de partenaires et calculer leur commission (intérêt légitime)."
+        ]
+      },
+      {
+        "title": "4. Destinataires et sous-traitants",
+        "body": [
+          "Vos données sont accessibles à l'équipe de LA TEUF et aux prestataires suivants, uniquement pour fournir le service : Kkiapay (paiement), Supabase (base de données), Resend (envoi des e-mails), Cloudflare Turnstile (contrôle anti-robot) et Vercel (hébergement).",
+          "Certains de ces prestataires sont situés hors du Togo et du Bénin, notamment dans l'Union européenne et aux États-Unis. Nous ne vendons pas vos données."
+        ]
+      },
+      {
+        "title": "5. Durée de conservation",
+        "body": [
+          "Les données de commande sont conservées [À compléter] (durée proposée : 3 ans après la soirée, puis suppression ou anonymisation). Les données de paiement détenues par Kkiapay suivent leur propre politique."
+        ]
+      },
+      {
+        "title": "6. Cookies",
+        "body": [
+          "Le site utilise uniquement des cookies strictement nécessaires : la langue choisie et, le cas échéant, l'attribution d'un lien de partenaire (30 jours). Il n'utilise ni cookie publicitaire ni outil de suivi tiers."
+        ]
+      },
+      {
+        "title": "7. Vos droits",
+        "body": [
+          "Vous pouvez demander l'accès à vos données, leur rectification, leur effacement, la limitation ou l'opposition à leur traitement, en écrivant à hello@lateufelectronic.com. Nous répondons dans un délai raisonnable, après vérification de votre identité.",
+          "Vous pouvez aussi saisir l'autorité de protection des données de votre pays ([À compléter] : Togo ou Bénin)."
+        ]
+      },
+      {
+        "title": "8. Sécurité",
+        "body": [
+          "Les échanges avec le site sont chiffrés (HTTPS). Les billets portent un QR code unique et signé, valable jusqu'à la fin du lendemain de la soirée. Ne partagez votre QR code qu'avec la personne qui l'utilisera."
+        ]
+      },
+      {
+        "title": "9. Modifications",
+        "body": [
+          "Cette politique peut évoluer ; la date de dernière mise à jour figure en haut de cette page."
+        ]
+      }
+    ]
   }
 }

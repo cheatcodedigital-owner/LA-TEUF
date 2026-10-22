@@ -6,7 +6,7 @@ export function RevealTitle({ lines, accent }: { lines: string[]; accent?: strin
   return (
     <>
       {lines.map((line, l) => (
-        <span key={l} className="block whitespace-nowrap">
+        <span key={l} className="block lg:whitespace-nowrap">
           {line.split(" ").map((word, w, words) => (
             <span key={w} className="inline-block overflow-hidden pb-[0.12em] align-bottom">
               <span

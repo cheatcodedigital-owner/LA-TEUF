@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { socials } from "@/components/layout/nav-items";
+import { Reveal } from "@/components/reveal";
 import { Section } from "@/components/section";
 
 const pill =
@@ -11,7 +12,7 @@ export async function Community() {
   return (
     <Section id="contact" className="scroll-mt-24">
       <div className="grid gap-12 md:grid-cols-2 md:gap-16">
-        <div>
+        <Reveal>
           <h2 className="font-title text-4xl md:whitespace-nowrap md:text-[clamp(1.75rem,3.6vw,2.75rem)]">{t("title")}</h2>
           <p className="mt-6 max-w-md text-warm-ivory/80">{t("text")}</p>
           <ul className="mt-8 flex flex-wrap gap-3">
@@ -28,9 +29,9 @@ export async function Community() {
               </li>
             ))}
           </ul>
-        </div>
+        </Reveal>
 
-        <div>
+        <Reveal delay={140}>
           <h2 className="font-title text-4xl md:whitespace-nowrap md:text-[clamp(1.75rem,3.6vw,2.75rem)]">{t("contactTitle")}</h2>
           <p className="mt-6 max-w-md text-warm-ivory/80">{t("contactText")}</p>
           <ul className="mt-8 flex flex-wrap gap-3">
@@ -50,7 +51,7 @@ export async function Community() {
               </a>
             </li>
           </ul>
-        </div>
+        </Reveal>
       </div>
     </Section>
   );

@@ -7,7 +7,6 @@
     "events": "Events",
     "djs": "DJs",
     "gallery": "Gallery",
-    "shop": "Shop",
     "contact": "Contact",
     "tickets": "Tickets",
     "home": "LA TEUF home",
@@ -32,7 +31,7 @@
   },
   "Hero": {
     "titleAccent": "portal",
-    "imageAlt": "Crowd dancing under purple lights at a LA TEUF night",
+    "imageAlt": "LA TEUF DJ booth bathed in smoke and blue light",
     "tickets": "Tickets",
     "agenda": "See the lineup",
     "countdown": {
@@ -86,6 +85,24 @@
     },
     "close": "Close"
   },
+  "Djs": {
+    "metaTitle": "DJs",
+    "metaDescription": "The DJs and live musicians who made LA TEUF move in Lomé and Cotonou.",
+    "title": "The DJs",
+    "subtitle": "{count, plural, one {# artist} other {# artists}} · Lomé & Cotonou",
+    "hint": "Scroll to meet the line-up",
+    "eyebrow": "Line-up",
+    "lineup": "They made LA TEUF dance",
+    "intro": "DJs and live musicians who have already played with us. Every night adds new ones.",
+    "kind": {
+      "dj": "DJ",
+      "live": "Live"
+    },
+    "photoAlt": "Portrait of {name}",
+    "ctaTitle": "Come see them <accent>for real</accent>",
+    "ctaText": "Each night's line-up is announced on the event page.",
+    "ctaButton": "Upcoming nights"
+  },
   "Concept": {
     "title": "What is LA TEUF?",
     "text": "A festive electronic music night in Lomé to break out of the routine: DJs, live musicians and carefully crafted staging, in a warm atmosphere open to everyone.",
@@ -98,10 +115,12 @@
   },
   "HomeEvents": {
     "title": "Upcoming nights",
+    "hint": "Tap a card to bring it forward",
     "all": "All events"
   },
   "Gallery": {
     "title": "Seen on the dancefloor",
+    "hint": "Drag to explore",
     "alt": [
       "The DJ set under blue lights, facing the LA TEUF logo",
       "A DJ at the decks in front of the LA TEUF banner",
@@ -308,5 +327,129 @@
     "followTitle": "Follow us",
     "followText": "Join the community on our socials for line-ups, behind the scenes and upcoming dates.",
     "allEvents": "All events"
+  },
+  "LegalNotice": {
+    "metaTitle": "Legal notice",
+    "title": "Legal notice",
+    "updated": "Last updated: 22 October 2026 (provisional text, pending review)",
+    "sections": [
+      {
+        "title": "1. Site publisher",
+        "body": [
+          "The website lateufelectronic.com is published by LA TEUF ÉLECTRONIQUE, organiser of electronic music nights in Lomé (Togo) and Cotonou (Benin).",
+          "Legal form and registration number: [To be completed]",
+          "Registered address: [To be completed]",
+          "Email: hello@lateufelectronic.com. Phone: +228 91 95 01 93 (Shayn); booking: +228 93 70 62 42.",
+          "Publication director: [To be completed]"
+        ]
+      },
+      {
+        "title": "2. Hosting",
+        "body": [
+          "The site is hosted by Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, United States (vercel.com).",
+          "Ticketing data is stored by Supabase (supabase.com)."
+        ]
+      },
+      {
+        "title": "3. Intellectual property",
+        "body": [
+          "The LA TEUF name, logo, visual identity, texts, photographs and videos on the site belong to LA TEUF ÉLECTRONIQUE or are used with their authors' permission.",
+          "Any reproduction or reuse, in whole or in part, without prior written permission is prohibited."
+        ]
+      },
+      {
+        "title": "4. Ticketing and payment",
+        "body": [
+          "Online ticket sales are governed by the terms of sale. Mobile Money and card payments are processed by Kkiapay: the organiser does not store any payment data."
+        ]
+      },
+      {
+        "title": "5. Liability",
+        "body": [
+          "The organiser strives to provide accurate, up-to-date information but does not guarantee that the site is free of errors or interruptions. Line-ups, times and venues may change; the official information is what is published on the site and on our social networks.",
+          "The site may contain links to third-party sites (social networks, Linktree, WhatsApp) for which the organiser is not responsible."
+        ]
+      },
+      {
+        "title": "6. Personal data",
+        "body": [
+          "The processing of personal data is described in the privacy policy."
+        ]
+      },
+      {
+        "title": "7. Applicable law and contact",
+        "body": [
+          "This notice is governed by the law applicable to the publisher ([To be completed]: Togo or Benin). Questions: hello@lateufelectronic.com."
+        ]
+      }
+    ]
+  },
+  "Privacy": {
+    "metaTitle": "Privacy policy",
+    "title": "Privacy policy",
+    "updated": "Last updated: 22 October 2026 (provisional text, pending review)",
+    "sections": [
+      {
+        "title": "1. Data controller",
+        "body": [
+          "LA TEUF ÉLECTRONIQUE is the controller of the personal data collected on lateufelectronic.com. Contact: hello@lateufelectronic.com."
+        ]
+      },
+      {
+        "title": "2. Data we collect",
+        "body": [
+          "When you order tickets: name, email address, WhatsApp number, country of residence, the content and amount of the order, and the payment transaction identifier.",
+          "When you browse: IP address and technical connection data (security, anti-bot check, operating statistics), and a 30-day attribution cookie if you arrive through a partner's link.",
+          "We do not collect card numbers or Mobile Money codes: payment details are entered with Kkiapay."
+        ]
+      },
+      {
+        "title": "3. Purposes and legal bases",
+        "body": [
+          "Processing your order, issuing and emailing your tickets, and controlling entry to the night (performance of the contract).",
+          "Contacting you about your order, a refund or a change to the night (performance of the contract and legitimate interest).",
+          "Protecting the site against abuse and fraud with an anti-bot check (legitimate interest).",
+          "Measuring sales from partner links and calculating their commission (legitimate interest)."
+        ]
+      },
+      {
+        "title": "4. Recipients and processors",
+        "body": [
+          "Your data is accessible to the LA TEUF team and to the following providers, only to deliver the service: Kkiapay (payment), Supabase (database), Resend (email delivery), Cloudflare Turnstile (anti-bot check) and Vercel (hosting).",
+          "Some of these providers are located outside Togo and Benin, notably in the European Union and the United States. We do not sell your data."
+        ]
+      },
+      {
+        "title": "5. Retention",
+        "body": [
+          "Order data is kept for [To be completed] (proposed: 3 years after the night, then deleted or anonymised). Payment data held by Kkiapay follows their own policy."
+        ]
+      },
+      {
+        "title": "6. Cookies",
+        "body": [
+          "The site only uses strictly necessary cookies: the chosen language and, where applicable, partner-link attribution (30 days). It uses no advertising cookies and no third-party tracking."
+        ]
+      },
+      {
+        "title": "7. Your rights",
+        "body": [
+          "You may request access to, correction or erasure of your data, or restriction of or objection to its processing, by writing to hello@lateufelectronic.com. We reply within a reasonable time, after verifying your identity.",
+          "You may also contact the data protection authority of your country ([To be completed]: Togo or Benin)."
+        ]
+      },
+      {
+        "title": "8. Security",
+        "body": [
+          "Communication with the site is encrypted (HTTPS). Tickets carry a unique, signed QR code valid until the end of the day after the night. Only share your QR code with the person who will use it."
+        ]
+      },
+      {
+        "title": "9. Changes",
+        "body": [
+          "This policy may change; the date of the last update is shown at the top of this page."
+        ]
+      }
+    ]
   }
 }

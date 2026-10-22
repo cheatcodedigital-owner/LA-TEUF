@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { useEffect, useId, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { Link, usePathname } from "@/i18n/navigation";
 import { LanguageSwitch } from "./language-switch";
 import { MenuButton, MenuPanel } from "./mobile-menu";
@@ -11,39 +11,72 @@ import { navItems } from "./nav-items";
 export function Header() {
   const t = useTranslations("Nav");
   const pathname = usePathname();
-  const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuId = useId();
+  const itemRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
+  const [hovered, setHovered] = useState<string | null>(null);
+  const [pill, setPill] = useState<{ left: number; width: number } | null>(null);
+  const [pillReady, setPillReady] = useState(false);
+  const activeKey = navItems.find(({ href }) => pathname.startsWith(href))?.key ?? null;
+  // La capsule suit le survol/focus, sinon se repose sur la page active
+  const targetKey = hovered ?? activeKey;
 
-  // Fond opaque après quelques pixels de scroll ; la barre reste toujours visible
+  const placePill = useCallback(() => {
+    const el = targetKey ? itemRefs.current[targetKey] : null;
+    setPill(el ? { left: el.offsetLeft, width: el.offsetWidth } : null);
+    // Pas d'animation du tout premier placement (évite un glissement depuis 0)
+    if (el) requestAnimationFrame(() => setPillReady(true));
+  }, [targetKey]);
+
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 16);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    placePill();
+    window.addEventListener("resize", placePill);
+    return () => window.removeEventListener("resize", placePill);
+  }, [placePill]);
+
 
   return (
     <>
-    <header
-      className={`fixed inset-x-0 top-0 z-40 transition-colors duration-500 ease-out motion-reduce:transition-none ${
-        scrolled || menuOpen ? "bg-cosmic-black" : "bg-transparent"
-      }`}
-    >
-      <div className="mx-auto flex h-18 max-w-6xl items-center justify-between gap-4 px-4">
+    <header className="pointer-events-none fixed inset-x-0 top-0 z-40">
+      {/* Barre flottante détachée du hero, visible dès le haut de page */}
+      <div className="mx-auto max-w-6xl px-4">
+      <div
+        className={`liquid-glass pointer-events-auto mt-2 flex h-14 items-center justify-between gap-4 rounded-full px-3 md:px-4 ${
+          menuOpen ? "liquid-glass-solid" : ""
+        }`}
+      >
         <Link href="/" aria-label={t("home")} className="shrink-0">
-          <Image src="/brand/logo-blanc.svg" alt="LA TEUF" width={56} height={55} priority />
+          <Image src="/brand/logo-blanc.svg" alt="LA TEUF" width={41} height={40} priority />
         </Link>
 
-        <nav aria-label={t("mainNav")} className="hidden items-center gap-1 lg:flex">
+        <nav
+          aria-label={t("mainNav")}
+          className="relative hidden items-center gap-1 lg:flex"
+          onMouseLeave={() => setHovered(null)}
+          onBlur={(e) => {
+            if (!e.currentTarget.contains(e.relatedTarget)) setHovered(null);
+          }}
+        >
+          <span
+            aria-hidden
+            className={`pointer-events-none absolute inset-y-0 left-0 rounded-full bg-deep-indigo ease-(--ease-wave) motion-reduce:transition-none ${
+              pillReady ? "transition-[transform,width,opacity] duration-500" : ""
+            } ${pill ? (hovered ? "opacity-100" : "opacity-60") : "opacity-0"}`}
+            style={{ width: pill?.width ?? 0, transform: `translateX(${pill?.left ?? 0}px)` }}
+          />
           {navItems.map(({ key, href }) => {
             const active = pathname.startsWith(href);
             return (
               <Link
                 key={key}
                 href={href}
+                ref={(el) => {
+                  itemRefs.current[key] = el;
+                }}
+                onMouseEnter={() => setHovered(key)}
+                onFocus={() => setHovered(key)}
                 aria-current={active ? "page" : undefined}
-                className={`w-[6.25rem] rounded-full py-2 text-center font-label text-sm uppercase tracking-wider transition-colors hover:text-solar-copper ${
+                className={`relative w-[6.25rem] rounded-full py-2 text-center font-label text-sm uppercase tracking-wider transition-colors ${
                   active ? "text-solar-copper" : "text-warm-ivory"
                 }`}
               >
@@ -63,6 +96,7 @@ export function Header() {
           </Link>
           <MenuButton open={menuOpen} onOpenChange={setMenuOpen} menuId={menuId} />
         </div>
+      </div>
       </div>
     </header>
     <MenuPanel open={menuOpen} onOpenChange={setMenuOpen} menuId={menuId} />

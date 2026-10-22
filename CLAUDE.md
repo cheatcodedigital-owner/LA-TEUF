@@ -29,6 +29,7 @@ Next.js 16 (App Router, TypeScript, `src/`), Tailwind v4 (tokens dans `src/app/g
 - Sur fond Ivory, accents en `copper-deep`, pas en Copper (contraste insuffisant).
 - Pas d'ombres : lueur Ultraviolet au survol uniquement (`hover-glow`). Désactiver les animations avec `prefers-reduced-motion`.
 - Mobile first, cibles tactiles ≥ 44 px, focus visible.
+- Galerie de l'accueil : carrousel WebGL circulaire (`ogl`) dans `src/components/gallery/` (`circular-gallery.tsx`, enveloppe `gallery-showcase.tsx` avec repli en grille HTML si WebGL échoue). Elle ne détourne pas la molette verticale de la page.
 - Composants partagés : `src/components/ui.tsx`. Layout (header, menu mobile, footer) : `src/components/layout/`. Page de démonstration du design system : `/design` (`src/app/[locale]/design/page.tsx`).
 
 ## Règles du projet

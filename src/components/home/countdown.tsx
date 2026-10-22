@@ -29,13 +29,16 @@ export function Countdown({ target }: { target: string }) {
   ] as const;
 
   return (
-    <dl className="flex gap-3 md:gap-4" aria-label={t("label")}>
+    <dl className="flex w-full justify-start gap-2 sm:gap-3 md:w-auto lg:gap-3 xl:gap-4" aria-label={t("label")}>
       {parts.map(({ key, value }) => (
-        <div key={key} className="w-16 rounded-2xl bg-cosmic-black/70 px-1 py-3 text-center md:w-20">
-          <dd className="font-label text-3xl tabular-nums leading-none md:text-4xl">
+        <div
+          key={key}
+          className="min-w-0 max-w-[4.5rem] flex-1 rounded-2xl bg-deep-indigo px-1 py-3 text-center short:py-2 md:w-[clamp(4.25rem,7.5vw,5.25rem)] md:max-w-none md:flex-none md:py-4 md:short:py-3 lg:w-[4.25rem] lg:py-3 lg:short:py-2 xl:w-20"
+        >
+          <dd className="font-label text-[clamp(1.75rem,0.9rem+4.4vw,2.25rem)] tabular-nums leading-none short:text-[clamp(1.5rem,0.8rem+3.6vw,2rem)] lg:text-4xl lg:max-xl:text-[clamp(2rem,3.4vw,2.25rem)] lg:short:text-3xl">
             {value === null ? "--" : String(value).padStart(2, "0")}
           </dd>
-          <dt className="mt-1 text-xs uppercase tracking-wider text-warm-ivory/70">{t(key)}</dt>
+          <dt className="mt-2 text-xs uppercase tracking-wider text-warm-ivory/80 md:text-sm lg:mt-1.5 lg:text-xs">{t(key)}</dt>
         </div>
       ))}
     </dl>

@@ -78,9 +78,9 @@ function Details({ event, labels }: { event: EventView; labels: ShowcaseLabels }
 
 // --- Fenêtre : fond assombri en fondu, carte au premier plan -----------------------------
 
-type Opened = { event: EventView; trigger: HTMLElement };
+export type Opened = { event: EventView; trigger: HTMLElement };
 
-function EventModal({ opened, labels, onClosed }: { opened: Opened; labels: ShowcaseLabels; onClosed: () => void }) {
+export function EventModal({ opened, labels, onClosed }: { opened: Opened; labels: ShowcaseLabels; onClosed: () => void }) {
   const { event } = opened;
   const panelRef = useRef<HTMLDivElement>(null);
   const backdropRef = useRef<HTMLDivElement>(null);

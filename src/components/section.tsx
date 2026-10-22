@@ -15,7 +15,7 @@ export function Section({
   return (
     <section
       id={id}
-      className={`${light ? "section-light" : "bg-deep-indigo"} rounded-card px-5 py-10 md:px-12 md:py-16 ${className}`}
+      className={`${light ? "section-light" : "bg-deep-indigo"} border border-frame-line rounded-card px-5 py-10 md:px-12 md:py-16 ${className}`}
     >
       {children}
     </section>

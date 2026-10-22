@@ -12,7 +12,7 @@ export async function Footer() {
 
   return (
     <footer className="mx-auto max-w-6xl px-4 pb-6 md:pb-10">
-      <div className="rounded-card bg-deep-indigo px-5 py-10 md:px-12 md:py-16">
+      <div className="border border-frame-line rounded-card bg-deep-indigo px-5 py-10 md:px-12 md:py-16">
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>
             <Image src="/brand/logo-blanc.svg" alt="LA TEUF" width={88} height={86} />

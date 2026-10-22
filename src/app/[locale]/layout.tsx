@@ -5,6 +5,7 @@ import localFont from "next/font/local";
 import { notFound } from "next/navigation";
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
+import { Starfield } from "@/components/starfield";
 import { routing } from "@/i18n/routing";
 import "../globals.css";
 
@@ -56,6 +57,10 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
       className={`${tropic.variable} ${dizzy.variable} ${anton.variable} ${pain.variable} antialiased`}
     >
       <body className="min-h-screen">
+        <Starfield />
+        <noscript>
+          <style>{".reveal{opacity:1!important;transform:none!important}"}</style>
+        </noscript>
         <NextIntlClientProvider>
           <Header />
           <div className="pt-18">{children}</div>
