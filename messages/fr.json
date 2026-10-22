@@ -203,6 +203,17 @@
     "payHint": "Un contrôle anti-robot est demandé, puis le paiement s'ouvre dans la fenêtre sécurisée de Kkiapay.",
     "payWaiting": "Le paiement est ouvert dans la fenêtre Kkiapay (Mobile Money ou carte). Vos places restent gardées pendant le compte à rebours. Fenêtre fermée ? Cliquez de nouveau sur « Payer ».",
     "confirming": "Confirmation du paiement…",
+    "confirmingTitle": "Validation de votre paiement",
+    "confirmingText": "Merci de patienter, nous confirmons votre paiement auprès de Kkiapay. Ne fermez pas cette page.",
+    "failure": {
+      "title": "Paiement non abouti",
+      "processing_error": "Une erreur est survenue pendant le traitement de votre paiement. Le paiement n'a pas abouti.",
+      "insufficient_funds": "Le solde de votre compte Mobile Money ou de votre carte est insuffisant. Rechargez-le ou utilisez un autre moyen de paiement.",
+      "declined": "Votre paiement a été refusé par votre opérateur ou votre banque. Vérifiez vos informations ou essayez un autre moyen de paiement.",
+      "unknown": "Le paiement a échoué ou a été annulé.",
+      "hint": "Vos places restent gardées pendant le compte à rebours. Cliquez sur « Payer » pour réessayer.",
+      "retry": "Réessayer"
+    },
     "paidTitle": "Paiement confirmé",
     "paidText": "Vos {count, plural, one {# billet est confirmé} other {# billets sont confirmés}}. Ils seront envoyés à {email}.",
     "refundTitle": "Paiement reçu, mais plus de places",
@@ -283,5 +294,19 @@
         ]
       }
     ]
+  },
+  "Thanks": {
+    "metaTitle": "Merci !",
+    "eyebrow": "Paiement confirmé",
+    "title": "Félicitations, tu fais partie de la fête !",
+    "intro": "Ton billet est confirmé et tu vas le recevoir par e-mail. Toute l'équipe de LA TEUF t'attend très bientôt pour faire la fête avec notre communauté : musique, art et rencontres, dans la bonne énergie.",
+    "calendarTitle": "Ne rate pas la date",
+    "calendarText": "Ajoute la soirée à ton calendrier : tu recevras un rappel la veille.",
+    "google": "Google Agenda",
+    "ics": "Apple / Outlook (.ics)",
+    "calendarDescription": "LA TEUF ÉLECTRONIQUE : prépare-toi à faire la fête avec la communauté !",
+    "followTitle": "Suis-nous",
+    "followText": "Rejoins la communauté sur nos réseaux pour les line-ups, les coulisses et les prochaines dates.",
+    "allEvents": "Tous les événements"
   }
 }

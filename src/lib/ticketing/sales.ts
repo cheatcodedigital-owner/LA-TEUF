@@ -3,6 +3,7 @@ import { events as sampleEvents } from "@/data/events";
 import { groupDiscountPercent, HOLD_MINUTES, MAX_PER_ORDER } from "./config";
 import { getKkiapayConfig, verifyTransaction } from "./kkiapay";
 import { getAdminClient, isSupabaseConfigured } from "./supabase";
+import { sendTicketsEmail } from "./ticket-email";
 import type { ReservationInput } from "./schema";
 import type { ConfirmResponse, EventSales, PaymentConfig, ReserveErrorCode, ReserveResult, SalesResult, Tier } from "./types";
 
@@ -181,6 +182,7 @@ export async function confirmPayment(orderId: string, transactionId: string): Pr
 
   const tx = await verifyTransaction(transactionId);
   if (!tx) return { status: "error", code: "unavailable" };
+  if (tx.failure) return { status: "failed", reason: tx.failure };
   // Une transaction réussie qui vise une autre commande ne peut pas en payer une autre
   if (!tx.success || !Number.isFinite(tx.amountXof) || (tx.partnerId && tx.partnerId !== orderId)) {
     return { status: "error", code: "not_confirmed" };
@@ -196,7 +198,11 @@ export async function confirmPayment(orderId: string, transactionId: string): Pr
     console.error("[ticketing] mark_order_paid", error.message);
     return { status: "error", code: "not_confirmed" };
   }
-  if (data.status === "paid") return { status: "paid", tickets: data.ticketIds.length };
+  if (data.status === "paid") {
+    // Idempotent : confirmation navigateur et webhook passent ici, un seul e-mail part (voir sendTicketsEmail)
+    await sendTicketsEmail(orderId);
+    return { status: "paid", tickets: data.ticketIds.length };
+  }
   if (data.status === "refund_needed") return { status: "refund_needed" };
   return { status: "error", code: "not_confirmed" };
 }

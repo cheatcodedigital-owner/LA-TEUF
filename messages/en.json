@@ -203,6 +203,17 @@
     "payHint": "An anti-robot check is requested, then payment opens in Kkiapay's secure window.",
     "payWaiting": "Payment is open in the Kkiapay window (Mobile Money or card). Your seats are held during the countdown. Window closed? Click “Pay” again.",
     "confirming": "Confirming payment…",
+    "confirmingTitle": "Validating your payment",
+    "confirmingText": "Please wait while we confirm your payment with Kkiapay. Do not close this page.",
+    "failure": {
+      "title": "Payment unsuccessful",
+      "processing_error": "An error occurred while processing your payment. The payment did not go through.",
+      "insufficient_funds": "The balance on your Mobile Money account or card is insufficient. Top it up or use another payment method.",
+      "declined": "Your payment was declined by your operator or bank. Check your details or try another payment method.",
+      "unknown": "The payment failed or was cancelled.",
+      "hint": "Your seats stay held while the countdown runs. Click “Pay” to try again.",
+      "retry": "Try again"
+    },
     "paidTitle": "Payment confirmed",
     "paidText": "Your {count, plural, one {# ticket is confirmed} other {# tickets are confirmed}}. They will be sent to {email}.",
     "refundTitle": "Payment received, but no seats left",
@@ -283,5 +294,19 @@
         ]
       }
     ]
+  },
+  "Thanks": {
+    "metaTitle": "Thank you!",
+    "eyebrow": "Payment confirmed",
+    "title": "Congratulations, you're part of the party!",
+    "intro": "Your ticket is confirmed and will be sent to you by email. The whole LA TEUF team can't wait to party with you and our community very soon: music, art and connection, good vibes only.",
+    "calendarTitle": "Don't miss the date",
+    "calendarText": "Add the night to your calendar: you'll get a reminder the day before.",
+    "google": "Google Calendar",
+    "ics": "Apple / Outlook (.ics)",
+    "calendarDescription": "LA TEUF ÉLECTRONIQUE: get ready to party with the community!",
+    "followTitle": "Follow us",
+    "followText": "Join the community on our socials for line-ups, behind the scenes and upcoming dates.",
+    "allEvents": "All events"
   }
 }

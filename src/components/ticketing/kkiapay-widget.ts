@@ -1,9 +1,10 @@
 // Widget de paiement Kkiapay (script officiel chargé à la demande, uniquement au moment de payer)
-type Handlers = { onSuccess: (transactionId: string | null) => void; onFailed: () => void };
+type Handlers = { onSuccess: (transactionId: string | null) => void; onFailed: (transactionId: string | null) => void };
 
 declare global {
   interface Window {
     openKkiapayWidget?: (options: Record<string, unknown>) => void;
+    closeKkiapayWidget?: () => void;
     addSuccessListener?: (callback: (response: unknown) => void) => void;
     addFailedListener?: (callback: (response: unknown) => void) => void;
   }
@@ -51,7 +52,11 @@ export async function openKkiapay(
   if (!registered) {
     registered = true;
     window.addSuccessListener((response) => current?.onSuccess(transactionIdOf(response)));
-    window.addFailedListener(() => current?.onFailed());
+    window.addFailedListener((response) => {
+      // Ferme la fenêtre Kkiapay pour laisser la nôtre afficher la raison de l'échec
+      window.closeKkiapayWidget?.();
+      current?.onFailed(transactionIdOf(response));
+    });
   }
   window.openKkiapayWidget({
     key: options.publicKey,

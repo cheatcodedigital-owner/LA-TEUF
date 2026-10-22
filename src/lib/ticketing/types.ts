@@ -83,4 +83,8 @@ export type CheckoutResponse =
 export type ConfirmResponse =
   | { status: "paid"; tickets: number }
   | { status: "refund_needed" }
+  /** Kkiapay a refusé la transaction : `reason` explique pourquoi (affiché dans la fenêtre de paiement) */
+  | { status: "failed"; reason: PaymentFailure }
   | { status: "error"; code: "not_confirmed" | "unavailable" };
+
+export type PaymentFailure = "processing_error" | "insufficient_funds" | "declined" | "unknown";

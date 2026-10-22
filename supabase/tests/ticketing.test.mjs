@@ -153,6 +153,16 @@ ok("scan : déjà utilisé", (await scan()) === "already_used");
 const other = (await q("select id from events where slug='la-teuf-cotonou'"))[0].id;
 ok("scan : mauvais événement", (await scan(t1.nonce, other)) === "wrong_event");
 
+// Validité : jusqu'à la fin du lendemain de la soirée
+const startsBefore = (await q("select starts_at from events where slug='la-teuf-karma'"))[0].starts_at;
+const t2 = (await q("select id, nonce, event_id from tickets where order_id=$1 and id<>$2 limit 1", [pay.orderId, t1.id]))[0];
+const scan2 = async () => (await q("select scan_ticket($1,$2,$3) as r", [t2.id, t2.nonce, t2.event_id]))[0].r.result;
+await q("update events set starts_at = now() - interval '3 days' where slug='la-teuf-karma'");
+ok("scan : après le lendemain de la soirée → expired", (await scan2()) === "expired");
+await q("update events set starts_at = now() - interval '1 day' where slug='la-teuf-karma'");
+ok("scan : le lendemain de la soirée → ok", (await scan2()) === "ok");
+await q("update events set starts_at = $1 where slug='la-teuf-karma'", [startsBefore]);
+
 // --- Pas de survente : paiement tardif sans place ---------------------------------------------
 await resetOrders();
 await q("update events set capacity = 3 where slug = 'la-teuf-karma'");

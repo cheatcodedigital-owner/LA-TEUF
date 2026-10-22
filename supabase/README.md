@@ -5,6 +5,7 @@
    - `migrations/0001_ticketing.sql` (schéma, RLS, fonctions)
    - `migrations/0002_sales_rules.sql` (fenêtres de vente, remises de groupe, annulation)
    - `migrations/0003_standard_quota_early_open.sql` (ouverture anticipée du standard, remise 15 %)
+   - `migrations/0004_ticket_email_expiry.sql` (suivi de l'envoi de l'e-mail, expiration du billet au scan)
    - `seed.sql` (événements de départ — prix : early bird 3 000, standard 5 000 FCFA)
 2. Copier `.env.example` en `.env.local` et renseigner `SUPABASE_URL` et `SUPABASE_SERVICE_ROLE_KEY`
    (Project Settings → API). La clé service_role reste côté serveur uniquement.
@@ -33,6 +34,12 @@ séquentiels, quotas, réservations temporaires, expiration, paiement idempotent
 place (`refund_needed`), scan à usage unique, codes promo, RLS et droits.
 Limite : un seul client, donc la concurrence réelle repose sur le verrou `FOR UPDATE` de la ligne
 `events` dans `create_order` / `mark_order_paid`.
+
+## E-mail du billet et validité du QR
+- Après un paiement confirmé (navigateur ou webhook), `sendTicketsEmail` (`src/lib/ticketing/ticket-email.ts`) envoie via Resend un e-mail avec un QR par place (images jointes en CID). Variables : `RESEND_API_KEY`, `EMAIL_FROM`, `TICKET_SIGNING_SECRET`.
+- Le QR contient `idBillet.nonce.signature` (HMAC, `ticket-token.ts`). Ne jamais changer `TICKET_SIGNING_SECRET` en cours de vente : les QR déjà envoyés ne passeraient plus la vérification.
+- Validité : jusqu'à la fin du lendemain de la soirée (minuit UTC du jour J + 2 jours, exclu). `scan_ticket` renvoie `expired` ensuite.
+- `orders.tickets_emailed_at` évite les doublons (posé avant l'envoi, remis à null si l'envoi échoue).
 
 ## Modèle
 - Une commande `pending` **maintient** ses places jusqu'à `expires_at` (10 min) ; les billets ne sont

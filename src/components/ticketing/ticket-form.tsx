@@ -2,10 +2,11 @@
 
 import { useLocale, useTranslations } from "next-intl";
 import { useState, useSyncExternalStore, type FormEvent } from "react";
-import { Link } from "@/i18n/navigation";
+import { createPortal } from "react-dom";
+import { getPathname, Link } from "@/i18n/navigation";
 import { COUNTRIES, groupDiscountPercent, MAX_PER_ORDER, TURNSTILE_TEST_SITE_KEY } from "@/lib/ticketing/config";
 import { formatXof } from "@/lib/ticketing/format";
-import type { CheckoutResponse, ConfirmResponse, OrderSummary, PaymentConfig, ReserveResponse, Tier } from "@/lib/ticketing/types";
+import type { CheckoutResponse, ConfirmResponse, OrderSummary, PaymentConfig, PaymentFailure, ReserveResponse, Tier } from "@/lib/ticketing/types";
 import { openKkiapay } from "./kkiapay-widget";
 import { Turnstile } from "./turnstile";
 
@@ -19,7 +20,7 @@ const secondary =
   "inline-flex min-h-11 items-center justify-center rounded-full border border-warm-ivory/40 py-3.5 font-label text-base uppercase tracking-wider text-warm-ivory transition hover:border-solar-copper hover:text-solar-copper disabled:cursor-not-allowed disabled:opacity-60";
 
 const SITE_KEY =
-  process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? (process.env.NODE_ENV !== "production" ? TURNSTILE_TEST_SITE_KEY : undefined);
+  process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || (process.env.NODE_ENV !== "production" ? TURNSTILE_TEST_SITE_KEY : undefined);
 
 function subscribe(onChange: () => void) {
   const id = window.setInterval(onChange, 1000);
@@ -29,14 +30,72 @@ const getSeconds = () => Math.floor(Date.now() / 1000);
 const getServerSeconds = () => null;
 
 type Saved = Record<string, string>;
-type PayStep = "idle" | "verifying" | "checking" | "ready" | "confirming" | "paid" | "refund" | "error";
+type PayStep = "idle" | "verifying" | "checking" | "ready" | "confirming" | "failed" | "paid" | "refund" | "error";
+
+// Fenêtre bloquante pendant la vérification du paiement auprès de Kkiapay (portail : un parent transformé casserait `fixed`)
+function ValidatingDialog({ failure, onRetry }: { failure?: PaymentFailure; onRetry?: () => void }) {
+  const t = useTranslations("Ticketing");
+  if (failure) {
+    return createPortal(
+      <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-cosmic-black/80 p-4 backdrop-blur-sm">
+        <div
+          role="alertdialog"
+          aria-modal="true"
+          aria-labelledby="failed-title"
+          aria-describedby="failed-text"
+          className="w-full max-w-sm rounded-card bg-deep-indigo p-8 text-center"
+        >
+          <div aria-hidden className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-solar-copper/15 font-label text-3xl text-solar-copper">
+            ✕
+          </div>
+          <h2 id="failed-title" className="mt-6 font-title text-2xl">
+            {t("failure.title")}
+          </h2>
+          <p id="failed-text" className="mt-3 text-warm-ivory/80">
+            {t(`failure.${failure}`)}
+          </p>
+          <p className="mt-3 text-sm text-warm-ivory/60">{t("failure.hint")}</p>
+          <button type="button" autoFocus onClick={onRetry} className={`${primary} mt-6 w-full`}>
+            {t("failure.retry")}
+          </button>
+        </div>
+      </div>,
+      document.body,
+    );
+  }
+  return createPortal(
+    <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-cosmic-black/80 p-4 backdrop-blur-sm">
+      <div
+        role="alertdialog"
+        aria-modal="true"
+        aria-labelledby="validating-title"
+        aria-describedby="validating-text"
+        className="w-full max-w-sm rounded-card bg-deep-indigo p-8 text-center"
+      >
+        <div
+          aria-hidden
+          className="mx-auto h-14 w-14 animate-spin rounded-full border-4 border-warm-ivory/20 border-t-solar-copper motion-reduce:animate-pulse"
+        />
+        <h2 id="validating-title" className="mt-6 font-title text-2xl">
+          {t("confirmingTitle")}
+        </h2>
+        <p id="validating-text" aria-live="polite" className="mt-3 text-warm-ivory/80">
+          {t("confirmingText")}
+        </p>
+      </div>
+    </div>,
+    document.body,
+  );
+}
 
 function Hold({
+  slug,
   order,
   email,
   onModify,
   onRestart,
 }: {
+  slug: string;
   order: OrderSummary;
   email: string;
   onModify: () => Promise<void>;
@@ -49,6 +108,7 @@ function Hold({
   const [payError, setPayError] = useState<keyof CheckoutErrors | null>(null);
   const [payment, setPayment] = useState<PaymentConfig | null>(null);
   const [modifying, setModifying] = useState(false);
+  const [failure, setFailure] = useState<PaymentFailure | null>(null);
   const left = now === null ? null : Math.max(0, Math.floor(new Date(order.expiresAt).getTime() / 1000) - now);
 
   async function checkout(token: string) {
@@ -83,12 +143,18 @@ function Hold({
         { publicKey: config.publicKey, sandbox: config.sandbox, amount: order.totalXof, orderId: order.orderId, email },
         {
           onSuccess: (transactionId) => (transactionId ? confirm(transactionId) : fail("not_confirmed")),
-          onFailed: () => fail("failed"),
+          onFailed: (transactionId) => (transactionId ? confirm(transactionId) : declined("unknown")),
         },
       );
     } catch {
       fail("unavailable");
     }
+  }
+
+  // Paiement refusé : la fenêtre explique la raison, « Réessayer » ramène au bouton « Payer » (sans repasser par les informations)
+  function declined(reason: PaymentFailure) {
+    setFailure(reason);
+    setStep("failed");
   }
 
   function fail(code: keyof CheckoutErrors) {
@@ -106,8 +172,14 @@ function Hold({
         body: JSON.stringify({ orderId: order.orderId, transactionId }),
       });
       const data = (await res.json()) as ConfirmResponse;
-      if (data.status === "paid") setStep("paid");
+      if (data.status === "paid") {
+        setStep("paid");
+        // Navigation complète (et non client-side) : le routeur garde en mémoire la page précédente avec son état,
+        // et un retour sur la billetterie rouvrirait la fenêtre de validation.
+        window.location.assign(getPathname({ href: `/billetterie/${slug}/merci`, locale }));
+      }
       else if (data.status === "refund_needed") setStep("refund");
+      else if (data.status === "failed") declined(data.reason);
       else fail(data.code);
     } catch {
       fail("unavailable");
@@ -123,6 +195,7 @@ function Hold({
     const paid = step === "paid";
     return (
       <div className="rounded-card bg-deep-indigo p-6 md:p-8">
+        {paid && <ValidatingDialog />}
         <h2 className="font-title text-3xl">{t(paid ? "paidTitle" : "refundTitle")}</h2>
         <p className="mt-3 text-warm-ivory/80">
           {paid ? t("paidText", { count: order.quantity, email }) : t("refundText")}
@@ -198,7 +271,16 @@ function Hold({
         </div>
       )}
       {step === "checking" && <p className="mt-6 text-warm-ivory/80">{t("checking")}</p>}
-      {step === "confirming" && <p className="mt-6 text-warm-ivory/80">{t("confirming")}</p>}
+      {step === "confirming" && <ValidatingDialog />}
+      {step === "failed" && failure && (
+        <ValidatingDialog
+          failure={failure}
+          onRetry={() => {
+            setFailure(null);
+            setStep("idle");
+          }}
+        />
+      )}
       {step === "ready" && <p className="mt-6 rounded-2xl bg-cosmic-black px-4 py-3 text-warm-ivory/90">{t("payWaiting")}</p>}
       {step === "error" && payError && (
         <p role="alert" className="mt-6 rounded-2xl bg-solar-copper/15 px-4 py-3 text-solar-copper">
@@ -291,6 +373,7 @@ export function TicketForm({ slug, tiers, sample }: { slug: string; tiers: Tier[
   if (response?.status === "success") {
     return (
       <Hold
+        slug={slug}
         order={response.order}
         email={saved.email ?? ""}
         onModify={() => modifyReservation(response.order)}
