@@ -1,6 +1,6 @@
 import "server-only";
 import { events as sampleEvents } from "@/data/events";
-import { groupDiscountPercent, HOLD_MINUTES, MAX_PER_ORDER } from "./config";
+import { groupDiscountPercent, HOLD_MINUTES, MAX_PER_ORDER, TABLE_SEATS } from "./config";
 import { getKkiapayConfig, verifyTransaction } from "./kkiapay";
 import { getAdminClient, isSupabaseConfigured } from "./supabase";
 import { sendTicketsEmail } from "./ticket-email";
@@ -32,11 +32,13 @@ function sampleSales(slug: string): EventSales | null {
   const e = sampleEvents.find((x) => x.slug === slug);
   if (!e) return null;
 
-  // Mêmes fenêtres que le seed : early bird de J-21 à J-7, standard de J-7 à l'événement (minuit UTC du jour J)
+  // Mêmes règles que le seed : ventes dès le 9 novembre (J-11) ; early bird jusqu'à épuisement ; standard sans date
+  // (ouvert seulement quand l'early bird est épuisé, jamais en démo : rien n'y est vendu) ; early bird et standard
+  // fermés le jour J (minuit UTC) ; tables jusqu'à l'événement (100 000 dès le 18 novembre, J-2).
   const start = new Date(e.startsAt);
   const dayJ = Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate());
   const now = sampleNow();
-  const make = (id: string, kind: Tier["kind"], priceXof: number, quota: number, from: number, to: number): Tier => {
+  const make = (id: string, kind: Tier["kind"], priceXof: number, quota: number, from: number, to: number, extra: Partial<Tier> = {}): Tier => {
     const state: Tier["state"] = now < from ? "upcoming" : now >= to ? "closed" : "on_sale";
     return {
       id,
@@ -47,6 +49,8 @@ function sampleSales(slug: string): EventSales | null {
       onSale: state === "on_sale",
       salesStart: new Date(from).toISOString(),
       salesEnd: new Date(to).toISOString(),
+      seats: 1,
+      ...extra,
     };
   };
 
@@ -65,9 +69,28 @@ function sampleSales(slug: string): EventSales | null {
     remaining: e.capacity,
     soldOut: false,
     tiers: [
-      // ⚠️ Prix d'exemple, visibles uniquement en développement sans Supabase (early bird 3000, standard 5000, quota standard 100)
-      make("00000000-0000-4000-8000-000000000001", "early_bird", 3000, 60, dayJ - 21 * DAY, dayJ - 7 * DAY),
-      make("00000000-0000-4000-8000-000000000002", "standard", 5000, 100, dayJ - 7 * DAY, start.getTime()),
+      // ⚠️ Prix d'exemple, visibles uniquement en développement sans Supabase (early bird 5000 ×70, standard 8000 ×30, 4 tables à 80000)
+      make("00000000-0000-4000-8000-000000000001", "early_bird", 5000, 70, dayJ - 11 * DAY, dayJ),
+      {
+        ...make("00000000-0000-4000-8000-000000000002", "standard", 8000, 30, dayJ, dayJ),
+        state: now >= dayJ ? "closed" : "upcoming",
+        remaining: 0,
+        onSale: false,
+        salesStart: null,
+      },
+      make(
+        "00000000-0000-4000-8000-000000000003",
+        "table",
+        now >= dayJ - 2 * DAY ? 100000 : 80000,
+        4,
+        dayJ - 11 * DAY,
+        start.getTime(),
+        {
+          seats: TABLE_SEATS,
+          nextPriceXof: now < dayJ - 2 * DAY ? 100000 : null,
+          nextPriceAt: now < dayJ - 2 * DAY ? new Date(dayJ - 2 * DAY).toISOString() : null,
+        },
+      ),
     ],
   };
 }
@@ -93,7 +116,7 @@ export async function reserve(input: ReservationInput, affiliateRef?: string | n
     const sales = sampleSales(input.slug);
     const tier = sales?.tiers.find((t) => t.id === input.ticketTypeId && t.onSale);
     if (!sales || !tier) return { ok: false, code: "type_unavailable" };
-    if (input.promo) return { ok: false, code: tier.kind === "early_bird" ? "promo_not_allowed" : "invalid_promo" };
+    if (input.promo) return { ok: false, code: tier.kind === "early_bird" || tier.kind === "table" ? "promo_not_allowed" : "invalid_promo" };
     const subtotal = tier.priceXof * input.quantity;
     const pct = groupDiscountPercent(tier.kind, input.quantity);
     const discount = Math.floor((subtotal * pct) / 100);
@@ -110,6 +133,7 @@ export async function reserve(input: ReservationInput, affiliateRef?: string | n
         totalXof: subtotal - discount,
         autoDiscountPct: pct,
         promoApplied: false,
+        seats: tier.seats,
       },
     };
   }

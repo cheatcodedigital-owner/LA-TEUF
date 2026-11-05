@@ -25,7 +25,7 @@ export const events: TeufEvent[] = [
     country: "Togo",
     startsAt: "2026-11-20T20:00:00Z",
     status: "en-vente",
-    capacity: 160,
+    capacity: 100,
   },
   {
     slug: "la-teuf-cotonou",
@@ -35,7 +35,7 @@ export const events: TeufEvent[] = [
     country: "Bénin",
     startsAt: "2026-12-12T20:00:00Z",
     status: "bientot",
-    capacity: 160,
+    capacity: 100,
   },
 ];
 

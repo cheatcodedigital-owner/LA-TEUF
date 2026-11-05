@@ -32,7 +32,7 @@ function write(key: string, value: unknown) {
   } catch {}
 }
 
-const KIND: Record<string, string> = { early_bird: "Early bird", standard: "Standard" };
+const KIND: Record<string, string> = { early_bird: "Early bird", standard: "Standard", table: "Table" };
 const hhmm = (iso?: string) => (iso ? new Date(iso).toLocaleTimeString("fr-FR", { timeZone: "Africa/Lome", hour: "2-digit", minute: "2-digit" }) : "");
 
 const MESSAGES: Record<LocalResult, { tone: Banner["tone"]; title: string }> = {

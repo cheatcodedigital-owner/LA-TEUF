@@ -7,7 +7,8 @@ import { requireRole } from "@/lib/admin/session";
 import { isSupabaseConfigured } from "@/lib/ticketing/supabase";
 import { AdminNav } from "../nav";
 import { PromoForm } from "../forms";
-import { createPromo, setPromoActive } from "./actions";
+import { createPromo, deletePromo, setPromoActive } from "./actions";
+import { DeletePromoButton } from "./delete-button";
 
 const fcfa = (n: number) => `${n.toLocaleString("fr-FR")} FCFA`;
 const day = (iso: string | null) => (iso ? new Date(iso).toLocaleDateString("fr-FR", { timeZone: "Africa/Lome" }) : "—");
@@ -102,6 +103,7 @@ async function Content() {
                       {p.active ? "Désactiver" : "Réactiver"}
                     </button>
                   </form>
+                  <DeletePromoButton action={deletePromo} id={p.id} code={p.code} used={p.used} />
                 </div>
               </li>
             );

@@ -13,7 +13,8 @@
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
     "mainNav": "Main navigation",
-    "language": "Language"
+    "language": "Language",
+    "faq": "FAQ"
   },
   "Footer": {
     "tagline": "The gateway to free partying. Electronic music, art and connection in Lomé and Cotonou.",
@@ -119,25 +120,67 @@
     "all": "All events"
   },
   "Gallery": {
+    "metaTitle": "Gallery",
+    "metaDescription": "Atmosphere and crowd at LA TEUF nights in Lomé and Cotonou.",
+    "eyebrow": "Gallery",
     "title": "Seen on the dancefloor",
+    "intro": "Lights, smoke and faces of the community: a few moments from our nights.",
     "hint": "Drag to explore",
+    "allTitle": "All photos",
+    "viewer": {
+      "open": "Enlarge photo",
+      "close": "Close",
+      "previous": "Previous photo",
+      "next": "Next photo"
+    },
     "alt": [
-      "The DJ set under blue lights, facing the LA TEUF logo",
+      "The crowd dances under a blue spotlight",
+      "A DJ at the decks in blue smoke, in front of the LA TEUF logo",
+      "A dancer with eyes closed, carried by the music",
+      "A DJ behind the decks under purple and blue lights",
+      "A partygoer with braids poses by the bar",
+      "The LA TEUF stage bathed in blue light",
+      "A couple dances in pink smoke",
       "A DJ at the decks in front of the LA TEUF banner",
-      "Silhouettes in red smoke in front of the stage",
-      "A percussionist on stage in front of the LA TEUF logo",
-      "Two friends at a LA TEUF night",
-      "A close couple on the dancefloor"
+      "The team and guests gathered for a group photo",
+      "Partygoers in the dark under string lights",
+      "A group of friends dances under the string lights",
+      "The DJ booth seen from the dancefloor, under string lights",
+      "Two close friends pose arm in arm",
+      "Silhouettes in front of the stage in red light"
     ]
   },
-  "Community": {
-    "title": "Join the movement",
-    "text": "Follow LA TEUF so you never miss a thing: night announcements, lineups, behind the scenes.",
-    "contactTitle": "Contact and booking",
-    "contactText": "A question, a wish to play with us, a collaboration? Write to us or call.",
-    "email": "Send an email",
+  "Contact": {
+    "metaTitle": "Contact",
+    "metaDescription": "Write to the LA TEUF team, call us or follow us on social media.",
+    "eyebrow": "Contact",
+    "title": "Let's talk",
+    "intro": "A question about a night, a ticket, a collaboration? Write to us right here or give us a call.",
+    "writeTitle": "Write to us",
+    "writeText": "Your message lands straight in our inbox. You can also write to",
+    "callTitle": "Call us",
+    "callText": "For any information request.",
     "call": "Call",
-    "booking": "Booking"
+    "followTitle": "Follow us",
+    "followText": "Night announcements, lineups and behind the scenes.",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "subject": "Subject",
+      "message": "Message",
+      "messagePlaceholder": "Tell us everything…",
+      "send": "Send",
+      "sending": "Sending…",
+      "sentTitle": "Message sent",
+      "sentText": "Thanks! The team will reply by email as soon as possible.",
+      "another": "New message",
+      "errors": {
+        "invalid": "Check the fields: name, valid email, subject and a message of at least 10 characters.",
+        "antibot": "The anti-bot check failed. Please try again.",
+        "rate": "Too many messages sent. Try again in an hour.",
+        "unavailable": "Sending is temporarily unavailable. Write to us at hello@lateufelectronic.com."
+      }
+    }
   },
   "Ticketing": {
     "metaTitle": "Tickets",
@@ -155,7 +198,8 @@
     "tier": "Ticket type",
     "tierKinds": {
       "early_bird": "Early bird",
-      "standard": "Standard"
+      "standard": "Standard",
+      "table": "Table"
     },
     "tierRemaining": "{count} left",
     "quantity": "Quantity",
@@ -186,7 +230,7 @@
       "unavailable": "Ticketing is temporarily unavailable. Please try again in a moment.",
       "unknown": "Something went wrong. Please try again.",
       "form": "Some fields are incomplete or invalid.",
-      "promo_not_allowed": "Promo codes do not apply to early birds."
+      "promo_not_allowed": "Promo codes do not apply to early birds or tables."
     },
     "held": "Tickets reserved",
     "heldFor": "Your tickets are held for another",
@@ -200,7 +244,7 @@
     "soldOutTier": "Sold out",
     "closedTier": "Sale ended",
     "earlyNoPromo": "Promo codes do not apply to early birds.",
-    "promoEarly": "Not applicable to early birds",
+    "promoEarly": "Not applicable to this ticket",
     "groupHint": "Automatic discount on the standard ticket: −10% from 5 tickets, −15% from 8 tickets, −20% for 10 tickets.",
     "groupDiscountLine": "Group discount −{pct}%",
     "subtotal": "Subtotal",
@@ -237,7 +281,14 @@
     "paidText": "Your {count, plural, one {# ticket is confirmed} other {# tickets are confirmed}}. They will be sent to {email}.",
     "refundTitle": "Payment received, but no seats left",
     "refundText": "Your reservation had expired and the seats were taken in the meantime. You will be refunded: contact us with the reference below.",
-    "reference": "Order reference:"
+    "reference": "Order reference:",
+    "tableRemaining": "{count, plural, one {# table left} other {# tables left}}",
+    "tableSeats": "Lounge for {seats} people",
+    "priceRises": "Goes up to {price} on {date}",
+    "tableNoPromo": "Promo codes and the group discount do not apply to tables.",
+    "quantityTables": "Number of tables",
+    "tableHint": "Each table comes with {seats} individual tickets (one per guest), sent to the booking email address.",
+    "afterEarly": "Opens when early birds are sold out"
   },
   "Cgv": {
     "metaTitle": "Terms of sale",
@@ -255,12 +306,13 @@
       {
         "title": "2. Tickets and prices",
         "body": [
-          "Prices are in CFA francs (FCFA). Capacity is limited to 160 people per night.",
-          "Early bird: 3,000 FCFA, 60 tickets, on sale from three weeks to one week before the night, while the quota lasts.",
-          "Standard: 5,000 FCFA, 100 tickets, on sale from one week before the night (or as soon as the early birds sell out) until the night.",
+          "Prices are in CFA francs (FCFA). For the KARMA night (20 November 2026), online sales open on 9 November. Individual tickets are limited to 100 per night.",
+          "Early bird: 5,000 FCFA, 70 tickets, on sale from 9 November until the quota is sold out, with no end date.",
+          "Standard: 8,000 FCFA, 30 tickets, on sale only once the 70 early birds are sold. Online early bird and standard sales close on the day of the night: remaining tickets are sold at the door, while places last.",
+          "Tables: 4 lounges for 6 people are offered on top of the 100 tickets, at 80,000 FCFA per table from 9 to 17 November, then 100,000 FCFA per table from 18 to 20 November. A table comes with 6 individual tickets.",
           "An order includes at most 10 tickets.",
           "A group discount is applied automatically to the standard ticket: −10% from 5 tickets, −15% from 8 tickets, −20% for 10 tickets.",
-          "Promo codes do not apply to early birds. They cannot be combined with the group discount: the most favorable discount is applied."
+          "Promo codes do not apply to early birds or tables. They cannot be combined with the group discount: the most favorable discount is applied."
         ]
       },
       {
@@ -448,6 +500,169 @@
         "title": "9. Changes",
         "body": [
           "This policy may change; the date of the last update is shown at the top of this page."
+        ]
+      }
+    ]
+  },
+  "Faq": {
+    "metaTitle": "FAQ",
+    "metaDescription": "Tickets, prices, tables, payment, QR code, refunds: all the answers about LA TEUF nights.",
+    "eyebrow": "FAQ",
+    "title": "Your questions, our answers",
+    "intro": "Tickets, tables, payment, getting in: everything you need to know before stepping through the portal.",
+    "ctaTitle": "Another question?",
+    "ctaText": "The team replies by email as soon as possible. You can also call us or message us on social media.",
+    "ctaButton": "Contact us",
+    "ticketsButton": "Get my tickets",
+    "groups": [
+      {
+        "title": "The night",
+        "items": [
+          {
+            "q": "What is LA TEUF?",
+            "a": "A festive electronic music gathering in Lomé and Cotonou to break the routine: DJs, live instrumentalists and carefully crafted staging, in a warm atmosphere open to everyone. One night a month, venues that change, always the same energy."
+          },
+          {
+            "q": "When is the next night?",
+            "a": "LA TEUF at KARMA, in Lomé (Togo), on 20 November 2026. The next one is in Cotonou (Benin) on 12 December 2026: the venue and line-up will be announced soon. All dates are on the Events page."
+          },
+          {
+            "q": "Who is playing?",
+            "a": "The DJs and live instrumentalists of each night are presented on the DJs page. When a line-up is not announced yet, it will be on the site and on our social media."
+          },
+          {
+            "q": "What is the vibe? Are there rules?",
+            "a": "A free, warm and relaxed party, with respect for everyone and their limits. The organizer may refuse entry to, or remove, anyone who does not respect others."
+          },
+          {
+            "q": "How many people can the night hold?",
+            "a": "The KARMA night is limited to 100 individual tickets, plus 4 tables of 6 people. When it is sold out, it is sold out: do not wait too long."
+          }
+        ]
+      },
+      {
+        "title": "Tickets and prices",
+        "items": [
+          {
+            "q": "When do KARMA ticket sales open?",
+            "a": "Online sales open on 9 November 2026, on the night's Tickets page: early bird tickets and tables are available from that date."
+          },
+          {
+            "q": "What are the prices?",
+            "a": "Early bird: 5,000 FCFA, 70 tickets, on sale from 9 November until sold out. Standard: 8,000 FCFA, 30 tickets, open only once the 70 early birds are sold. The standard ticket stays visible, greyed out, until then."
+          },
+          {
+            "q": "What happens when early birds sell out?",
+            "a": "As soon as the 70th early bird is sold (or held), the 8,000 FCFA standard ticket opens automatically, for 30 tickets. There is no date: it depends on how fast early birds sell. If an early bird booking expires unpaid, the place goes back to early bird."
+          },
+          {
+            "q": "Are there group discounts?",
+            "a": "Yes, on the standard ticket: −10% from 5 tickets, −15% from 8 tickets and −20% for 10 tickets. The discount is applied automatically, no code needed, as soon as standard tickets are open (after the 70 early birds)."
+          },
+          {
+            "q": "How many tickets can I buy at once?",
+            "a": "Up to 10 tickets per order. For a bigger group, place several orders while places remain, or book a table."
+          },
+          {
+            "q": "How do I use a promo code?",
+            "a": "Enter it in the “Promo code” field of the booking form, or use the shared link that comes with the code, which fills it in. It does not apply to early birds or tables and cannot be combined with the group discount: the most favorable discount is applied."
+          },
+          {
+            "q": "Can I buy tickets on the day of the night?",
+            "a": "Yes. On the day of the night, online early bird and standard sales are closed and remaining tickets are sold at the door, while places last. To be sure of your spot (and the best price), buy online beforehand."
+          }
+        ]
+      },
+      {
+        "title": "Booking a table",
+        "items": [
+          {
+            "q": "What is a table?",
+            "a": "A reserved lounge for 6 people at the KARMA night. There are 4 in total, on top of the 100 individual tickets."
+          },
+          {
+            "q": "How much is a table?",
+            "a": "80,000 FCFA per table from 9 to 17 November, then 100,000 FCFA from 18 to 20 November. Book early for the best price."
+          },
+          {
+            "q": "How are the tickets of a table sent?",
+            "a": "A table comes with 6 individual tickets, one per person, each with its own QR code. They all arrive at the booking email address: pass them on to your guests."
+          },
+          {
+            "q": "Do promo codes work on tables?",
+            "a": "No, neither promo codes nor the group discount apply to tables."
+          },
+          {
+            "q": "I have a question about the lounge or its location.",
+            "a": "Write to us on the Contact page or call us before booking: we will gladly answer."
+          }
+        ]
+      },
+      {
+        "title": "Payment and booking",
+        "items": [
+          {
+            "q": "How can I pay?",
+            "a": "Online, with Mobile Money (Flooz, T-Money, MTN, Moov) or a Visa or Mastercard card, through the secure Kkiapay platform. An anti-bot check is requested just before payment."
+          },
+          {
+            "q": "How long are my places held?",
+            "a": "10 minutes from the moment you submit the form. Without payment in that time, the booking is cancelled and the places go back on sale. You can also cancel and return to the form at any time before paying."
+          },
+          {
+            "q": "My payment failed, what now?",
+            "a": "Your places stay held during the countdown: click “Pay” to try again, with another payment method if needed. Also check the balance of your Mobile Money account or card."
+          },
+          {
+            "q": "I paid but my time had run out.",
+            "a": "If places are still available, your ticket is issued as usual. Otherwise your payment is refunded: contact us with the order reference shown on screen."
+          }
+        ]
+      },
+      {
+        "title": "After you buy",
+        "items": [
+          {
+            "q": "How do I receive my tickets?",
+            "a": "After payment, each place gets an electronic ticket with a unique QR code, sent by email and WhatsApp to the details you gave. Double-check them when booking."
+          },
+          {
+            "q": "I did not receive my ticket.",
+            "a": "First check your spam folder. Otherwise contact us with your name, email and order reference: we will send it again."
+          },
+          {
+            "q": "How does entry work?",
+            "a": "Show your ticket's QR code at the door, on your phone or printed. It is single use: only the first scan is accepted. Do not share or copy it; keep it to yourself."
+          },
+          {
+            "q": "How long is my ticket valid?",
+            "a": "Until the end of the day after the night. After that, the QR code is refused."
+          },
+          {
+            "q": "Can I get a refund or exchange my ticket?",
+            "a": "Tickets are neither exchangeable nor refundable, unless the night is cancelled: they are then refunded. If the night is postponed, tickets remain valid for the new date."
+          },
+          {
+            "q": "How do I not forget the date?",
+            "a": "On the confirmation page, add the night to your calendar (Google Calendar, Apple or Outlook): you will get a reminder the day before."
+          }
+        ]
+      },
+      {
+        "title": "Contact and data",
+        "items": [
+          {
+            "q": "How can I reach you?",
+            "a": "Through the form on the Contact page, by email at hello@lateufelectronic.com, by phone at +228 91 95 01 93, or on Instagram, TikTok and WhatsApp."
+          },
+          {
+            "q": "How does the influencer program work?",
+            "a": "Partner influencers get a personal link and follow their sales in a dedicated space. To become a partner, write to us on the Contact page."
+          },
+          {
+            "q": "What do you do with my data?",
+            "a": "Name, email, WhatsApp and country are only used to process your order and send you your tickets. Everything is detailed in the privacy policy."
+          }
         ]
       }
     ]

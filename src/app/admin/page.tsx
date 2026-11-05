@@ -168,7 +168,12 @@ async function Content({ searchParams }: { searchParams: Promise<{ event?: strin
       </section>
 
       <section className="mt-6 rounded-card bg-deep-indigo p-6">
-        <h2 className="font-title text-2xl">Dernières commandes</h2>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2 className="font-title text-2xl">Dernières commandes</h2>
+          <Link href={`/admin/achats?event=${event.slug}`} className="text-sm text-warm-ivory/70 underline">
+            Tous les achats et billets
+          </Link>
+        </div>
         <div className="mt-4 overflow-x-auto">
           <table className="w-full min-w-[40rem] text-left text-sm">
             <thead className="font-label uppercase tracking-wider text-warm-ivory/60">
@@ -193,7 +198,9 @@ async function Content({ searchParams }: { searchParams: Promise<{ event?: strin
                 <tr key={o.id} className="border-t border-warm-ivory/10">
                   <td className="py-2">{when(o.paid_at ?? o.created_at)}</td>
                   <td className="py-2">
-                    {o.buyer_name}
+                    <Link href={`/admin/achats/${o.id}`} className="underline">
+                      {o.buyer_name}
+                    </Link>
                     <br />
                     <span className="text-warm-ivory/60">{o.buyer_email}</span>
                   </td>
@@ -239,7 +246,8 @@ async function Content({ searchParams }: { searchParams: Promise<{ event?: strin
 function Kpis({ d }: { d: Dashboard }) {
   const cards: [string, string, string?][] = [
     ["Recettes", fcfa(d.revenue.total), `en ligne ${fcfa(d.revenue.online)}${d.revenue.onsite ? ` · sur place ${fcfa(d.revenue.onsite)}` : ""}`],
-    ["Billets vendus", `${d.tickets.sold} / ${d.event.capacity}`, `${d.capacityLeft} restants${d.held ? ` · ${d.held} en cours de paiement` : ""}`],
+    ["Billets vendus", `${d.tickets.sold - d.tickets.table} / ${d.event.capacity}`, `${d.capacityLeft} restants${d.held ? ` · ${d.held} en cours de paiement` : ""}`],
+    ...(d.tables.sold || d.tables.held ? ([["Tables", `${d.tables.sold}`, `${d.tickets.table} billets${d.tables.held ? ` · ${d.tables.held} en cours de paiement` : ""} (hors capacité)`]] as [string, string, string?][]) : []),
     ["Entrées scannées", `${d.tickets.entered}`, d.tickets.sold ? `${Math.round((d.tickets.entered / d.tickets.sold) * 100)} % des billets vendus` : undefined],
     ["À rembourser", `${d.refundNeeded.length}`, d.tickets.cancelled ? `${d.tickets.cancelled} billets annulés` : undefined],
   ];

@@ -25,7 +25,7 @@ export default async function DjsPage({ params }: PageProps<"/[locale]/djs">) {
   setRequestLocale(locale);
   const t = await getTranslations("Djs");
 
-  const portraits = djs.map((dj) => ({ name: dj.name, caption: t(`kind.${dj.kind}`), src: dj.photo }));
+  const portraits = djs.map((dj) => ({ name: dj.name, caption: t(`kind.${dj.kind}`), src: dj.photo2 ?? dj.photo }));
 
   return (
     <PageMain>

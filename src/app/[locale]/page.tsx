@@ -1,9 +1,7 @@
 import { hasLocale } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
-import { Community } from "@/components/home/community";
 import { Concept } from "@/components/home/concept";
-import { Gallery } from "@/components/home/gallery";
 import { Hero } from "@/components/home/hero";
 import { Upcoming } from "@/components/home/upcoming";
 import { IntroScope } from "@/components/intro/intro-scope";
@@ -27,12 +25,6 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
           </Reveal>
           <Reveal>
             <Upcoming />
-          </Reveal>
-          <Reveal>
-            <Gallery />
-          </Reveal>
-          <Reveal>
-            <Community />
           </Reveal>
         </main>
       </IntroScope>

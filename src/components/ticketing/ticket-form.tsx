@@ -198,7 +198,7 @@ function Hold({
         {paid && <ValidatingDialog />}
         <h2 className="font-title text-3xl">{t(paid ? "paidTitle" : "refundTitle")}</h2>
         <p className="mt-3 text-warm-ivory/80">
-          {paid ? t("paidText", { count: order.quantity, email }) : t("refundText")}
+          {paid ? t("paidText", { count: order.quantity * (order.seats || 1), email }) : t("refundText")}
         </p>
         <p className="mt-6 text-sm text-warm-ivory/60">
           {t("reference")} <span className="font-label tracking-widest text-warm-ivory">{order.orderId.slice(0, 8).toUpperCase()}</span>
@@ -335,7 +335,8 @@ export function TicketForm({ slug, tiers, sample, initialPromo }: { slug: string
   const subtotal = (tier?.priceXof ?? 0) * qty;
   const pct = tier ? groupDiscountPercent(tier.kind, qty) : 0;
   const discount = Math.floor((subtotal * pct) / 100);
-  const earlySelected = tier?.kind === "early_bird";
+  const tableSelected = tier?.kind === "table";
+  const noPromo = tier?.kind === "early_bird" || tableSelected;
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -397,20 +398,23 @@ export function TicketForm({ slug, tiers, sample, initialPromo }: { slug: string
         <legend className={label}>{t("tier")}</legend>
         <div className="grid gap-3 sm:grid-cols-2">
           {tiers.map((x) => {
+            const isTable = x.kind === "table";
             const selected = x.id === tier?.id;
             const note =
-              x.state === "upcoming" && x.salesStart
+              x.state === "upcoming" && x.salesStart && x.kind !== "standard"
                 ? t("availableFrom", { date: dateFmt.format(new Date(x.salesStart)) })
-                : x.state === "sold_out"
+                : x.state === "upcoming" && x.kind === "standard"
+                  ? t("afterEarly")
+                  : x.state === "sold_out"
                   ? t("soldOutTier")
                   : x.state === "closed"
                     ? t("closedTier")
-                    : t("tierRemaining", { count: x.remaining });
+                    : t(isTable ? "tableRemaining" : "tierRemaining", { count: x.remaining });
             return (
               <label
                 key={x.id}
                 aria-disabled={!x.onSale}
-                className={`flex items-center justify-between gap-4 rounded-2xl px-5 py-4 ring-1 transition ${
+                className={`flex items-center justify-between gap-4 rounded-2xl px-5 py-4 ring-1 transition ${isTable ? "sm:col-span-2 " : ""}${
                   x.onSale
                     ? selected
                       ? "cursor-pointer bg-cosmic-black ring-2 ring-solar-copper"
@@ -429,14 +433,20 @@ export function TicketForm({ slug, tiers, sample, initialPromo }: { slug: string
                     className="sr-only"
                   />
                   <span className="block font-title text-xl">{t(`tierKinds.${x.kind}`)}</span>
+                  {isTable && <span className="block text-sm text-warm-ivory/70">{t("tableSeats", { seats: x.seats })}</span>}
                   <span className="block text-sm text-warm-ivory/70">{note}</span>
+                  {isTable && x.onSale && x.nextPriceXof && x.nextPriceAt && (
+                    <span className="block text-sm text-solar-copper">
+                      {t("priceRises", { price: formatXof(x.nextPriceXof, locale), date: dateFmt.format(new Date(x.nextPriceAt)) })}
+                    </span>
+                  )}
                 </span>
                 <span className="font-label text-2xl text-solar-copper">{formatXof(x.priceXof, locale)}</span>
               </label>
             );
           })}
         </div>
-        {earlySelected && <p className="mt-3 px-2 text-sm text-warm-ivory/70">{t("earlyNoPromo")}</p>}
+        {noPromo && <p className="mt-3 px-2 text-sm text-warm-ivory/70">{t(tableSelected ? "tableNoPromo" : "earlyNoPromo")}</p>}
       </fieldset>
 
       {!anyOnSale ? (
@@ -444,7 +454,7 @@ export function TicketForm({ slug, tiers, sample, initialPromo }: { slug: string
       ) : (
         <>
           <div className="mt-8">
-            <span className={label}>{t("quantity")}</span>
+            <span className={label}>{t(tableSelected ? "quantityTables" : "quantity")}</span>
             <div className="inline-flex items-center gap-4 rounded-full bg-cosmic-black p-1.5 ring-1 ring-warm-ivory/25">
               <button
                 type="button"
@@ -468,7 +478,7 @@ export function TicketForm({ slug, tiers, sample, initialPromo }: { slug: string
                 +
               </button>
             </div>
-            <p className="mt-3 max-w-lg px-2 text-sm text-warm-ivory/70">{t("groupHint")}</p>
+            <p className="mt-3 max-w-lg px-2 text-sm text-warm-ivory/70">{t(tableSelected ? "tableHint" : "groupHint", { seats: tier?.seats ?? 1 })}</p>
           </div>
 
           <h2 className="mt-10 font-title text-2xl">{t("you")}</h2>
@@ -514,8 +524,8 @@ export function TicketForm({ slug, tiers, sample, initialPromo }: { slug: string
                 name="promo"
                 autoCapitalize="characters"
                 defaultValue={saved.promo}
-                disabled={earlySelected}
-                placeholder={earlySelected ? t("promoEarly") : undefined}
+                disabled={noPromo}
+                placeholder={noPromo ? t("promoEarly") : undefined}
                 className={`${input} uppercase md:max-w-xs`}
                 aria-invalid={errors?.promo}
               />

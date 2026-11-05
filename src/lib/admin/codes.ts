@@ -34,6 +34,8 @@ export type PromoRow = {
   ends_at: string | null;
   active: boolean;
   created_at: string;
+  /** Rempli quand le code est supprimé alors qu'il a des commandes payées (migration 0011) */
+  archived_at?: string | null;
   events: { name: string } | null;
 };
 
@@ -43,7 +45,8 @@ export async function listPromos(): Promise<PromoWithStats[]> {
   const db = getAdminClient();
   const { data, error } = await db
     .from("promo_codes")
-    .select("id, code, label, kind, value, max_uses, event_id, starts_at, ends_at, active, created_at, events(name)")
+    // `*` plutôt qu'une liste : la page fonctionne même avant la migration 0011 (archived_at)
+    .select("*, events(name)")
     .order("created_at", { ascending: false });
   if (error) throw new Error(error.message);
 
@@ -51,7 +54,7 @@ export async function listPromos(): Promise<PromoWithStats[]> {
     db.from("orders").select("promo_code_id, status, discount_xof, expires_at").not("promo_code_id", "is", null).range(from, to) as unknown as Page<never>,
   );
   const now = Date.now();
-  return (data as unknown as PromoRow[]).map((p) => {
+  return (data as unknown as PromoRow[]).filter((p) => !p.archived_at).map((p) => {
     const mine = orders.filter((o) => o.promo_code_id === p.id);
     const paid = mine.filter((o) => o.status === "paid");
     return {

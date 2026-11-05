@@ -23,7 +23,7 @@
 ### Calendrier connu
 - **20 novembre 2026** : LA TEUF au **KARMA**, Lomé
 - **12 décembre 2026** : édition de **Cotonou**
-- Capacité par événement : **160 personnes**
+- Capacité par événement : **100 billets individuels** (70 early bird + 30 standard), plus, à l'édition du KARMA, **4 tables de 6 personnes** (offre additionnelle, hors capacité)
 - Un événement peut porter la mention **« Bientôt »**
 
 ### Changement majeur par rapport à aujourd'hui
@@ -132,7 +132,7 @@ Simple et claire ✅ : barre fixe discrète (Événements · DJs · Galerie · B
 ### 5.1 Billetterie en ligne (cœur du projet)
 
 **Parcours acheteur**
-1. Choix de l'événement puis du tarif (**Early bird** ou **Standard**), quantité
+1. Choix de l'événement puis du tarif (**Early bird**, **Standard** ou **Table**), quantité
 2. Saisie : nom, email, numéro WhatsApp, pays
 3. Code promo (optionnel)
 4. Paiement via **Kkiapay** : Mobile Money (Flooz, T-Money, MTN, Moov) ou carte Visa/Mastercard
@@ -140,8 +140,8 @@ Simple et claire ✅ : barre fixe discrète (Événements · DJs · Galerie · B
 
 **Règles métier**
 - Prix en **FCFA (XOF)** ; Togo et Bénin utilisent la même monnaie.
-- Capacité **160** par événement, décomptée en temps réel. Statuts : `bientôt`, `en vente`, `complet`, `terminé`.
-- Early bird : plafonné en quantité ou en date (❓ à définir). Bascule automatique vers Standard.
+- Capacité **100** billets individuels par événement, décomptée en temps réel. Tables (KARMA) : 4 tables de 6 personnes, 80 000 FCFA du 9 au 17 novembre puis 100 000 FCFA du 18 au 20 novembre, 6 billets nominatifs par table, hors capacité. Statuts : `bientôt`, `en vente`, `complet`, `terminé`.
+- Early bird : 5 000 FCFA, 70 billets, dès le 9 novembre (KARMA), sans date de fin, jusqu'à épuisement. Le Standard (8 000 FCFA, 30 billets) s'ouvre seulement quand les early birds sont vendus. Early bird et Standard fermés le jour J : vente physique.
 - ⚠️ **Anti-survente** : réserver les places avant le paiement avec expiration (par exemple 10 minutes), de façon atomique en base.
 - Vente physique conservée : le staff peut **créer un billet sur place** depuis l'admin (paiement espèces), avec QR aussi.
 - Frais de service : non retenus pour l'instant ❓.
@@ -269,7 +269,7 @@ Public majoritairement sur mobile avec réseau variable : design pensé d'abord 
 
 ### Modèle de données (première ébauche)
 - `events` (id, slug, titre FR/EN, description, date, lieu, ville, pays, capacité, statut, affiche)
-- `ticket_types` (event_id, nom : early_bird/standard, prix XOF, quota, dates de vente)
+- `ticket_types` (event_id, nom : early_bird/standard/table, prix XOF, quota, places par unité, dates de vente, palier de prix)
 - `orders` (id, acheteur, email, whatsapp, total, statut, id Kkiapay, promo_id, affilié_id, canal : en ligne / sur place)
 - `tickets` (id, order_id, event_id, type, jeton QR signé, statut : valide / utilisé / annulé, `scanned_at`, `scanned_by`)
 - `reservations` (stock temporaire avec expiration)
@@ -287,7 +287,7 @@ Sécurité : RLS Supabase strict, clés service uniquement côté serveur, véri
 
 ## 8. Vigilances et risques
 
-1. **Anti-survente (160 places)** : réservation temporaire atomique et libération automatique à expiration.
+1. **Anti-survente (100 places + 4 tables)** : réservation temporaire atomique et libération automatique à expiration.
 2. **Webhook Kkiapay** : la confirmation de paiement doit être vérifiée côté serveur (appel de vérification de transaction) avant toute émission de billet.
 3. **Envoi WhatsApp du QR** : l'API officielle exige un compte Business et des modèles de messages approuvés. À valider tôt ; solution de repli : lien de téléchargement du billet sur `/billet/[id]` envoyé par email, avec bouton « Partager sur WhatsApp ».
 4. **Lumail.ai** : vérifier qu'il permet des emails transactionnels via API avec pièces jointes ou images QR. Sinon, envisager Resend ou équivalent pour les billets et garder Lumail.ai pour la newsletter.

@@ -50,3 +50,37 @@ export async function setPromoActive(form: FormData) {
   await getAdminClient().from("promo_codes").update({ active: form.get("active") === "true" }).eq("id", id);
   revalidatePath("/admin/codes");
 }
+
+/**
+ * Supprime un code de la liste. Jamais payé : suppression définitive (les commandes non abouties qui le citaient
+ * le perdent). Déjà payé : archivé et désactivé, pour garder l'historique des ventes et des exports.
+ */
+export async function deletePromo(_prev: FormState, form: FormData): Promise<FormState> {
+  await assertRole("admin");
+  const id = z.uuid().safeParse(form.get("id"));
+  if (!id.success) return { error: "Code introuvable." };
+  const db = getAdminClient();
+
+  const { data: orders, error } = await db.from("orders").select("status, expires_at").eq("promo_code_id", id.data);
+  if (error) return { error: "Erreur de lecture. Réessayez." };
+  const now = Date.now();
+  if (orders.some((o) => o.status === "pending" && o.expires_at && new Date(o.expires_at).getTime() > now)) {
+    return { error: "Une commande avec ce code est en cours de paiement. Réessayez dans quelques minutes." };
+  }
+
+  const archive = async (): Promise<FormState> => {
+    const { error: e } = await db.from("promo_codes").update({ archived_at: new Date().toISOString(), active: false }).eq("id", id.data);
+    if (e) return { error: "Ce code a des ventes payées : appliquez la migration 0011 (supabase/migrations) pour pouvoir le retirer." };
+    revalidatePath("/admin/codes");
+    return { done: "archived" };
+  };
+  if (orders.some((o) => o.status === "paid")) return archive();
+
+  // Jamais payé : on détache les commandes non abouties puis on supprime. Si une commande vient d'être payée entre-temps,
+  // la clé étrangère bloque la suppression et le code est archivé à la place.
+  await db.from("orders").update({ promo_code_id: null }).eq("promo_code_id", id.data).neq("status", "paid");
+  const { error: delError } = await db.from("promo_codes").delete().eq("id", id.data);
+  if (delError) return archive();
+  revalidatePath("/admin/codes");
+  return { done: "deleted" };
+}

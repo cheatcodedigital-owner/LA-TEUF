@@ -8,10 +8,11 @@ import { signTicketToken } from "./ticket-token";
 type EventRow = { name: string; venue: string | null; city: string; country: string; starts_at: string };
 type OrderRow = {
   id: string;
+  status: string;
   buyer_name: string;
   buyer_email: string;
   events: EventRow | EventRow[] | null;
-  tickets: { id: string; nonce: string; created_at: string }[];
+  tickets: { id: string; nonce: string; status: string; created_at: string }[];
 };
 
 // Couleurs de la charte (src/app/globals.css) : un e-mail ne peut pas utiliser les tokens Tailwind
@@ -101,8 +102,11 @@ function renderEmail(order: OrderRow, event: EventRow, tokens: string[]) {
   return { html, text, subject: `Ton billet pour ${event.name} · ${date}` };
 }
 
-/** Envoie l'e-mail avec un QR unique par place. Ne lève jamais d'exception : renvoie `true` si l'e-mail est parti (ou déjà envoyé). */
-export async function sendTicketsEmail(orderId: string): Promise<boolean> {
+/**
+ * Envoie l'e-mail avec un QR unique par place. Ne lève jamais d'exception : renvoie `true` si l'e-mail est parti (ou déjà envoyé).
+ * `resend` (admin) : renvoie même si l'e-mail est déjà parti, éventuellement à une autre adresse (`to`).
+ */
+export async function sendTicketsEmail(orderId: string, opts: { resend?: boolean; to?: string } = {}): Promise<boolean> {
   if (!isSupabaseConfigured()) return false;
 
   const apiKey = process.env.RESEND_API_KEY;
@@ -115,27 +119,34 @@ export async function sendTicketsEmail(orderId: string): Promise<boolean> {
   }
 
   const db = getAdminClient();
-  // Une seule exécution gagne (confirmation navigateur et webhook) ; remis à null si l'envoi échoue
-  const claim = await db
-    .from("orders")
-    .update({ tickets_emailed_at: new Date().toISOString() })
-    .eq("id", orderId)
-    .eq("status", "paid")
-    .is("tickets_emailed_at", null)
-    .select("id");
-  if (claim.error) {
-    console.error("[ticketing] e-mail du billet", claim.error.message);
-    return false;
+  if (!opts.resend) {
+    // Une seule exécution gagne (confirmation navigateur et webhook) ; remis à null si l'envoi échoue
+    const claim = await db
+      .from("orders")
+      .update({ tickets_emailed_at: new Date().toISOString() })
+      .eq("id", orderId)
+      .eq("status", "paid")
+      .is("tickets_emailed_at", null)
+      .select("id");
+    if (claim.error) {
+      console.error("[ticketing] e-mail du billet", claim.error.message);
+      return false;
+    }
+    if (!claim.data?.length) return true;
   }
-  if (!claim.data?.length) return true;
 
   try {
     const { data, error } = await db
       .from("orders")
-      .select("id, buyer_name, buyer_email, events(name, venue, city, country, starts_at), tickets(id, nonce, created_at)")
+      .select("id, status, buyer_name, buyer_email, events(name, venue, city, country, starts_at), tickets(id, nonce, status, created_at)")
       .eq("id", orderId)
       .single<OrderRow>();
     if (error || !data) throw new Error(error?.message ?? "commande introuvable");
+    if (opts.resend) {
+      // Renvoi : seulement une commande payée, sans les billets annulés
+      if (data.status !== "paid") throw new Error("commande non payée");
+      data.tickets = data.tickets.filter((t) => t.status !== "cancelled");
+    }
     const event = Array.isArray(data.events) ? data.events[0] : data.events;
     if (!event || !data.tickets.length) throw new Error("événement ou billets introuvables");
     data.tickets.sort((a, b) => a.created_at.localeCompare(b.created_at) || a.id.localeCompare(b.id));
@@ -168,13 +179,15 @@ export async function sendTicketsEmail(orderId: string): Promise<boolean> {
       method: "POST",
       headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
       // Les réponses des acheteurs arrivent sur la vraie boîte de l'équipe
-      body: JSON.stringify({ from, reply_to: "hello@lateufelectronic.com", to: [data.buyer_email], subject, html, text, attachments }),
+      body: JSON.stringify({ from, reply_to: "hello@lateufelectronic.com", to: [opts.to || data.buyer_email], subject, html, text, attachments }),
     });
     if (!res.ok) throw new Error(`Resend ${res.status} ${await res.text()}`);
+    if (opts.resend) await db.from("orders").update({ tickets_emailed_at: new Date().toISOString() }).eq("id", orderId);
     return true;
   } catch (e) {
     console.error("[ticketing] e-mail du billet", e instanceof Error ? e.message : e);
-    await db.from("orders").update({ tickets_emailed_at: null }).eq("id", orderId);
+    // Un renvoi raté ne doit pas effacer la trace du premier envoi
+    if (!opts.resend) await db.from("orders").update({ tickets_emailed_at: null }).eq("id", orderId);
     return false;
   }
 }

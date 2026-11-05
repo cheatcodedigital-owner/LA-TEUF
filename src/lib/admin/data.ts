@@ -108,12 +108,15 @@ const eventScans = (eventId: string) =>
       .range(from, to) as unknown as Page<ScanRow>,
   );
 
-const KIND_LABEL: Record<string, string> = { early_bird: "Early bird", standard: "Standard" };
+const KIND_LABEL: Record<string, string> = { early_bird: "Early bird", standard: "Standard", table: "Table (6 pers.)" };
 export const kindLabel = (kind: string | undefined) => (kind ? (KIND_LABEL[kind] ?? kind) : "—");
 
 export type Dashboard = {
   event: AdminEvent;
-  tickets: { sold: number; entered: number; cancelled: number };
+  /** `sold` : tous les billets (tables comprises) ; `table` : dont les billets de tables */
+  tickets: { sold: number; entered: number; cancelled: number; table: number };
+  /** Tables payées et tables en cours de paiement */
+  tables: { sold: number; held: number };
   capacityLeft: number;
   held: number;
   revenue: { total: number; online: number; onsite: number; discounts: number };
@@ -136,12 +139,24 @@ export async function getDashboard(event: AdminEvent): Promise<Dashboard> {
     if (error) throw new Error(error.message);
     return n ?? 0;
   };
-  const [orders, scans, valid, used, cancelled] = await Promise.all([
+  // Billets issus de tables : hors capacité générale (offre additionnelle)
+  const tableTickets = async () => {
+    const { count: n, error } = await db
+      .from("tickets")
+      .select("id, ticket_types!inner(kind)", { count: "exact", head: true })
+      .eq("event_id", event.id)
+      .eq("ticket_types.kind", "table")
+      .in("status", ["valid", "used"]);
+    if (error) throw new Error(error.message);
+    return n ?? 0;
+  };
+  const [orders, scans, valid, used, cancelled, table] = await Promise.all([
     eventOrders(event.id),
     eventScans(event.id),
     count("valid"),
     count("used"),
     count("cancelled"),
+    tableTickets(),
   ]);
 
   const now = Date.now();
@@ -164,15 +179,16 @@ export async function getDashboard(event: AdminEvent): Promise<Dashboard> {
   for (const s of scans) scanResults[s.result] = (scanResults[s.result] ?? 0) + 1;
 
   const sold = valid + used;
-  const held = sum(
-    orders.filter((o) => o.status === "pending" && o.expires_at && new Date(o.expires_at).getTime() > now),
-    (o) => o.quantity,
-  );
+  const pendingOrders = orders.filter((o) => o.status === "pending" && o.expires_at && new Date(o.expires_at).getTime() > now);
+  const isTable = (o: OrderRow) => o.ticket_types?.kind === "table";
+  const held = sum(pendingOrders.filter((o) => !isTable(o)), (o) => o.quantity);
+  const tables = { sold: sum(paid.filter(isTable), (o) => o.quantity), held: sum(pendingOrders.filter(isTable), (o) => o.quantity) };
 
   return {
     event,
-    tickets: { sold, entered: used, cancelled },
-    capacityLeft: Math.max(0, event.capacity - sold - held),
+    tickets: { sold, entered: used, cancelled, table },
+    tables,
+    capacityLeft: Math.max(0, event.capacity - (sold - table) - held),
     held,
     revenue: {
       total: sum(paid, (o) => o.total_xof),

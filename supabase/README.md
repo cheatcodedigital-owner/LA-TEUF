@@ -10,19 +10,28 @@
    - `migrations/0006_revoke_api_roles.sql` (retire l'accès de `anon`/`authenticated` aux fonctions)
    - `migrations/0007_affiliates_promos.sql` (tables d'affiliation, libellé des codes promo)
    - `migrations/0008_affiliate_links.sql` (affiliation par liens, clics, commission 20 %)
-   - `seed.sql` (événements de départ — prix : early bird 3 000, standard 5 000 FCFA)
+   - `migrations/0009_pricing_tables.sql` (nouvelle tarification : early bird 5 000 ×70, standard 8 000 ×30, capacité 100, tables de 6 personnes)
+   - `migrations/0010_standard_after_early.sql` (standard ouvert seulement quand l'early bird est épuisé, early bird/standard fermés le jour J)
+   - `seed.sql` (événements de départ — early bird 5 000, standard 8 000 FCFA, tables 80 000 → 100 000 FCFA ; **uniquement pour une base vide** : sur une base existante, appliquer la 0009)
 2. Copier `.env.example` en `.env.local` et renseigner `SUPABASE_URL` et `SUPABASE_SERVICE_ROLE_KEY`
    (Project Settings → API). La clé service_role reste côté serveur uniquement.
 3. Relancer `npm run dev`. Sans ces variables, la billetterie tourne en **mode démo** (développement
    seulement) ; en production elle s'affiche « indisponible ».
 
 ## Règles de vente
-- Early bird : 3 000 FCFA, 60 billets, de J-21 à J-7. Standard : 5 000 FCFA, 100 billets, de J-7 jusqu'à la
-  soirée, ou dès que les 60 early birds sont épuisés. Capacité totale de la soirée : 160 (60 + 100). Les deux tarifs restent affichés : celui qui
+- Édition du KARMA (20 novembre 2026) : la vente ouvre le **9 novembre**.
+- Early bird : 5 000 FCFA, 70 billets, dès le 9 novembre, **sans date de fin** (jusqu'à épuisement). Standard : 8 000 FCFA, 30 billets,
+  **sans date d'ouverture** : il s'ouvre uniquement quand les 70 early birds sont vendus (vendus + réservés), règle codée dans `_tiers` (migration 0010).
+  **Le jour de la soirée (minuit UTC du jour J), early bird et standard sont fermés** : les billets restants se vendent sur place (admin). Capacité générale de la soirée : 100 (70 + 30). Les tarifs restent affichés : celui qui
   n'est pas ouvert est grisé avec sa date d'ouverture.
-- 10 billets maximum par commande.
+- **Tables** (`kind = 'table'`, migration 0009) : 4 salons de 6 personnes, **80 000 FCFA** du 9 au 17 novembre puis **100 000 FCFA** du 18 au 20 novembre
+  (`price_step_at` / `price_after_xof`, le prix est calculé par `_tiers`). Offre **additionnelle** : elle n'entame pas la capacité générale de 100.
+  Une table = 1 unité commandée = 6 billets nominatifs (`ticket_types.seats`), émis par `mark_order_paid` (un QR par personne, tous envoyés à l'e-mail
+  de la réservation). Ni code promo ni remise de groupe sur les tables. Pour modifier prix, dates ou quota : `update ticket_types` (colonnes `price_xof`,
+  `price_after_xof`, `price_step_at`, `quota`).
+- 10 billets (ou tables) maximum par commande.
 - Remise de groupe automatique sur le standard : -10 % dès 5 billets, -15 % dès 8, -20 % pour 10. Pas de code promo
-  sur l'early bird ; promo et remise de groupe ne se cumulent pas (la meilleure est retenue).
+  sur l'early bird ni sur les tables ; promo et remise de groupe ne se cumulent pas (la meilleure est retenue).
 - Anti-bot (Cloudflare Turnstile) après le clic sur « Payer » : variables `NEXT_PUBLIC_TURNSTILE_SITE_KEY`
   et `TURNSTILE_SECRET_KEY` (clés de test utilisées automatiquement en développement).
 - Paiement Kkiapay : après l'anti-bot, `POST /api/billetterie/checkout` renvoie la clé publique et le widget

@@ -1,4 +1,4 @@
-export type TierKind = "early_bird" | "standard";
+export type TierKind = "early_bird" | "standard" | "table";
 
 /** upcoming : pas encore ouvert · on_sale · sold_out : quota atteint · closed : fenêtre terminée */
 export type TierState = "upcoming" | "on_sale" | "sold_out" | "closed";
@@ -12,6 +12,11 @@ export type Tier = {
   onSale: boolean;
   salesStart: string | null;
   salesEnd: string | null;
+  /** Billets émis par unité achetée : 6 pour une table, 1 sinon */
+  seats: number;
+  /** Prochain prix et sa date d'entrée en vigueur (tables), null s'il n'y en a pas */
+  nextPriceXof?: number | null;
+  nextPriceAt?: string | null;
 };
 
 export type EventSales = {
@@ -48,6 +53,8 @@ export type OrderSummary = {
   autoDiscountPct: number;
   /** Un code promo a été appliqué (il l'emporte sur la remise de groupe) */
   promoApplied: boolean;
+  /** Billets émis par unité commandée (6 pour une table) */
+  seats: number;
 };
 
 export type ReserveErrorCode =

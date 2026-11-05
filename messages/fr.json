@@ -13,7 +13,8 @@
     "openMenu": "Ouvrir le menu",
     "closeMenu": "Fermer le menu",
     "mainNav": "Navigation principale",
-    "language": "Langue"
+    "language": "Langue",
+    "faq": "FAQ"
   },
   "Footer": {
     "tagline": "Le portail vers la fête libre. Musique électronique, art et rencontres à Lomé et Cotonou.",
@@ -119,25 +120,67 @@
     "all": "Tous les événements"
   },
   "Gallery": {
+    "metaTitle": "Galerie",
+    "metaDescription": "Ambiances et public des soirées LA TEUF à Lomé et Cotonou.",
+    "eyebrow": "Galerie",
     "title": "Vu sur le dancefloor",
+    "intro": "Lumières, fumée et visages de la communauté : quelques instants de nos soirées.",
     "hint": "Fais glisser pour explorer",
+    "allTitle": "Toutes les photos",
+    "viewer": {
+      "open": "Agrandir la photo",
+      "close": "Fermer",
+      "previous": "Photo précédente",
+      "next": "Photo suivante"
+    },
     "alt": [
-      "Le DJ set sous les lumières bleues, face au logo LA TEUF",
-      "Un DJ derrière ses platines devant la bannière LA TEUF",
-      "Silhouettes dans la fumée rouge devant la scène",
-      "Un percussionniste sur scène devant le logo LA TEUF",
-      "Deux amis lors d'une soirée LA TEUF",
-      "Un couple complice sur le dancefloor"
+      "Le public danse sous un projecteur bleu",
+      "Un DJ aux platines dans la fumée bleue, devant le logo LA TEUF",
+      "Une danseuse les yeux fermés, portée par la musique",
+      "Un DJ derrière les platines sous des lumières violettes et bleues",
+      "Une fêtarde aux tresses pose devant le bar",
+      "La scène LA TEUF baignée de lumière bleue",
+      "Un couple danse dans la fumée rose",
+      "Un DJ aux platines devant la bannière LA TEUF",
+      "L'équipe et des invités réunis pour une photo de groupe",
+      "Des fêtards dans la pénombre sous les guirlandes lumineuses",
+      "Un groupe d'amis danse sous les guirlandes",
+      "La cabine du DJ vue depuis le dancefloor, sous les guirlandes",
+      "Deux amis complices posent enlacés",
+      "Des silhouettes devant la scène dans la lumière rouge"
     ]
   },
-  "Community": {
-    "title": "Rejoins le mouvement",
-    "text": "Suis LA TEUF pour ne rien manquer : annonces des soirées, line-ups, coulisses.",
-    "contactTitle": "Contact et booking",
-    "contactText": "Une question, une envie de jouer chez nous, une collaboration ? Écris-nous ou appelle.",
-    "email": "Écrire un email",
+  "Contact": {
+    "metaTitle": "Contact",
+    "metaDescription": "Écris à l'équipe LA TEUF, appelle-nous ou suis-nous sur les réseaux.",
+    "eyebrow": "Contact",
+    "title": "Parlons-en",
+    "intro": "Une question sur une soirée, un billet, une collaboration ? Écris-nous directement ici ou appelle-nous.",
+    "writeTitle": "Écris-nous",
+    "writeText": "Ton message arrive directement dans notre boîte. Tu peux aussi écrire à",
+    "callTitle": "Appelle-nous",
+    "callText": "Pour toute demande d'informations.",
     "call": "Appeler",
-    "booking": "Booking"
+    "followTitle": "Suis-nous",
+    "followText": "Annonces des soirées, line-ups et coulisses.",
+    "form": {
+      "name": "Nom",
+      "email": "E-mail",
+      "subject": "Sujet",
+      "message": "Message",
+      "messagePlaceholder": "Dis-nous tout…",
+      "send": "Envoyer",
+      "sending": "Envoi…",
+      "sentTitle": "Message envoyé",
+      "sentText": "Merci ! L'équipe te répond par e-mail dès que possible.",
+      "another": "Nouveau message",
+      "errors": {
+        "invalid": "Vérifie les champs : nom, e-mail valide, sujet et message d'au moins 10 caractères.",
+        "antibot": "La vérification anti-robot a échoué. Réessaie.",
+        "rate": "Trop de messages envoyés. Réessaie dans une heure.",
+        "unavailable": "L'envoi est momentanément indisponible. Écris-nous à hello@lateufelectronic.com."
+      }
+    }
   },
   "Ticketing": {
     "metaTitle": "Billetterie",
@@ -155,7 +198,8 @@
     "tier": "Tarif",
     "tierKinds": {
       "early_bird": "Early bird",
-      "standard": "Standard"
+      "standard": "Standard",
+      "table": "Table"
     },
     "tierRemaining": "{count} restantes",
     "quantity": "Quantité",
@@ -186,7 +230,7 @@
       "unavailable": "La billetterie est momentanément indisponible. Réessayez dans un instant.",
       "unknown": "Une erreur est survenue. Réessayez.",
       "form": "Certains champs sont incomplets ou invalides.",
-      "promo_not_allowed": "Les codes promo ne s'appliquent pas aux early birds."
+      "promo_not_allowed": "Les codes promo ne s'appliquent pas aux early birds ni aux tables."
     },
     "held": "Places réservées",
     "heldFor": "Vos places sont gardées encore",
@@ -200,7 +244,7 @@
     "soldOutTier": "Épuisé",
     "closedTier": "Vente terminée",
     "earlyNoPromo": "Les codes promo ne s'appliquent pas aux early birds.",
-    "promoEarly": "Non applicable aux early birds",
+    "promoEarly": "Non applicable à ce tarif",
     "groupHint": "Remise automatique sur le tarif standard : −10 % dès 5 billets, −15 % dès 8 billets, −20 % pour 10 billets.",
     "groupDiscountLine": "Remise de groupe −{pct} %",
     "subtotal": "Sous-total",
@@ -237,7 +281,14 @@
     "paidText": "Vos {count, plural, one {# billet est confirmé} other {# billets sont confirmés}}. Ils seront envoyés à {email}.",
     "refundTitle": "Paiement reçu, mais plus de places",
     "refundText": "Votre réservation avait expiré et les places ont été prises entre-temps. Vous serez remboursé : contactez-nous avec la référence ci-dessous.",
-    "reference": "Référence de commande :"
+    "reference": "Référence de commande :",
+    "tableRemaining": "{count, plural, one {# table restante} other {# tables restantes}}",
+    "tableSeats": "Salon de {seats} personnes",
+    "priceRises": "Passe à {price} dès le {date}",
+    "tableNoPromo": "Les codes promo et la remise de groupe ne s'appliquent pas aux tables.",
+    "quantityTables": "Nombre de tables",
+    "tableHint": "Chaque table donne {seats} billets individuels (un par personne), envoyés à l'adresse e-mail de la réservation.",
+    "afterEarly": "Ouvre quand les early birds sont épuisés"
   },
   "Cgv": {
     "metaTitle": "Conditions générales de vente",
@@ -255,12 +306,13 @@
       {
         "title": "2. Billets et tarifs",
         "body": [
-          "Les prix sont indiqués en francs CFA (FCFA). Le nombre de places est limité à 160 par soirée.",
-          "Early bird : 3 000 FCFA, 60 billets, en vente de trois semaines à une semaine avant la soirée, dans la limite du quota.",
-          "Standard : 5 000 FCFA, 100 billets, en vente à partir d'une semaine avant la soirée (ou dès que les early birds sont épuisés) et jusqu'à la soirée.",
+          "Les prix sont indiqués en francs CFA (FCFA). Pour l'édition du KARMA (20 novembre 2026), la vente en ligne ouvre le 9 novembre. Le nombre de billets individuels est limité à 100 par soirée.",
+          "Early bird : 5 000 FCFA, 70 billets, en vente dès le 9 novembre jusqu'à épuisement du quota, sans date de fin.",
+          "Standard : 8 000 FCFA, 30 billets, en vente uniquement une fois les 70 early birds vendus. Les ventes en ligne early bird et standard sont fermées le jour de la soirée : les billets restants sont vendus sur place, dans la limite des places disponibles.",
+          "Tables : 4 tables (salons) de 6 personnes sont proposées en plus des 100 billets, à 80 000 FCFA la table du 9 au 17 novembre, puis 100 000 FCFA la table du 18 au 20 novembre. Une table donne 6 billets individuels.",
           "Une commande comprend 10 billets au maximum.",
           "Une remise de groupe est appliquée automatiquement au tarif standard : −10 % à partir de 5 billets, −15 % à partir de 8 billets, −20 % pour 10 billets.",
-          "Les codes promo ne s'appliquent pas aux early birds. Ils ne se cumulent pas avec la remise de groupe : la remise la plus avantageuse est retenue."
+          "Les codes promo ne s'appliquent ni aux early birds ni aux tables. Ils ne se cumulent pas avec la remise de groupe : la remise la plus avantageuse est retenue."
         ]
       },
       {
@@ -448,6 +500,169 @@
         "title": "9. Modifications",
         "body": [
           "Cette politique peut évoluer ; la date de dernière mise à jour figure en haut de cette page."
+        ]
+      }
+    ]
+  },
+  "Faq": {
+    "metaTitle": "FAQ",
+    "metaDescription": "Billets, tarifs, tables, paiement, QR code, remboursement : toutes les réponses sur les soirées LA TEUF.",
+    "eyebrow": "FAQ",
+    "title": "Tes questions, nos réponses",
+    "intro": "Billets, tables, paiement, accès à la soirée : tout ce qu'il faut savoir avant de passer le portail.",
+    "ctaTitle": "Une autre question ?",
+    "ctaText": "L'équipe te répond par e-mail dès que possible. Tu peux aussi nous appeler ou nous écrire sur les réseaux.",
+    "ctaButton": "Nous contacter",
+    "ticketsButton": "Prendre mes billets",
+    "groups": [
+      {
+        "title": "La soirée",
+        "items": [
+          {
+            "q": "C'est quoi LA TEUF ?",
+            "a": "Un rendez-vous festif de musique électronique à Lomé et Cotonou, pour sortir de la routine : DJs, instrumentistes live et scénographies soignées, dans une ambiance chaleureuse et ouverte à tous. Une soirée par mois, des lieux qui changent, toujours la même énergie."
+          },
+          {
+            "q": "Quelle est la prochaine soirée ?",
+            "a": "LA TEUF au KARMA, à Lomé (Togo), le 20 novembre 2026. La suivante a lieu à Cotonou (Bénin) le 12 décembre 2026 : le lieu et le line-up seront annoncés prochainement. Toutes les dates sont dans la page Événements."
+          },
+          {
+            "q": "Qui joue ?",
+            "a": "Les DJs et instrumentistes live de la soirée sont présentés dans la page DJs. Quand le line-up d'une soirée n'est pas encore annoncé, il le sera sur le site et sur nos réseaux."
+          },
+          {
+            "q": "Quelle est l'ambiance ? Y a-t-il des règles ?",
+            "a": "Une fête libre, chaleureuse et décontractée, dans le respect de chacun et de ses limites. L'organisateur peut refuser l'entrée ou exclure toute personne qui ne respecte pas les autres."
+          },
+          {
+            "q": "Combien de personnes peut accueillir la soirée ?",
+            "a": "L'édition du KARMA est limitée à 100 billets individuels, plus 4 tables de 6 personnes. Quand c'est complet, c'est complet : ne tarde pas."
+          }
+        ]
+      },
+      {
+        "title": "Billets et tarifs",
+        "items": [
+          {
+            "q": "Quand ouvre la vente des billets du KARMA ?",
+            "a": "La vente en ligne ouvre le 9 novembre 2026, sur la page Billetterie de la soirée : early bird et tables sont disponibles dès cette date."
+          },
+          {
+            "q": "Quels sont les tarifs ?",
+            "a": "Early bird : 5 000 FCFA, 70 billets, en vente dès le 9 novembre jusqu'à épuisement. Standard : 8 000 FCFA, 30 billets, ouvert uniquement quand les 70 early birds sont vendus. Le tarif standard reste affiché, grisé, en attendant."
+          },
+          {
+            "q": "Que se passe-t-il quand les early birds sont épuisés ?",
+            "a": "Dès que le 70e early bird est vendu (ou réservé), le tarif standard à 8 000 FCFA s'ouvre automatiquement, pour 30 billets. Il n'y a pas de date : tout dépend de la vitesse de vente des early birds. Si une réservation early bird expire sans paiement, la place revient en early bird."
+          },
+          {
+            "q": "Y a-t-il des réductions pour les groupes ?",
+            "a": "Oui, sur le tarif standard : −10 % à partir de 5 billets, −15 % à partir de 8 billets et −20 % pour 10 billets. La remise est appliquée automatiquement, sans code, dès que le standard est ouvert (après les 70 early birds)."
+          },
+          {
+            "q": "Combien de billets puis-je acheter à la fois ?",
+            "a": "10 billets au maximum par commande. Pour plus de monde, passe plusieurs commandes tant qu'il reste des places, ou réserve une table."
+          },
+          {
+            "q": "Comment utiliser un code promo ?",
+            "a": "Saisis-le dans le champ « Code promo » du formulaire de réservation, ou utilise le lien partagé avec le code, qui le pré-remplit. Il ne s'applique pas aux early birds ni aux tables, et ne se cumule pas avec la remise de groupe : la remise la plus avantageuse est retenue."
+          },
+          {
+            "q": "Peut-on acheter sur place le jour de la soirée ?",
+            "a": "Oui. Le jour de la soirée, la vente en ligne early bird et standard est fermée et les billets restants se vendent sur place, dans la limite des places disponibles. Pour être sûr d'avoir ta place (et au meilleur prix), prends ton billet en ligne avant."
+          }
+        ]
+      },
+      {
+        "title": "Réserver une table",
+        "items": [
+          {
+            "q": "Qu'est-ce qu'une table ?",
+            "a": "Un salon réservé pour 6 personnes à l'édition du KARMA. Il y en a 4 en tout, en plus des 100 billets individuels."
+          },
+          {
+            "q": "Combien coûte une table ?",
+            "a": "80 000 FCFA la table du 9 au 17 novembre, puis 100 000 FCFA du 18 au 20 novembre. Réserve tôt pour profiter du meilleur prix."
+          },
+          {
+            "q": "Comment sont envoyés les billets d'une table ?",
+            "a": "Une table donne 6 billets individuels, un par personne, avec chacun son QR code. Ils arrivent tous à l'adresse e-mail de la réservation : transmets-les à tes invités."
+          },
+          {
+            "q": "Les codes promo marchent-ils sur les tables ?",
+            "a": "Non, ni les codes promo ni la remise de groupe ne s'appliquent aux tables."
+          },
+          {
+            "q": "J'ai une question sur le salon ou son emplacement.",
+            "a": "Écris-nous via la page Contact ou appelle-nous avant de réserver : nous te répondons avec plaisir."
+          }
+        ]
+      },
+      {
+        "title": "Paiement et réservation",
+        "items": [
+          {
+            "q": "Comment payer ?",
+            "a": "En ligne, par Mobile Money (Flooz, T-Money, MTN, Moov) ou par carte Visa ou Mastercard, via la plateforme sécurisée Kkiapay. Un contrôle anti-robot est demandé juste avant le paiement."
+          },
+          {
+            "q": "Combien de temps mes places sont-elles gardées ?",
+            "a": "10 minutes à partir de la validation du formulaire. Sans paiement dans ce délai, la réservation est annulée et les places sont remises en vente. Tu peux aussi annuler et revenir au formulaire à tout moment avant de payer."
+          },
+          {
+            "q": "Mon paiement a échoué, que faire ?",
+            "a": "Tes places restent gardées pendant le compte à rebours : clique sur « Payer » pour réessayer, avec un autre moyen de paiement si besoin. Vérifie aussi le solde de ton compte Mobile Money ou de ta carte."
+          },
+          {
+            "q": "J'ai payé mais mon temps était écoulé.",
+            "a": "Si les places sont encore libres, ton billet est émis normalement. Sinon, ton paiement est remboursé : contacte-nous avec la référence de commande affichée à l'écran."
+          }
+        ]
+      },
+      {
+        "title": "Après l'achat",
+        "items": [
+          {
+            "q": "Comment je reçois mes billets ?",
+            "a": "Après le paiement, chaque place donne un billet électronique avec un QR code unique, envoyé par e-mail et par WhatsApp aux coordonnées indiquées. Vérifie bien ces informations en réservant."
+          },
+          {
+            "q": "Je n'ai pas reçu mon billet.",
+            "a": "Regarde d'abord tes courriers indésirables. Sinon, contacte-nous avec ton nom, ton e-mail et ta référence de commande : nous le renvoyons."
+          },
+          {
+            "q": "Comment se passe l'entrée ?",
+            "a": "Présente le QR code de ton billet à l'entrée, sur ton téléphone ou imprimé. Il est à usage unique : seul le premier passage est accepté. Ne le partage ni ne le copie, et garde-le pour toi."
+          },
+          {
+            "q": "Jusqu'à quand mon billet est-il valable ?",
+            "a": "Jusqu'à la fin du lendemain de la soirée. Au-delà, le QR code est refusé."
+          },
+          {
+            "q": "Puis-je me faire rembourser ou échanger mon billet ?",
+            "a": "Les billets ne sont ni échangeables ni remboursables, sauf si la soirée est annulée : ils sont alors remboursés. En cas de report, ils restent valables à la nouvelle date."
+          },
+          {
+            "q": "Comment ne pas oublier la date ?",
+            "a": "Sur la page de confirmation, ajoute la soirée à ton calendrier (Google Agenda, Apple ou Outlook) : tu recevras un rappel la veille."
+          }
+        ]
+      },
+      {
+        "title": "Contact et données",
+        "items": [
+          {
+            "q": "Comment vous joindre ?",
+            "a": "Via le formulaire de la page Contact, par e-mail à hello@lateufelectronic.com, par téléphone au +228 91 95 01 93, ou sur Instagram, TikTok et WhatsApp."
+          },
+          {
+            "q": "Comment fonctionne le programme d'influenceurs ?",
+            "a": "Les influenceurs partenaires ont un lien personnel et suivent leurs ventes dans un espace dédié. Pour devenir partenaire, écris-nous via la page Contact."
+          },
+          {
+            "q": "Que faites-vous de mes données ?",
+            "a": "Nom, e-mail, WhatsApp et pays servent uniquement à traiter ta commande et à t'envoyer tes billets. Tout est détaillé dans la politique de confidentialité."
+          }
         ]
       }
     ]
