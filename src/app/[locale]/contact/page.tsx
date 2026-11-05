@@ -26,7 +26,7 @@ export default async function ContactPage({ params }: PageProps<"/[locale]/conta
     <PageMain>
       <Section>
         <Reveal>
-          <p className="font-label text-sm uppercase tracking-widest text-solar-copper">{t("eyebrow")}</p>
+          <p className="font-label text-sm uppercase tracking-wider text-solar-copper">{t("eyebrow")}</p>
           <h1 className="mt-4 font-title text-5xl md:text-7xl">{t("title")}</h1>
           <p className="mt-6 max-w-xl text-lg text-warm-ivory/80">{t("intro")}</p>
         </Reveal>

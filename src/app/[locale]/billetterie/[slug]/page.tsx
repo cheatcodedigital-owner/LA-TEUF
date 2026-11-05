@@ -65,7 +65,7 @@ async function Sales({
   return (
     <>
       <Section>
-        <Link href="/evenements" className="font-label text-sm uppercase tracking-widest text-warm-ivory/70 hover:text-solar-copper">
+        <Link href="/evenements" className="font-label text-sm uppercase tracking-wider text-warm-ivory/70 hover:text-solar-copper">
           ← {t("back")}
         </Link>
         <h1 className="mt-6 max-w-3xl font-title text-[clamp(2.25rem,8vw,4.5rem)] leading-[1.05]">{event.name}</h1>
@@ -75,7 +75,7 @@ async function Sales({
           {event.city}, {event.country}
         </p>
         {!state && sales.remaining <= 30 && (
-          <p className="mt-4 font-label text-sm uppercase tracking-widest text-solar-copper">
+          <p className="mt-4 font-label text-sm uppercase tracking-wider text-solar-copper">
             {t("remaining", { count: sales.remaining })}
           </p>
         )}

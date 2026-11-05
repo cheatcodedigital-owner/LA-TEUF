@@ -90,7 +90,7 @@ export function PortalIntro() {
       <button
         type="button"
         onClick={skip}
-        className="absolute bottom-8 left-1/2 min-h-11 -translate-x-1/2 rounded-full border border-warm-ivory/40 px-6 font-label text-sm uppercase tracking-widest text-warm-ivory transition-colors hover:border-solar-copper hover:text-solar-copper"
+        className="absolute bottom-8 left-1/2 min-h-11 -translate-x-1/2 rounded-full border border-warm-ivory/40 px-6 font-label text-sm uppercase tracking-wider text-warm-ivory transition-colors hover:border-solar-copper hover:text-solar-copper"
       >
         {t("skip")}
       </button>

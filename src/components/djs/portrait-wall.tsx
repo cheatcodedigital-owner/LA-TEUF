@@ -69,7 +69,7 @@ function Portrait({ portrait, origin, still }: { portrait: WallPortrait; origin:
       className="group relative h-full w-full"
       style={{ transformOrigin: origin, scale: still ? 1 : scale }}
     >
-      <div className="relative h-full w-full overflow-hidden rounded-[22px] bg-deep-indigo">
+      <div className="relative h-full w-full overflow-hidden rounded-2xl bg-deep-indigo">
         <Image
           src={portrait.src}
           alt=""
@@ -78,7 +78,7 @@ function Portrait({ portrait, origin, still }: { portrait: WallPortrait; origin:
           className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03] motion-reduce:transition-none"
         />
       </div>
-      <p className="absolute inset-x-1 top-full mt-2 flex justify-between gap-2 font-label text-xs uppercase tracking-widest sm:text-sm">
+      <p className="absolute inset-x-1 top-full mt-2 flex justify-between gap-2 font-label text-xs uppercase tracking-wider sm:text-sm">
         <span className="truncate">{portrait.name}</span>
         <span className="shrink-0 text-warm-ivory/60">{portrait.caption}</span>
       </p>
@@ -94,7 +94,7 @@ function FadingHint({ progress, children }: { progress: MotionValue<number>; chi
       style={{ opacity }}
       className="pointer-events-none absolute left-1/2 top-[calc(50svh+5rem)] -translate-x-1/2 text-center"
     >
-      <span className="relative block max-w-[16ch] font-label text-xs uppercase leading-snug tracking-widest text-warm-ivory/60 after:absolute after:left-1/2 after:top-full after:mt-3 after:h-16 after:w-px after:bg-gradient-to-b after:from-warm-ivory/50 after:to-transparent">
+      <span className="relative block max-w-[16ch] font-label text-xs uppercase leading-snug tracking-wider text-warm-ivory/60 after:absolute after:left-1/2 after:top-full after:mt-3 after:h-16 after:w-px after:bg-gradient-to-b after:from-warm-ivory/50 after:to-transparent">
         {children}
       </span>
     </motion.div>
@@ -134,7 +134,7 @@ export function PortraitWall({
       <div className="pointer-events-none sticky top-1/2 z-20 -translate-y-1/2 px-2 text-center text-warm-ivory mix-blend-difference">
         <h1 className="font-title text-[clamp(3.5rem,14vw,10rem)] leading-[0.95]">{title}</h1>
         {subtitle && (
-          <p className="mt-3 font-label text-sm uppercase tracking-widest text-warm-ivory/70 md:text-base">
+          <p className="mt-3 font-label text-sm uppercase tracking-wider text-warm-ivory/70 md:text-base">
             {subtitle}
           </p>
         )}

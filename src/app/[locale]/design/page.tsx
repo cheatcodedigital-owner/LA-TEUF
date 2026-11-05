@@ -47,7 +47,7 @@ export default async function DesignPage({ params }: PageProps<"/[locale]/design
     <main className="mx-auto max-w-6xl space-y-6 px-4 py-6 md:space-y-8 md:py-10">
       <header className="relative overflow-hidden rounded-card bg-deep-indigo px-5 pb-14 pt-16 md:px-12 md:pb-20 md:pt-28">
         <Keyhole className="absolute -right-10 top-10 h-[120%] text-cosmic-black/40 md:right-20" />
-        <p className="relative font-label text-sm uppercase tracking-widest text-solar-copper">
+        <p className="relative font-label text-sm uppercase tracking-wider text-solar-copper">
           Design system · démo
         </p>
         <h1 className="relative mt-4 max-w-4xl font-title text-6xl leading-[1.02] md:text-8xl">
@@ -73,7 +73,7 @@ export default async function DesignPage({ params }: PageProps<"/[locale]/design
       <Section id="typo" title="Typographie">
         <div className="space-y-8">
           <div>
-            <p className="font-label text-xs uppercase tracking-widest text-warm-ivory/60">
+            <p className="font-label text-xs uppercase tracking-wider text-warm-ivory/60">
               Tropic Ground · H1 hero
             </p>
             <p className="font-display text-5xl md:text-7xl">
@@ -81,19 +81,19 @@ export default async function DesignPage({ params }: PageProps<"/[locale]/design
             </p>
           </div>
           <div>
-            <p className="font-label text-xs uppercase tracking-widest text-warm-ivory/60">
+            <p className="font-label text-xs uppercase tracking-wider text-warm-ivory/60">
               ATP Dizzy · titres de section
             </p>
             <p className="font-title text-4xl md:text-5xl">Prochains rendez-vous</p>
           </div>
           <div>
-            <p className="font-label text-xs uppercase tracking-widest text-warm-ivory/60">
+            <p className="font-label text-xs uppercase tracking-wider text-warm-ivory/60">
               Anton · dates, prix, boutons
             </p>
             <p className="font-label text-5xl uppercase text-solar-copper">20 Nov · 5 000 FCFA</p>
           </div>
           <div>
-            <p className="font-label text-xs uppercase tracking-widest text-warm-ivory/60">
+            <p className="font-label text-xs uppercase tracking-wider text-warm-ivory/60">
               Pain de Mie · texte courant
             </p>
             <p className="max-w-xl">

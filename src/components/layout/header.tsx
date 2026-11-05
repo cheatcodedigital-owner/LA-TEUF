@@ -59,8 +59,8 @@ export function Header() {
         >
           <span
             aria-hidden
-            className={`pointer-events-none absolute inset-y-0 left-0 rounded-full bg-deep-indigo ease-(--ease-wave) motion-reduce:transition-none ${
-              pillReady ? "transition-[transform,width,opacity] duration-500" : ""
+            className={`pointer-events-none absolute inset-y-0 left-0 rounded-full bg-deep-indigo ease-(--ease-out) motion-reduce:transition-none ${
+              pillReady ? "transition-[transform,opacity] duration-300" : ""
             } ${pill ? (hovered ? "opacity-100" : "opacity-60") : "opacity-0"}`}
             style={{ width: pill?.width ?? 0, transform: `translateX(${pill?.left ?? 0}px)` }}
           />

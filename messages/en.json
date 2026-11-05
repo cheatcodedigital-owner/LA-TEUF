@@ -32,7 +32,7 @@
   },
   "Hero": {
     "titleAccent": "portal",
-    "imageAlt": "LA TEUF DJ booth bathed in smoke and blue light",
+    "imageAlt": "DJ at the decks, seen from behind, facing the crowd at a LA TEUF rooftop party under string lights",
     "tickets": "Tickets",
     "agenda": "See the lineup",
     "countdown": {
@@ -172,7 +172,7 @@
       "send": "Send",
       "sending": "Sending…",
       "sentTitle": "Message sent",
-      "sentText": "Thanks! The team will reply by email as soon as possible.",
+      "sentText": "Thanks. The team will reply by email as soon as possible.",
       "another": "New message",
       "errors": {
         "invalid": "Check the fields: name, valid email, subject and a message of at least 10 characters.",
@@ -367,15 +367,15 @@
     ]
   },
   "Thanks": {
-    "metaTitle": "Thank you!",
+    "metaTitle": "Thank you",
     "eyebrow": "Payment confirmed",
-    "title": "Congratulations, you're part of the party!",
+    "title": "You're part of the party",
     "intro": "Your ticket is confirmed and will be sent to you by email. The whole LA TEUF team can't wait to party with you and our community very soon: music, art and connection, good vibes only.",
     "calendarTitle": "Don't miss the date",
     "calendarText": "Add the night to your calendar: you'll get a reminder the day before.",
     "google": "Google Calendar",
     "ics": "Apple / Outlook (.ics)",
-    "calendarDescription": "LA TEUF ÉLECTRONIQUE: get ready to party with the community!",
+    "calendarDescription": "LA TEUF ÉLECTRONIQUE: get ready to party with the community.",
     "followTitle": "Follow us",
     "followText": "Join the community on our socials for line-ups, behind the scenes and upcoming dates.",
     "allEvents": "All events"

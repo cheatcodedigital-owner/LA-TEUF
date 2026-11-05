@@ -45,7 +45,7 @@ async function Content() {
   return (
     <>
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="font-label text-sm uppercase tracking-widest text-solar-copper">LA TEUF · Espace influenceur</p>
+        <p className="font-label text-sm uppercase tracking-wider text-solar-copper">LA TEUF · Espace influenceur</p>
         <form action={logoutAffiliate}>
           <button type="submit" className="min-h-11 px-3 text-sm text-warm-ivory/70 underline">
             Se déconnecter
@@ -78,7 +78,7 @@ async function Content() {
       <section aria-label="Ton entonnoir" className="mt-6 grid gap-4 sm:grid-cols-3">
         {funnel.map(([label, value, sub]) => (
           <div key={label} className="rounded-card bg-deep-indigo p-5">
-            <p className="font-label text-xs uppercase tracking-widest text-warm-ivory/70">{label}</p>
+            <p className="font-label text-xs uppercase tracking-wider text-warm-ivory/70">{label}</p>
             <p className="mt-2 font-label text-4xl text-solar-copper">{value}</p>
             <p className="mt-1 text-sm text-warm-ivory/70">{sub}</p>
           </div>
@@ -88,7 +88,7 @@ async function Content() {
       <section aria-label="Tes gains" className="mt-4 grid grid-cols-2 gap-4">
         {money.map(([label, value, accent]) => (
           <div key={label} className={`rounded-card p-5 ${accent ? "bg-solar-copper text-cosmic-black" : "bg-deep-indigo"}`}>
-            <p className={`font-label text-xs uppercase tracking-widest ${accent ? "" : "text-warm-ivory/70"}`}>{label}</p>
+            <p className={`font-label text-xs uppercase tracking-wider ${accent ? "" : "text-warm-ivory/70"}`}>{label}</p>
             <p className={`mt-2 font-label text-2xl ${accent ? "" : "text-solar-copper"}`}>{value}</p>
           </div>
         ))}

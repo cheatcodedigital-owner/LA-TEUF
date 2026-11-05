@@ -35,7 +35,7 @@ async function Thanks({ params }: { params: PageProps<"/[locale]/billetterie/[sl
   return (
     <>
       <Section>
-        <p className="font-label text-sm uppercase tracking-widest text-solar-copper">{t("eyebrow")}</p>
+        <p className="font-label text-sm uppercase tracking-wider text-solar-copper">{t("eyebrow")}</p>
         <h1 className="mt-4 max-w-3xl font-title text-[clamp(2.25rem,8vw,4.5rem)] leading-[1.05]">{t("title")}</h1>
         <p className="mt-5 max-w-2xl text-lg text-warm-ivory/90">{t("intro")}</p>
         <p className="mt-6 font-label text-3xl uppercase tracking-wide text-solar-copper">{date}</p>

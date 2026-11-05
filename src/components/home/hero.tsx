@@ -27,16 +27,21 @@ export async function Hero() {
   return (
     <section className="home-reveal relative isolate flex min-h-[max(30rem,calc(100svh-6.25rem))] flex-col overflow-hidden border border-frame-line rounded-card bg-deep-indigo">
       <Image
-        src="/images/hero-cabine.jpg"
+        src="/images/hero-platines.jpg"
         alt={t("imageAlt")}
         fill
         priority
         sizes="(min-width: 1152px) 1152px, 100vw"
-        className="-z-20 object-cover object-[50%_72%]"
+        className="-z-20 object-cover object-[58%_50%]"
       />
       {/* Voile plus dense en haut (header lisible) et en bas (bloc infos) */}
       <div
-        className="absolute inset-0 -z-10 bg-linear-to-b from-cosmic-black/60 via-cosmic-black/10 to-cosmic-black/70"
+        className="absolute inset-0 -z-10 bg-linear-to-b from-cosmic-black/70 via-cosmic-black/20 to-cosmic-black/70"
+        aria-hidden
+      />
+      {/* Dès 768 px, le titre est à gauche sur la foule éclairée : voile latéral pour le contraste */}
+      <div
+        className="absolute inset-0 -z-10 hidden bg-linear-to-r from-cosmic-black/80 via-cosmic-black/40 to-transparent md:block"
         aria-hidden
       />
 

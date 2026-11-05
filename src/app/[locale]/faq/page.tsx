@@ -40,7 +40,7 @@ export default async function FaqPage({ params }: PageProps<"/[locale]/faq">) {
 
       <Section>
         <Reveal>
-          <p className="font-label text-sm uppercase tracking-widest text-solar-copper">{t("eyebrow")}</p>
+          <p className="font-label text-sm uppercase tracking-wider text-solar-copper">{t("eyebrow")}</p>
           <h1 className="mt-4 font-title text-5xl md:text-7xl">{t("title")}</h1>
           <p className="mt-6 max-w-xl text-lg text-warm-ivory/80">{t("intro")}</p>
         </Reveal>
@@ -51,7 +51,7 @@ export default async function FaqPage({ params }: PageProps<"/[locale]/faq">) {
           <h2 className="font-title text-3xl md:text-4xl">{g.title}</h2>
           <div className="mt-6 space-y-3">
             {g.items.map((i) => (
-              <details key={i.q} className="group rounded-2xl bg-cosmic-black ring-1 ring-warm-ivory/15 transition open:ring-solar-copper/60">
+              <details key={i.q} className="group rounded-2xl bg-cosmic-black ring-1 ring-warm-ivory/15 transition-shadow open:ring-solar-copper/60">
                 <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 rounded-2xl px-5 py-4 text-lg outline-none marker:content-none focus-visible:ring-2 focus-visible:ring-ultraviolet [&::-webkit-details-marker]:hidden">
                   <span>{i.q}</span>
                   <span aria-hidden className="font-label text-2xl leading-none text-solar-copper transition-transform group-open:rotate-45 motion-reduce:transition-none">

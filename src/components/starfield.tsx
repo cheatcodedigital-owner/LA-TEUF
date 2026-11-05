@@ -3,8 +3,7 @@
 import { useEffect, useRef } from "react";
 
 // Ciel étoilé en fond de page : étoiles sur 3 plans de profondeur (dérive lente,
-// scintillement, parallaxe au scroll et à la souris), étoiles filantes rares et
-// nébuleuses Ultraviolet / Indigo en CSS. Canvas transparent : le fond Cosmic Black
+// scintillement, sans parallaxe) et étoiles filantes rares. Canvas transparent : le fond Cosmic Black
 // vient de <html>. prefers-reduced-motion : ciel fixe, sans animation.
 
 interface Star {
@@ -31,8 +30,8 @@ interface Shooting {
 const IVORY = "243,233,213"; // warm-ivory
 const VIOLET = "170,150,255"; // Ultraviolet éclairci
 const DRIFT = 5; // px/s pour le plan le plus proche
-const SCROLL_PARALLAX = 0.12;
-const MOUSE_PARALLAX = 14;
+const SCROLL_PARALLAX = 0; // pas de parallaxe : le ciel reste calme derrière le contenu
+const MOUSE_PARALLAX = 0;
 
 const wrap = (v: number, max: number) => ((v % max) + max) % max;
 
@@ -184,9 +183,6 @@ export function Starfield() {
 
   return (
     <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-      <div className="nebula nebula-a" />
-      <div className="nebula nebula-b" />
-      <div className="nebula nebula-c" />
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
     </div>
   );

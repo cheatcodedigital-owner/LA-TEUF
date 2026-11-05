@@ -12,12 +12,12 @@ import { Turnstile } from "./turnstile";
 
 // Champs clairs sur fond Indigo : le formulaire est une carte Deep Indigo, les champs sont en Cosmic Black
 const input =
-  "w-full rounded-full bg-cosmic-black px-6 py-3.5 text-warm-ivory outline-none ring-1 ring-warm-ivory/25 transition placeholder:text-warm-ivory/40 hover:ring-warm-ivory/50 focus:ring-2 focus:ring-ultraviolet aria-[invalid=true]:ring-2 aria-[invalid=true]:ring-solar-copper disabled:cursor-not-allowed disabled:opacity-50";
-const label = "mb-2 block px-2 font-label text-sm uppercase tracking-widest text-warm-ivory/80";
+  "w-full rounded-full bg-cosmic-black px-6 py-3.5 text-warm-ivory outline-none ring-1 ring-warm-ivory/25 transition-shadow placeholder:text-warm-ivory/40 hover:ring-warm-ivory/50 focus:ring-2 focus:ring-ultraviolet aria-[invalid=true]:ring-2 aria-[invalid=true]:ring-solar-copper disabled:cursor-not-allowed disabled:opacity-50";
+const label = "mb-2 block px-2 font-label text-sm uppercase tracking-wider text-warm-ivory/80";
 const primary =
   "hover-glow inline-flex min-h-11 items-center justify-center rounded-full bg-solar-copper py-3.5 font-label text-base uppercase tracking-wider text-cosmic-black disabled:cursor-not-allowed disabled:opacity-60";
 const secondary =
-  "inline-flex min-h-11 items-center justify-center rounded-full border border-warm-ivory/40 py-3.5 font-label text-base uppercase tracking-wider text-warm-ivory transition hover:border-solar-copper hover:text-solar-copper disabled:cursor-not-allowed disabled:opacity-60";
+  "inline-flex min-h-11 items-center justify-center rounded-full border border-warm-ivory/40 py-3.5 font-label text-base uppercase tracking-wider text-warm-ivory transition-colors hover:border-solar-copper hover:text-solar-copper disabled:cursor-not-allowed disabled:opacity-60";
 
 const SITE_KEY =
   process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || (process.env.NODE_ENV !== "production" ? TURNSTILE_TEST_SITE_KEY : undefined);
@@ -201,7 +201,7 @@ function Hold({
           {paid ? t("paidText", { count: order.quantity * (order.seats || 1), email }) : t("refundText")}
         </p>
         <p className="mt-6 text-sm text-warm-ivory/60">
-          {t("reference")} <span className="font-label tracking-widest text-warm-ivory">{order.orderId.slice(0, 8).toUpperCase()}</span>
+          {t("reference")} <span className="font-label tracking-wider text-warm-ivory">{order.orderId.slice(0, 8).toUpperCase()}</span>
         </p>
       </div>
     );
@@ -246,14 +246,14 @@ function Hold({
           </div>
         )}
         <div className="flex justify-between gap-4 border-t border-warm-ivory/15 pt-3">
-          <dt className="font-label text-sm uppercase tracking-widest">{t("total")}</dt>
+          <dt className="font-label text-sm uppercase tracking-wider">{t("total")}</dt>
           <dd className="font-label text-2xl text-solar-copper">{formatXof(order.totalXof, locale)}</dd>
         </div>
       </dl>
 
       {step === "verifying" && (
         <div className="mt-6">
-          <p className="font-label text-sm uppercase tracking-widest text-warm-ivory/80">{t("verifyTitle")}</p>
+          <p className="font-label text-sm uppercase tracking-wider text-warm-ivory/80">{t("verifyTitle")}</p>
           <p className="mb-3 mt-1 text-sm text-warm-ivory/70">{t("verifyText")}</p>
           {SITE_KEY ? (
             <Turnstile
@@ -414,7 +414,7 @@ export function TicketForm({ slug, tiers, sample, initialPromo }: { slug: string
               <label
                 key={x.id}
                 aria-disabled={!x.onSale}
-                className={`flex items-center justify-between gap-4 rounded-2xl px-5 py-4 ring-1 transition ${isTable ? "sm:col-span-2 " : ""}${
+                className={`flex items-center justify-between gap-4 rounded-2xl px-5 py-4 ring-1 transition-[box-shadow,background-color,color] ${isTable ? "sm:col-span-2 " : ""}${
                   x.onSale
                     ? selected
                       ? "cursor-pointer bg-cosmic-black ring-2 ring-solar-copper"
@@ -566,7 +566,7 @@ export function TicketForm({ slug, tiers, sample, initialPromo }: { slug: string
                 </>
               )}
               <div className="flex items-baseline gap-3">
-                <dt className="font-label text-sm uppercase tracking-widest text-warm-ivory/80">{t("total")}</dt>
+                <dt className="font-label text-sm uppercase tracking-wider text-warm-ivory/80">{t("total")}</dt>
                 <dd className="font-label text-3xl text-solar-copper">{formatXof(subtotal - discount, locale)}</dd>
               </div>
             </dl>

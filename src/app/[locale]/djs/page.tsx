@@ -38,7 +38,7 @@ export default async function DjsPage({ params }: PageProps<"/[locale]/djs">) {
 
       <Section id="line-up">
         <Reveal>
-          <p className="font-label text-sm uppercase tracking-widest text-solar-copper">{t("eyebrow")}</p>
+          <p className="font-label text-sm uppercase tracking-wider text-solar-copper">{t("eyebrow")}</p>
           <h2 className="mt-4 font-title text-4xl md:text-5xl">{t("lineup")}</h2>
           <p className="mt-6 max-w-xl text-lg text-warm-ivory/80">{t("intro")}</p>
         </Reveal>
@@ -47,7 +47,7 @@ export default async function DjsPage({ params }: PageProps<"/[locale]/djs">) {
           {djs.map((dj, i) => (
             <Reveal as="li" key={dj.slug} delay={(i % 3) * 110}>
               <article className="h-full rounded-card bg-cosmic-black p-2 pb-5 md:p-3 md:pb-6">
-                <div className="relative aspect-[4/5] overflow-hidden rounded-[22px] bg-deep-indigo">
+                <div className="relative aspect-[4/5] overflow-hidden rounded-[20px] md:rounded-2xl bg-deep-indigo">
                   <Image
                     src={dj.photo}
                     alt={t("photoAlt", { name: dj.name })}
@@ -58,7 +58,7 @@ export default async function DjsPage({ params }: PageProps<"/[locale]/djs">) {
                 </div>
                 <div className="px-2 pt-4 md:px-3">
                   <h3 className="font-title text-xl md:text-2xl">{dj.name}</h3>
-                  <p className="mt-1 font-label text-xs uppercase tracking-widest text-solar-copper md:text-sm">
+                  <p className="mt-1 font-label text-xs uppercase tracking-wider text-solar-copper md:text-sm">
                     {t(`kind.${dj.kind}`)}
                   </p>
                   {(dj.soundcloud || dj.instagram) && (

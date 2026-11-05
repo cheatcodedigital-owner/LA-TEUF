@@ -121,7 +121,7 @@ function DeckCard({
       }`}
     >
       <div>
-        <div className="relative aspect-[5/4] overflow-hidden rounded-[22px] bg-deep-indigo">
+        <div className="relative aspect-[5/4] overflow-hidden rounded-2xl bg-deep-indigo">
           <Keyhole className="absolute left-1/2 top-1/2 h-3/5 -translate-x-1/2 -translate-y-1/2 text-cosmic-black/50" />
           <div className="absolute left-3 top-3">
             <StatusBadge status={event.status} label={event.statusLabel} />

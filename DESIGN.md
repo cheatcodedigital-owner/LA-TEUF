@@ -88,9 +88,9 @@ Règles ✅ :
 
 ## 7. Mouvement
 
-- **Personnalité** ✅ : organique et ondulante, rebonds légers, sensation de vibration.
+- **Personnalité** ✅ : organique et ondulante. Rebonds légers sur les titres seulement, l'interface reste calme.
 - **Scroll** ✅ : les **titres se révèlent mot par mot ou ligne par ligne**.
-- **Survol** ✅ : lueur Ultraviolet + zoom de 2 à 3 %.
+- **Survol** ✅ : filet et lueur Ultraviolet discrets, sans zoom ni animation en boucle ; pression à 98 % (révisé le 05/11/2026). Courbe unique `--ease-out` ; le rebond `--ease-wave` est réservé aux titres révélés.
 - **Durées** ❓ : micro-interactions 200 à 300 ms, révélations 500 à 800 ms.
 - **Dégradation** ✅ : version simplifiée **automatique** avec `prefers-reduced-motion` et sur appareil modeste. Le site reste complet.
 

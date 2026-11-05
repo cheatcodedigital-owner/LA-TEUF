@@ -11,8 +11,8 @@ const SITE_KEY =
 
 // Champs en Cosmic Black sur la carte Deep Indigo (même style que la billetterie)
 const field =
-  "w-full bg-cosmic-black px-6 py-3.5 text-warm-ivory outline-none ring-1 ring-warm-ivory/25 transition placeholder:text-warm-ivory/40 hover:ring-warm-ivory/50 focus:ring-2 focus:ring-ultraviolet disabled:opacity-50";
-const label = "mb-2 block px-2 font-label text-sm uppercase tracking-widest text-warm-ivory/80";
+  "w-full bg-cosmic-black px-6 py-3.5 text-warm-ivory outline-none ring-1 ring-warm-ivory/25 transition-shadow placeholder:text-warm-ivory/40 hover:ring-warm-ivory/50 focus:ring-2 focus:ring-ultraviolet disabled:opacity-50";
+const label = "mb-2 block px-2 font-label text-sm uppercase tracking-wider text-warm-ivory/80";
 
 type State = "idle" | "sending" | "sent" | Extract<ContactResponse, { status: "error" }>["code"];
 
@@ -56,7 +56,7 @@ export function ContactForm() {
         <button
           type="button"
           onClick={() => setState("idle")}
-          className="mt-6 inline-flex min-h-11 items-center rounded-full border border-warm-ivory/40 px-6 font-label text-sm uppercase tracking-wider transition hover:border-solar-copper hover:text-solar-copper"
+          className="mt-6 inline-flex min-h-11 items-center rounded-full border border-warm-ivory/40 px-6 font-label text-sm uppercase tracking-wider transition-colors hover:border-solar-copper hover:text-solar-copper"
         >
           {t("another")}
         </button>

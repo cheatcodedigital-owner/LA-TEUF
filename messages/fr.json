@@ -32,7 +32,7 @@
   },
   "Hero": {
     "titleAccent": "portail",
-    "imageAlt": "Cabine DJ LA TEUF baignée de fumée et de lumière bleue",
+    "imageAlt": "DJ aux platines, de dos, face au public d'une soirée LA TEUF en terrasse sous les guirlandes lumineuses",
     "tickets": "Billets",
     "agenda": "Voir l'agenda",
     "countdown": {
@@ -172,7 +172,7 @@
       "send": "Envoyer",
       "sending": "Envoi…",
       "sentTitle": "Message envoyé",
-      "sentText": "Merci ! L'équipe te répond par e-mail dès que possible.",
+      "sentText": "Merci. L'équipe te répond par e-mail dès que possible.",
       "another": "Nouveau message",
       "errors": {
         "invalid": "Vérifie les champs : nom, e-mail valide, sujet et message d'au moins 10 caractères.",
@@ -367,15 +367,15 @@
     ]
   },
   "Thanks": {
-    "metaTitle": "Merci !",
+    "metaTitle": "Merci",
     "eyebrow": "Paiement confirmé",
-    "title": "Félicitations, tu fais partie de la fête !",
+    "title": "Tu fais partie de la fête",
     "intro": "Ton billet est confirmé et tu vas le recevoir par e-mail. Toute l'équipe de LA TEUF t'attend très bientôt pour faire la fête avec notre communauté : musique, art et rencontres, dans la bonne énergie.",
     "calendarTitle": "Ne rate pas la date",
     "calendarText": "Ajoute la soirée à ton calendrier : tu recevras un rappel la veille.",
     "google": "Google Agenda",
     "ics": "Apple / Outlook (.ics)",
-    "calendarDescription": "LA TEUF ÉLECTRONIQUE : prépare-toi à faire la fête avec la communauté !",
+    "calendarDescription": "LA TEUF ÉLECTRONIQUE : prépare-toi à faire la fête avec la communauté.",
     "followTitle": "Suis-nous",
     "followText": "Rejoins la communauté sur nos réseaux pour les line-ups, les coulisses et les prochaines dates.",
     "allEvents": "Tous les événements"

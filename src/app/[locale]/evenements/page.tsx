@@ -48,7 +48,7 @@ export default async function EventsPage({ params }: PageProps<"/[locale]/evenem
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
       />
       <Section>
-        <p className="font-label text-sm uppercase tracking-widest text-solar-copper">{t("eyebrow")}</p>
+        <p className="font-label text-sm uppercase tracking-wider text-solar-copper">{t("eyebrow")}</p>
         <h1 className="mt-4 font-title text-[clamp(2.75rem,10vw,5.5rem)] leading-[1.05]">{t("title")}</h1>
         <p className="mt-6 max-w-xl text-lg text-warm-ivory/80">{t("intro")}</p>
       </Section>

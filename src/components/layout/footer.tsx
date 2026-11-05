@@ -7,7 +7,7 @@ export async function Footer() {
   const t = await getTranslations("Footer");
   const tn = await getTranslations("Nav");
 
-  const heading = "font-label text-sm uppercase tracking-widest text-solar-copper";
+  const heading = "font-label text-sm uppercase tracking-wider text-solar-copper";
   const link = "text-warm-ivory/80 transition-colors hover:text-solar-copper";
 
   return (

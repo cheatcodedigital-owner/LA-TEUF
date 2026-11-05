@@ -63,7 +63,7 @@ function Details({ event, labels }: { event: EventView; labels: ShowcaseLabels }
       <dl className="mt-4 grid gap-4 sm:grid-cols-2">
         {event.rows.map((r) => (
           <div key={r.label}>
-            <dt className="font-label text-sm uppercase tracking-widest text-solar-copper">{r.label}</dt>
+            <dt className="font-label text-sm uppercase tracking-wider text-solar-copper">{r.label}</dt>
             <dd className="mt-1">{r.value}</dd>
           </div>
         ))}
@@ -183,7 +183,7 @@ export function EventsShowcase({ events, labels }: { events: EventView[]; labels
                 }}
                 className="block w-full cursor-pointer rounded-card p-3 pb-6 text-left"
               >
-                <div className="relative aspect-[4/5] overflow-hidden rounded-[22px] bg-deep-indigo">
+                <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-deep-indigo">
                   <Keyhole className="absolute left-1/2 top-1/2 h-3/5 -translate-x-1/2 -translate-y-1/2 text-cosmic-black/50" />
                   <div className="absolute left-3 top-3">
                     <StatusBadge status={event.status} label={event.statusLabel} />

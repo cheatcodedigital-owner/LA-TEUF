@@ -28,7 +28,7 @@ export default async function GalleryPage({ params }: PageProps<"/[locale]/galer
     <PageMain>
       <Section light>
         <Reveal>
-          <p className="font-label text-sm uppercase tracking-widest">{t("eyebrow")}</p>
+          <p className="font-label text-sm uppercase tracking-wider">{t("eyebrow")}</p>
           <h1 className="mt-4 font-title text-5xl md:text-7xl">{t("title")}</h1>
           <p className="mb-10 mt-6 max-w-xl text-lg">{t("intro")}</p>
         </Reveal>

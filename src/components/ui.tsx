@@ -51,7 +51,7 @@ const statusStyle: Record<Status, string> = {
 export function StatusBadge({ status, label }: { status: Status; label?: string }) {
   return (
     <span
-      className={`inline-block rounded-full px-3 py-1 font-label text-xs uppercase tracking-widest ${statusStyle[status]}`}
+      className={`inline-block rounded-full px-3 py-1 font-label text-xs uppercase tracking-wider ${statusStyle[status]}`}
     >
       {label ?? statusLabel[status]}
     </span>
@@ -71,7 +71,7 @@ export function EventCard({
 }) {
   return (
     <article className="hover-glow group rounded-card bg-cosmic-black p-3 pb-6">
-      <div className="relative aspect-[4/5] overflow-hidden rounded-[22px] bg-deep-indigo">
+      <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-deep-indigo">
         <Keyhole className="absolute left-1/2 top-1/2 h-3/5 -translate-x-1/2 -translate-y-1/2 text-cosmic-black/50" />
         <div className="absolute left-3 top-3">
           <StatusBadge status={status} />
@@ -105,10 +105,10 @@ export function Field({
       <span className="relative block">
         <input
           placeholder=" "
-          className="peer w-full rounded-full bg-cosmic-black px-6 pb-2 pt-6 text-warm-ivory outline-none ring-1 ring-transparent transition focus:ring-ultraviolet aria-[invalid=true]:ring-solar-copper"
+          className="peer w-full rounded-full bg-cosmic-black px-6 pb-2 pt-6 text-warm-ivory outline-none ring-1 ring-transparent transition-shadow focus:ring-ultraviolet aria-[invalid=true]:ring-solar-copper"
           aria-invalid={error ? true : undefined}
         />
-        <span className="pointer-events-none absolute left-6 top-4 origin-left text-warm-ivory/60 transition-all peer-focus:top-2 peer-focus:scale-75 peer-[:not(:placeholder-shown)]:top-2 peer-[:not(:placeholder-shown)]:scale-75">
+        <span className="pointer-events-none absolute left-6 top-4 origin-left text-warm-ivory/60 transition-transform duration-150 ease-(--ease-out) peer-focus:-translate-y-2 peer-focus:scale-75 peer-[:not(:placeholder-shown)]:-translate-y-2 peer-[:not(:placeholder-shown)]:scale-75">
           {label}
         </span>
       </span>
@@ -122,7 +122,7 @@ export function TicketPass() {
   return (
     <div className="mx-auto w-full max-w-sm overflow-hidden rounded-card bg-deep-indigo">
       <div className="p-7">
-        <p className="font-label text-sm uppercase tracking-widest text-solar-copper">
+        <p className="font-label text-sm uppercase tracking-wider text-solar-copper">
           Billet · Early bird
         </p>
         <h3 className="mt-3 font-title text-3xl">LA TEUF au KARMA</h3>

@@ -86,7 +86,7 @@ export function PhotoGrid({ photos, alts, labels }: { photos: GalleryPhoto[]; al
               <button type="button" onClick={() => step(-1)} aria-label={labels.previous} className={control}>
                 ←
               </button>
-              <span className="min-w-16 text-center font-label tracking-widest text-warm-ivory/70">
+              <span className="min-w-16 text-center font-label tracking-wider text-warm-ivory/70">
                 {index! + 1} / {photos.length}
               </span>
               <button type="button" onClick={() => step(1)} aria-label={labels.next} className={control}>

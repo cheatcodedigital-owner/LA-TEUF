@@ -64,7 +64,7 @@ export function MenuPanel({ open, onOpenChange, menuId }: MenuProps) {
         aria-modal="true"
         aria-label={t("mainNav")}
         inert={!open}
-        className={`fixed inset-0 z-50 flex flex-col bg-cosmic-black px-6 pb-8 pt-4 transition-[clip-path] duration-700 ease-out motion-reduce:transition-none ${
+        className={`fixed inset-0 z-50 flex flex-col bg-cosmic-black px-6 pb-8 pt-4 transition-[clip-path] duration-500 ease-(--ease-out) motion-reduce:transition-none ${
           open ? "[clip-path:circle(150%_at_90%_5%)]" : "[clip-path:circle(0%_at_90%_5%)]"
         }`}
       >
