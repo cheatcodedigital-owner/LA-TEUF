@@ -20,7 +20,6 @@
     "tagline": "The gateway to free partying. Electronic music, art and connection in Lomé and Cotonou.",
     "explore": "Explore",
     "contact": "Contact",
-    "booking": "Booking",
     "follow": "Follow",
     "legal": "Legal notice",
     "terms": "Terms of sale",
@@ -104,6 +103,10 @@
     "ctaText": "Each night's line-up is announced on the event page.",
     "ctaButton": "Upcoming nights"
   },
+  "Ambiance": {
+    "parts": ["Our vibe", "electric", "takes you places"],
+    "label": "Our electric vibe takes you places"
+  },
   "Concept": {
     "title": "What is LA TEUF?",
     "text": "A festive electronic music night in Lomé to break out of the routine: DJs, live musicians and carefully crafted staging, in a warm atmosphere open to everyone.",
@@ -115,9 +118,7 @@
     ]
   },
   "HomeEvents": {
-    "title": "Upcoming nights",
-    "hint": "Tap a card to bring it forward",
-    "all": "All events"
+    "title": "Upcoming nights"
   },
   "Gallery": {
     "metaTitle": "Gallery",
@@ -361,7 +362,7 @@
       {
         "title": "9. Contact",
         "body": [
-          "For any question about an order: hello@lateufelectronic.com, or by phone at +228 91 95 01 93 (Shayn) and +228 93 70 62 42 (booking, AK2M)."
+          "For any question about an order: hello@lateufelectronic.com, or by phone at +228 91 95 01 93 (Shayn)."
         ]
       }
     ]
@@ -391,7 +392,7 @@
           "The website lateufelectronic.com is published by LA TEUF ÉLECTRONIQUE, organiser of electronic music nights in Lomé (Togo) and Cotonou (Benin).",
           "Legal form and registration number: [To be completed]",
           "Registered address: [To be completed]",
-          "Email: hello@lateufelectronic.com. Phone: +228 91 95 01 93 (Shayn); booking: +228 93 70 62 42.",
+          "Email: hello@lateufelectronic.com. Phone: +228 91 95 01 93 (Shayn).",
           "Publication director: [To be completed]"
         ]
       },

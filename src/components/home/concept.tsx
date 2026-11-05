@@ -22,7 +22,8 @@ export async function Concept() {
               as="li"
               key={m}
               delay={i * 60}
-              className="flex items-start gap-4 border-t border-deep-indigo/15 py-5 md:py-6"
+              // Sur mobile, on ne garde que la 2e mission (la scène africaine) pour raccourcir la section
+              className={`flex items-start gap-4 border-t border-deep-indigo/15 py-5 md:py-6 ${i === 1 ? "" : "max-md:hidden"}`}
             >
               <Keyhole className="mt-1 h-6 w-auto shrink-0 text-copper-deep" />
               <span className="text-lg md:text-xl">{m}</span>

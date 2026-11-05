@@ -45,11 +45,6 @@ export async function Footer() {
                   Shayn · +228 91 95 01 93
                 </a>
               </li>
-              <li>
-                <a href="tel:+22893706242" className={link}>
-                  {t("booking")} · +228 93 70 62 42
-                </a>
-              </li>
             </ul>
           </div>
 

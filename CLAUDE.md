@@ -29,7 +29,7 @@ Next.js 16 (App Router, TypeScript, `src/`), Tailwind v4 (tokens dans `src/app/g
 - Sur fond Ivory, accents en `copper-deep`, pas en Copper (contraste insuffisant).
 - Pas d'ombres : lueur Ultraviolet au survol uniquement (`hover-glow`). Désactiver les animations avec `prefers-reduced-motion`.
 - Mobile first, cibles tactiles ≥ 44 px, focus visible.
-- Accueil : hero, concept, prochains rendez-vous (pas de galerie ni de contact, qui ont leurs pages).
+- Accueil : hero, ambiance (mobile seulement : 3 vidéos verticales de 3 s qui basculent en 3D au défilement, `src/components/home/dimensional-switch-slider.tsx` (GSAP), textes `Ambiance.parts`), concept, prochains rendez-vous (vidéo d'ambiance en fond) ; pas de galerie ni de contact, qui ont leurs pages.
 - Galerie `/galerie` : carrousel WebGL circulaire (`ogl`) dans `src/components/gallery/` (`circular-gallery.tsx`, enveloppe `gallery-showcase.tsx` avec repli en grille HTML si WebGL échoue ; il ne détourne pas la molette verticale), puis mosaïque avec visionneuse (`photo-grid.tsx`). Photos listées dans `src/data/gallery.ts`, légendes dans `Gallery.alt` (même ordre).
 - DJs : `src/data/djs.ts` (`photo` pour le line-up, `photo2` optionnelle pour le mur de portraits), portraits 4:5 dans `public/images/djs/`.
 - FAQ `/faq` (`src/app/[locale]/faq/page.tsx`, textes dans `Faq.groups` de `messages/*.json`, accordéon `<details>` + JSON-LD FAQPage) : à tenir à jour avec tarifs, tables et règles de vente.

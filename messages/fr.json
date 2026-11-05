@@ -20,7 +20,6 @@
     "tagline": "Le portail vers la fête libre. Musique électronique, art et rencontres à Lomé et Cotonou.",
     "explore": "Explorer",
     "contact": "Contact",
-    "booking": "Booking",
     "follow": "Suivre",
     "legal": "Mentions légales",
     "terms": "CGV",
@@ -104,6 +103,10 @@
     "ctaText": "Le line-up de chaque soirée est annoncé sur la page de l'événement.",
     "ctaButton": "Prochaines soirées"
   },
+  "Ambiance": {
+    "parts": ["Notre ambiance", "électrique", "te fait voyager"],
+    "label": "Notre ambiance électrique te fait voyager"
+  },
   "Concept": {
     "title": "Qu'est-ce que LA TEUF ?",
     "text": "Un rendez-vous festif de musique électronique à Lomé, pour sortir de la routine : DJs, instrumentistes live et scénographies soignées, dans une ambiance chaleureuse et ouverte à tous.",
@@ -115,9 +118,7 @@
     ]
   },
   "HomeEvents": {
-    "title": "Prochains rendez-vous",
-    "hint": "Touche une carte pour la passer devant",
-    "all": "Tous les événements"
+    "title": "Prochains rendez-vous"
   },
   "Gallery": {
     "metaTitle": "Galerie",
@@ -361,7 +362,7 @@
       {
         "title": "9. Contact",
         "body": [
-          "Pour toute question sur une commande : hello@lateufelectronic.com, ou par téléphone au +228 91 95 01 93 (Shayn) et +228 93 70 62 42 (booking, AK2M)."
+          "Pour toute question sur une commande : hello@lateufelectronic.com, ou par téléphone au +228 91 95 01 93 (Shayn)."
         ]
       }
     ]
@@ -391,7 +392,7 @@
           "Le site lateufelectronic.com est édité par LA TEUF ÉLECTRONIQUE, organisateur de soirées de musique électronique à Lomé (Togo) et à Cotonou (Bénin).",
           "Forme juridique et numéro d'immatriculation : [À compléter]",
           "Adresse du siège : [À compléter]",
-          "E-mail : hello@lateufelectronic.com. Téléphone : +228 91 95 01 93 (Shayn) ; booking : +228 93 70 62 42.",
+          "E-mail : hello@lateufelectronic.com. Téléphone : +228 91 95 01 93 (Shayn).",
           "Directeur de la publication : [À compléter]"
         ]
       },

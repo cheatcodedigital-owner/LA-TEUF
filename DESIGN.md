@@ -98,7 +98,7 @@ Règles ✅ :
 
 - **Photos** ✅ : couleurs naturelles de la soirée, sans filtre de marque.
 - **Cadrage** ✅ : rectangles aux coins arrondis, **ratios fixes** : 4:5 affiches, 16:9 vidéos, 9:16 stories.
-- **Vidéos** ✅ : **aucun autoplay**, lecture au clic. Le hero utilise une image de poster. ⚠️ Cela diverge de BRAINSTORMING §4 (« visuel ou vidéo d'ambiance ») : le hero est donc une photo ou une affiche, avec la vidéo en option au clic.
+- **Vidéos** ✅ : **aucun autoplay**, lecture au clic. Exception (05/11/2026) : vidéo d'ambiance muette en boucle en fond de la section « Prochains rendez-vous » de l'accueil (`src/components/home/ambiance-video.tsx`, fichiers dans `public/videos/`), chargée à l'approche, en pause hors écran, image fixe avec `prefers-reduced-motion` ou l'économie de données. Même exception pour la section « ambiance » mobile de l'accueil (3 clips verticaux de 3 s qui basculent en 3D au défilement). Le hero utilise une image de poster. ⚠️ Cela diverge de BRAINSTORMING §4 (« visuel ou vidéo d'ambiance ») : le hero est donc une photo ou une affiche, avec la vidéo en option au clic.
 - **Placeholders** ✅ : mockups réalistes provisoires (T-shirts, silhouettes DJs), remplaçables depuis l'admin.
 
 ## 9. Accessibilité et performance

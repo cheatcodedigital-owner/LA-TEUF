@@ -37,7 +37,7 @@ export function Header() {
 
   return (
     <>
-    <header className="pointer-events-none fixed inset-x-0 top-0 z-40">
+    <header className="pointer-events-none fixed inset-x-0 top-0 z-40 transform-gpu">
       {/* Barre flottante détachée du hero, visible dès le haut de page */}
       <div className="mx-auto max-w-6xl px-4">
       <div

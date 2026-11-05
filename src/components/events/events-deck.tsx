@@ -121,7 +121,7 @@ function DeckCard({
       }`}
     >
       <div>
-        <div className="relative aspect-[5/4] overflow-hidden rounded-2xl bg-deep-indigo">
+        <div className="relative aspect-video overflow-hidden rounded-2xl bg-deep-indigo">
           <Keyhole className="absolute left-1/2 top-1/2 h-3/5 -translate-x-1/2 -translate-y-1/2 text-cosmic-black/50" />
           <div className="absolute left-3 top-3">
             <StatusBadge status={event.status} label={event.statusLabel} />
@@ -162,11 +162,9 @@ function DeckCard({
 export function EventsDeck({
   events,
   labels,
-  hint,
 }: {
   events: EventView[];
   labels: ShowcaseLabels;
-  hint: string;
 }) {
   const reduced = useReducedMotion() ?? false;
   const narrow = useNarrow();
@@ -177,7 +175,7 @@ export function EventsDeck({
 
   return (
     <>
-      <div className="relative mx-auto h-[37rem] w-full max-w-3xl" style={{ perspective: "1000px" }}>
+      <div className="relative mx-auto h-[28.5rem] w-full max-w-3xl sm:h-[30rem]" style={{ perspective: "1000px" }}>
         {events.map((event) => (
           <DeckCard
             key={event.slug}
@@ -191,9 +189,6 @@ export function EventsDeck({
           />
         ))}
       </div>
-      {events.length > 1 && (
-        <p className="mt-2 text-center font-label text-sm uppercase tracking-wider text-warm-ivory/70">{hint}</p>
-      )}
 
       {opened && <EventModal opened={opened} labels={labels} onClosed={() => setOpened(null)} />}
     </>
