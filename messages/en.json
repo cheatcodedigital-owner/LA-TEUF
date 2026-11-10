@@ -42,10 +42,7 @@
     "skip": "Skip"
   },
   "Hero": {
-    "titleAccent": "portal",
     "imageAlt": "DJ at the decks, seen from behind, facing the crowd at a LA TEUF rooftop party under string lights",
-    "tickets": "Tickets",
-    "agenda": "See the lineup",
     "countdown": {
       "label": "Countdown to the night",
       "days": "Days",
@@ -89,13 +86,48 @@
     "ticketsSoon": "Tickets open soon.",
     "items": {
       "la-teuf-karma": {
-        "description": "LA TEUF takes over KARMA in Lomé. DJs and live musicians, carefully crafted staging around the keyhole, light shows: a warm, relaxed night to break out of your routine, with respect for everyone."
+        "description": "LA TEUF takes over KARMA in Lomé. DJs and live musicians, carefully crafted staging around the keyhole, light shows: a warm, relaxed night to break out of your routine, with respect for everyone.",
+        "card": "Karma",
+        "teaser": "A rooftop edition bringing together electronic DJs from the Togolese and Beninese scenes",
+        "hoverTitle": "A new electronic experience that makes borders vibrate!",
+        "hoverText": "2 stages, one dancefloor, the same energy to celebrate electronic music and the connection between Lomé and Cotonou.",
+        "imageAlt": "The LA TEUF DJ booth in blue smoke",
+        "aboutTitle": "LA TEUF: from Lomé to Cotonou",
+        "aboutLead": "A new electronic experience that makes borders vibrate!",
+        "about": [
+          "On Friday 20 November 2026, meet us at KARMA from 9 PM to 3 AM for a night of House, Afro House, Afro Tech and SA Tech with Shayn, AK2M, Wafa and Famouz.",
+          "2 stages, one dancefloor, the same energy to celebrate electronic music and the connection between Lomé and Cotonou.",
+          "Get ready to live LA TEUF! 🔊"
+        ],
+        "aboutImageAlt": "The LA TEUF DJ booth under blue spotlights"
       },
       "la-teuf-cotonou": {
-        "description": "LA TEUF crosses the border for an edition in Cotonou. Venue and lineup will be announced soon."
+        "description": "LA TEUF crosses the border for an edition in Cotonou, at Zone 5 Plage. The line-up will be announced soon.",
+        "card": "Zone 5 Plage",
+        "teaser": "Line-up and prices coming soon. Join the WhatsApp group to hear first.",
+        "hoverTitle": "LA TEUF crosses the border",
+        "hoverText": "A first edition in Cotonou, by the beach. The line-up will be announced soon.",
+        "imageAlt": "A partygoer on the terrace of a LA TEUF night",
+        "aboutTitle": "LA TEUF crosses the border",
+        "aboutLead": "A first edition in Cotonou, by the beach.",
+        "about": [
+          "See you at Zone 5 Plage. Line-up and prices will be announced soon: join the WhatsApp group to hear first."
+        ],
+        "aboutImageAlt": "A partygoer on the terrace of a LA TEUF night"
       }
     },
-    "close": "Close"
+    "close": "Close",
+    "card": {
+      "from": "From {price} FCFA",
+      "priceTbd": "Prices to come",
+      "tickets": "Tickets",
+      "ticketsMobile": "Get my ticket",
+      "notify": "Notify me",
+      "lineup": "Line-up",
+      "lineupSoon": "Line-up coming soon"
+    },
+    "heading": "Upcoming <line><accent>dates</accent></line>",
+    "archivesTitle": "Past editions"
   },
   "Djs": {
     "metaTitle": "DJs",
@@ -113,28 +145,9 @@
     "photoAlt": "Portrait of {name}",
     "ctaTitle": "Come see them <accent>for real</accent>",
     "ctaText": "Each night's line-up is announced on the event page.",
-    "ctaButton": "Upcoming nights"
-  },
-  "Ambiance": {
-    "parts": [
-      "Our vibe",
-      "electric",
-      "takes you places"
-    ],
-    "label": "Our electric vibe takes you places"
-  },
-  "Concept": {
-    "title": "What is LA TEUF?",
-    "text": "A festive electronic music night in Lomé to break out of the routine: DJs, live musicians and carefully crafted staging, in a warm atmosphere open to everyone.",
-    "missions": [
-      "Give every form of art a place to express itself",
-      "Bring electronic music to the African scene",
-      "Cultivate the art of partying freely, with respect",
-      "Gather around art and support artistic works"
-    ]
-  },
-  "HomeEvents": {
-    "title": "Upcoming nights"
+    "ctaButton": "Upcoming nights",
+    "heading": "The <accent>DJs</accent>",
+    "wallTitle": "They already made <accent>LA TEUF</accent> dance"
   },
   "Gallery": {
     "metaTitle": "Gallery",
@@ -165,7 +178,11 @@
       "The DJ booth seen from the dancefloor, under string lights",
       "Two close friends pose arm in arm",
       "Silhouettes in front of the stage in red light"
-    ]
+    ],
+    "heading": "Seen on the <line><accent>dancefloor</accent></line>",
+    "clickHint": "Click a photo to enlarge it.",
+    "next": "The next one is on {date}",
+    "nextCta": "Get your ticket"
   },
   "Contact": {
     "metaTitle": "Contact",
@@ -197,7 +214,8 @@
         "rate": "Too many messages sent. Try again in an hour.",
         "unavailable": "Sending is temporarily unavailable. Write to us at hello@lateufelectronic.com."
       }
-    }
+    },
+    "heading": "Let's <accent>talk</accent>"
   },
   "Ticketing": {
     "metaTitle": "Tickets",
@@ -247,7 +265,7 @@
       "unavailable": "Ticketing is temporarily unavailable. Please try again in a moment.",
       "unknown": "Something went wrong. Please try again.",
       "form": "Some fields are incomplete or invalid.",
-      "promo_not_allowed": "Promo codes do not apply to early birds or tables."
+      "promo_not_allowed": "Promo codes only apply to early bird tickets."
     },
     "held": "Tickets reserved",
     "heldFor": "Your tickets are held for another",
@@ -259,13 +277,10 @@
     "restart": "Start over",
     "availableFrom": "Available from {date}",
     "soldOutTier": "Sold out",
-    "closedTier": "Sale ended",
-    "earlyNoPromo": "Promo codes do not apply to early birds.",
-    "promoEarly": "Not applicable to this ticket",
-    "groupHint": "Automatic discount on the standard ticket: −10% from 5 tickets, −15% from 8 tickets, −20% for 10 tickets.",
+    "closedTier": "Online sales closed",
     "groupDiscountLine": "Group discount −{pct}%",
     "subtotal": "Subtotal",
-    "noneOnSale": "No ticket type is on sale right now. Come back on the opening date shown.",
+    "noneOnSale": "Online sales are closed. Standard tickets are sold at the door on the day of the night, while places last.",
     "modify": "Edit my details",
     "modifying": "Releasing tickets…",
     "modifyHint": "Your tickets will be released and you will return to the form.",
@@ -302,34 +317,70 @@
     "tableRemaining": "{count, plural, one {# table left} other {# tables left}}",
     "tableSeats": "Lounge for {seats} people",
     "priceRises": "Goes up to {price} on {date}",
-    "tableNoPromo": "Promo codes and the group discount do not apply to tables.",
+    "tableNoPromo": "Promo codes do not apply to tables.",
     "quantityTables": "Number of tables",
     "tableHint": "Each table comes with {seats} individual tickets (one per guest), sent to the booking email address.",
-    "afterEarly": "Opens when early birds are sold out"
+    "panelTitle": "Get your ticket",
+    "quantityMax": "Quantity (max {max})",
+    "promoPlaceholder": "Promo code",
+    "namePlaceholder": "Full name",
+    "emailPlaceholder": "Email",
+    "whatsappPlaceholder": "WhatsApp, with country code",
+    "summaryLine": "{count} × {tier}",
+    "panelHint": "Pay with Mobile Money (Flooz, T-Money, MTN, Moov) or card, via Kkiapay. Your seats are held for {minutes} minutes. Online sales close at noon the day before the night.",
+    "from": "Tickets from",
+    "openPanel": "Get your ticket",
+    "closePanel": "Close ticketing",
+    "panelLabel": "Ticketing",
+    "header": {
+      "date": "Date",
+      "time": "Time",
+      "venue": "Venue",
+      "tickets": "Tickets",
+      "capacity": "Capacity",
+      "capacityValue": "{count} + {tables} tables",
+      "from": "From {price} FCFA",
+      "tbd": "Coming soon"
+    },
+    "lineupTitle": "On the decks at <accent>{venue}</accent>",
+    "lineupPastTitle": "They already made <accent>LA TEUF</accent> dance",
+    "lineupMeta": "{genres}: {count} DJs, 2 stages, one dancefloor.",
+    "allDjs": "All DJs",
+    "faqTitle": "Before you book",
+    "faqCount": "{count} questions",
+    "faqMore": "Full answers are on the <link>FAQ page</link>.",
+    "faqOpen": "Show the questions",
+    "faqClose": "Collapse",
+    "retry": "Try again",
+    "soonBadge": "Soon",
+    "doorBadge": "Only available at the door",
+    "drinkIncluded": "Drink included",
+    "remainingOnline": "{count, plural, one {# online ticket left} other {# online tickets left}}",
+    "promoEarly": "Early bird tickets only"
   },
   "Cgv": {
     "metaTitle": "Terms of sale",
     "title": "Terms of sale",
-    "updated": "Last updated: October 22, 2026",
+    "updated": "Last updated: November 10, 2026",
     "sections": [
       {
         "title": "1. Organizer and purpose",
         "body": [
           "These terms of sale govern the sale of admission tickets to LA TEUF nights, organized by LA TEUF ÉLECTRONIQUE (the \"organizer\") in Lomé (Togo) and Cotonou (Benin).",
-          "They apply to any order placed on lateufelectronic.com. Tickets can still be sold on site on the night, subject to availability.",
+          "They apply to any order placed on lateufelectronic.com. Standard tickets are sold only at the door on the day of the night, while places last.",
           "By confirming an order, the buyer acknowledges having read and accepted these terms."
         ]
       },
       {
         "title": "2. Tickets and prices",
         "body": [
-          "Prices are in CFA francs (FCFA). For the KARMA night (20 November 2026), online sales open on 9 November. Individual tickets are limited to 100 per night.",
-          "Early bird: 5,000 FCFA, 70 tickets, on sale from 9 November until the quota is sold out, with no end date.",
-          "Standard: 8,000 FCFA, 30 tickets, on sale only once the 70 early birds are sold. Online early bird and standard sales close on the day of the night: remaining tickets are sold at the door, while places last.",
+          "Prices are in CFA francs (FCFA), drink included. For the KARMA night (20 November 2026), online sales open on 9 November. Individual tickets are limited to 100 per night.",
+          "Early bird (online): 5,000 FCFA, drink included. These tickets are limited according to the size of the venue (70 for KARMA) and on sale until sold out, at the latest until noon the day before the night (19 November at 12 PM, Lomé time), when online sales close.",
+          "Standard: 8,000 FCFA, drink included, sold only at the door on the day of the night, while places last. It is not sold online.",
           "Tables: 4 lounges for 6 people are offered on top of the 100 tickets, at 80,000 FCFA per table from 9 to 17 November, then 100,000 FCFA per table from 18 to 20 November. A table comes with 6 individual tickets.",
           "An order includes at most 10 tickets.",
-          "A group discount is applied automatically to the standard ticket: −10% from 5 tickets, −15% from 8 tickets, −20% for 10 tickets.",
-          "Promo codes do not apply to early birds or tables. They cannot be combined with the group discount: the most favorable discount is applied."
+          "No group discount is applied.",
+          "Promo codes only apply to early bird tickets; they do not apply to tables."
         ]
       },
       {
@@ -395,7 +446,16 @@
     "calendarDescription": "LA TEUF ÉLECTRONIQUE: get ready to party with the community.",
     "followTitle": "Follow us",
     "followText": "Join the community on our socials for line-ups, behind the scenes and upcoming dates.",
-    "allEvents": "All events"
+    "allEvents": "All events",
+    "badge": "Payment confirmed",
+    "heading": "You're part of <accent>the party</accent>",
+    "text": "Your tickets are confirmed and sent by email and WhatsApp. The whole LA TEUF team is waiting for you at {venue}.",
+    "ticketQr": "Your QR code is in the confirmation email",
+    "ticketHint": "Show it at the entrance. Single use.",
+    "ticketDate": "Date",
+    "ticketTime": "Time",
+    "ticketVenue": "Venue",
+    "ticketCity": "City"
   },
   "LegalNotice": {
     "metaTitle": "Legal notice",
@@ -541,7 +601,7 @@
           },
           {
             "q": "When is the next night?",
-            "a": "LA TEUF at KARMA, in Lomé (Togo), on 20 November 2026. The next one is in Cotonou (Benin) on 12 December 2026: the venue and line-up will be announced soon. All dates are on the Events page."
+            "a": "LA TEUF at KARMA, in Lomé (Togo), on 20 November 2026. The next one is in Cotonou (Benin) on 12 December 2026: at Zone 5 Plage: the line-up will be announced soon. All dates are on the Events page."
           },
           {
             "q": "Who is playing?",
@@ -562,19 +622,19 @@
         "items": [
           {
             "q": "When do KARMA ticket sales open?",
-            "a": "Online sales open on 9 November 2026, on the night's Tickets page: early bird tickets and tables are available from that date."
+            "a": "Online sales open on 9 November 2026 on the night's Tickets page and close at noon the day before the night (19 November at 12 PM, Lomé time). Tables can be booked online until the start of the night."
           },
           {
             "q": "What are the prices?",
-            "a": "Early bird: 5,000 FCFA, 70 tickets, on sale from 9 November until sold out. Standard: 8,000 FCFA, 30 tickets, open only once the 70 early birds are sold. The standard ticket stays visible, greyed out, until then."
+            "a": "Early bird, online: 5,000 FCFA, drink included. Standard: 8,000 FCFA, drink included, sold only at the door on the day of the night. Tables have their own price (see “Book a table”)."
           },
           {
-            "q": "What happens when early birds sell out?",
-            "a": "As soon as the 70th early bird is sold (or held), the 8,000 FCFA standard ticket opens automatically, for 30 tickets. There is no date: it depends on how fast early birds sell. If an early bird booking expires unpaid, the place goes back to early bird."
+            "q": "How many early bird tickets are available?",
+            "a": "Early birds are limited, depending on the size of the venue: 70 online tickets for KARMA. Once they sell out, or after noon the day before the night, tickets are sold at the door at the standard price, while places last."
           },
           {
             "q": "Are there group discounts?",
-            "a": "Yes, on the standard ticket: −10% from 5 tickets, −15% from 8 tickets and −20% for 10 tickets. The discount is applied automatically, no code needed, as soon as standard tickets are open (after the 70 early birds)."
+            "a": "No, there is no group discount. To come as a group, book a table (a lounge for 6 people) or use a promo code on early bird tickets."
           },
           {
             "q": "How many tickets can I buy at once?",
@@ -582,11 +642,11 @@
           },
           {
             "q": "How do I use a promo code?",
-            "a": "Enter it in the “Promo code” field of the booking form, or use the shared link that comes with the code, which fills it in. It does not apply to early birds or tables and cannot be combined with the group discount: the most favorable discount is applied."
+            "a": "Enter it in the “Promo code” field of the booking form, or use the shared link that comes with the code, which fills it in. It only applies to early bird tickets, not to tables."
           },
           {
             "q": "Can I buy tickets on the day of the night?",
-            "a": "Yes. On the day of the night, online early bird and standard sales are closed and remaining tickets are sold at the door, while places last. To be sure of your spot (and the best price), buy online beforehand."
+            "a": "Yes: standard tickets (8,000 FCFA, drink included) are sold only at the door on the day of the night, while places last. To get your spot at the best price, grab an early bird online before noon the day before."
           }
         ]
       },
@@ -607,7 +667,7 @@
           },
           {
             "q": "Do promo codes work on tables?",
-            "a": "No, neither promo codes nor the group discount apply to tables."
+            "a": "No, promo codes do not apply to tables."
           },
           {
             "q": "I have a question about the lounge or its location.",
@@ -682,6 +742,72 @@
           }
         ]
       }
-    ]
+    ],
+    "heading": "Your questions, <line><accent>our answers</accent></line>",
+    "count": "{n} · {count} questions",
+    "jump": "Jump to section"
+  },
+  "Home": {
+    "hero": {
+      "place": "{city} · {country} · From {time}",
+      "cta": "Get your ticket",
+      "more": "See more",
+      "from": "From",
+      "currency": "FCFA"
+    },
+    "ambiance": {
+      "lines": [
+        "Our",
+        "<accent>electric</accent> vibe",
+        "takes you away"
+      ],
+      "label": "Our electric vibe takes you away"
+    },
+    "concept": {
+      "title": "What is <line><accent>LA TEUF</accent>?</line>",
+      "intro": "A festive electronic music gathering with a warm atmosphere, open to everyone.",
+      "cards": [
+        {
+          "title": "A dancefloor driven by electronic music",
+          "text": "Afro house, deep house, tech house, afro tech: DJs from the Togolese and Beninese scenes take turns on the decks."
+        },
+        {
+          "title": "Live performances, edition by edition",
+          "text": "Percussionists, musicians and dancers join the DJs on some nights, so every edition has its surprise."
+        },
+        {
+          "title": "Warm encounters",
+          "text": "An atmosphere open to all, with respect for everyone: you come for the music and leave with new friends."
+        }
+      ]
+    },
+    "dates": {
+      "title": "Upcoming dates"
+    },
+    "ticketsBand": {
+      "title": "Early bird at<br></br>{price} FCFA",
+      "cta": "Get my tickets",
+      "note": "Drink included. Limited online tickets, until noon the day before the night."
+    },
+    "community": {
+      "title": "Join the <accent>community</accent>",
+      "tiktok": "Clips from the nights",
+      "whatsapp": "The community, live",
+      "newsTitle": "Be the first to hear about the next dates",
+      "newsCta": "Join the WhatsApp group",
+      "newsNote": "Dates, line-ups and ticket releases are announced there first."
+    }
+  },
+  "Legal": {
+    "surtitle": "Legal information",
+    "toc": "Contents",
+    "ctaText": "Write to {email} or call {phone}.",
+    "ctaContact": "Contact us",
+    "ctaFaq": "See the FAQ",
+    "ctaTitle": {
+      "Cgv": "A question about your order?",
+      "LegalNotice": "A question?",
+      "Privacy": "A question about your data?"
+    }
   }
 }

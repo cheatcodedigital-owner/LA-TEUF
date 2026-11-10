@@ -26,7 +26,7 @@ export function ResendForm({ action, orderId, email }: { action: Action; orderId
         <button
           type="submit"
           disabled={pending}
-          className="hover-glow min-h-12 rounded-full bg-solar-copper px-7 font-label uppercase tracking-wider text-cosmic-black disabled:opacity-50"
+          className="press min-h-12 rounded-full bg-solar-copper px-7 font-label uppercase tracking-wider text-cosmic-black disabled:opacity-50"
         >
           {pending ? "Envoi…" : "Renvoyer les billets"}
         </button>

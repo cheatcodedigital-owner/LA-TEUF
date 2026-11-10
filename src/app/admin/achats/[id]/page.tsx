@@ -21,7 +21,7 @@ export default function PurchasePage(props: PageProps<"/admin/achats/[id]">) {
 }
 
 const ghost =
-  "hover-glow inline-flex min-h-11 items-center justify-center rounded-full border border-warm-ivory/40 px-5 font-label text-sm uppercase tracking-wider";
+  "press inline-flex min-h-11 items-center justify-center rounded-full border border-warm-ivory/40 px-5 font-label text-sm uppercase tracking-wider";
 
 async function Content({ params }: { params: Promise<{ id: string }> }) {
   const role = await requireRole("admin");

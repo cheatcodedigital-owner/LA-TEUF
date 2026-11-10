@@ -12,6 +12,9 @@
    - `migrations/0008_affiliate_links.sql` (affiliation par liens, clics, commission 20 %)
    - `migrations/0009_pricing_tables.sql` (nouvelle tarification : early bird 5 000 ×70, standard 8 000 ×30, capacité 100, tables de 6 personnes)
    - `migrations/0010_standard_after_early.sql` (standard ouvert seulement quand l'early bird est épuisé, early bird/standard fermés le jour J)
+   - `migrations/0012_event_times_venues.sql` (KARMA à 21 h, Cotonou à Zone 5 Plage)
+   - `migrations/0013_cotonou_hours.sql` (Cotonou de 16 h à 4 h)
+   - `migrations/0014_door_standard_online_early.sql` (en ligne = early bird jusqu'à la veille midi, standard à la porte, plus de remise de groupe, codes promo sur l'early bird)
    - `seed.sql` (événements de départ — early bird 5 000, standard 8 000 FCFA, tables 80 000 → 100 000 FCFA ; **uniquement pour une base vide** : sur une base existante, appliquer la 0009)
 2. Copier `.env.example` en `.env.local` et renseigner `SUPABASE_URL` et `SUPABASE_SERVICE_ROLE_KEY`
    (Project Settings → API). La clé service_role reste côté serveur uniquement.
@@ -19,19 +22,22 @@
    seulement) ; en production elle s'affiche « indisponible ».
 
 ## Règles de vente
-- Édition du KARMA (20 novembre 2026) : la vente ouvre le **9 novembre**.
-- Early bird : 5 000 FCFA, 70 billets, dès le 9 novembre, **sans date de fin** (jusqu'à épuisement). Standard : 8 000 FCFA, 30 billets,
-  **sans date d'ouverture** : il s'ouvre uniquement quand les 70 early birds sont vendus (vendus + réservés), règle codée dans `_tiers` (migration 0010).
-  **Le jour de la soirée (minuit UTC du jour J), early bird et standard sont fermés** : les billets restants se vendent sur place (admin). Capacité générale de la soirée : 100 (70 + 30). Les tarifs restent affichés : celui qui
-  n'est pas ouvert est grisé avec sa date d'ouverture.
-- **Tables** (`kind = 'table'`, migration 0009) : 4 salons de 6 personnes, **80 000 FCFA** du 9 au 17 novembre puis **100 000 FCFA** du 18 au 20 novembre
-  (`price_step_at` / `price_after_xof`, le prix est calculé par `_tiers`). Offre **additionnelle** : elle n'entame pas la capacité générale de 100.
-  Une table = 1 unité commandée = 6 billets nominatifs (`ticket_types.seats`), émis par `mark_order_paid` (un QR par personne, tous envoyés à l'e-mail
-  de la réservation). Ni code promo ni remise de groupe sur les tables. Pour modifier prix, dates ou quota : `update ticket_types` (colonnes `price_xof`,
-  `price_after_xof`, `price_step_at`, `quota`).
+Politique du 10/11/2026 (migration 0014, testée par `npm run test:db`) :
+- **Billets en ligne = early bird uniquement** : 5 000 FCFA, consommation incluse, en quantité limitée selon la taille du lieu
+  (KARMA : **70**). En vente dès le **9 novembre** (KARMA) jusqu'à épuisement, et **au plus tard jusqu'à la veille de la soirée à midi**
+  (heure locale ; KARMA : 19 novembre 12:00 UTC = 12 h à Lomé), via `ticket_types.sales_end`.
+- **Standard** : 8 000 FCFA, consommation incluse, **vendu uniquement à la porte le jour de la soirée** (`ticket_types.door_only = true`).
+  Il reste affiché sur la billetterie (état `door` renvoyé par `_tiers`) mais n'est jamais réservable en ligne. Capacité générale : 100
+  (70 en ligne + la porte) ; les ventes à la porte se saisissent dans l'admin.
+- **Pas de remise de groupe** : `_group_discount_pct` renvoie toujours 0 (`autoDiscountPct` reste à 0 dans les réponses).
+- **Codes promo : early bird uniquement** (`promo_not_allowed` sur les tables).
+- **Tables** (`kind = 'table'`, migration 0009, politique inchangée) : 4 salons de 6 personnes, **80 000 FCFA** du 9 au 17 novembre puis
+  **100 000 FCFA** du 18 au 20 novembre (`price_step_at` / `price_after_xof`, le prix est calculé par `_tiers`), en vente en ligne jusqu'à
+  l'heure de la soirée. Offre **additionnelle** : elle n'entame pas la capacité générale de 100. Une table = 1 unité commandée = 6 billets
+  nominatifs (`ticket_types.seats`), émis par `mark_order_paid` (un QR par personne, tous envoyés à l'e-mail de la réservation). Pas de code
+  promo sur les tables. Pour modifier prix, dates ou quota : `update ticket_types` (colonnes `price_xof`, `price_after_xof`, `price_step_at`, `quota`).
 - 10 billets (ou tables) maximum par commande.
-- Remise de groupe automatique sur le standard : -10 % dès 5 billets, -15 % dès 8, -20 % pour 10. Pas de code promo
-  sur l'early bird ni sur les tables ; promo et remise de groupe ne se cumulent pas (la meilleure est retenue).
+- Nouvelle soirée : early bird avec `sales_end` = veille à midi (heure locale), standard avec `door_only = true`, quota early bird selon le lieu.
 - Anti-bot (Cloudflare Turnstile) après le clic sur « Payer » : variables `NEXT_PUBLIC_TURNSTILE_SITE_KEY`
   et `TURNSTILE_SECRET_KEY` (clés de test utilisées automatiquement en développement).
 - Paiement Kkiapay : après l'anti-bot, `POST /api/billetterie/checkout` renvoie la clé publique et le widget
@@ -76,7 +82,7 @@ Limite : un seul client, donc la concurrence réelle repose sur le verrou `FOR U
 Sur Supabase, `revoke ... from public` ne retire pas l'accès de `anon` et `authenticated` (privilèges par défaut du schéma `public`) : sans la migration 0006, la clé publique pouvait appeler `mark_order_paid` via l'API REST. **Toute nouvelle fonction du schéma doit être suivie de `revoke all on function ... from anon, authenticated;`.** Vérification : `select p.oid::regprocedure, has_function_privilege('anon', p.oid, 'execute') from pg_proc p join pg_namespace n on n.oid = p.pronamespace where n.nspname = 'public';` (seule `rls_auto_enable`, fournie par Supabase, peut rester ouverte).
 
 ## Codes promo et affiliation
-- **Codes promo** (`/admin/codes`) : générés depuis l'admin, nombre d'utilisations limité (commandes payées), `%` ou montant fixe, événement et date de fin optionnels. Standard uniquement, non cumulables avec la remise de groupe (la meilleure est retenue). Lien partageable `/billetterie/<événement>?code=XXXX` (préremplit le champ).
+- **Codes promo** (`/admin/codes`) : générés depuis l'admin, nombre d'utilisations limité (commandes payées), `%` ou montant fixe, événement et date de fin optionnels. Early bird uniquement. Lien partageable `/billetterie/<événement>?code=XXXX` (préremplit le champ).
 - **Affiliation par liens** (`/admin/influenceurs`, migration 0008) :
   - Lien `https://<site>/r/<identifiant>[?c=<campagne>]` (route `src/app/r/[slug]/route.ts`) : compte le clic (`affiliate_clicks`, robots et aperçus de lien ignorés, un même visiteur n'est compté qu'une fois par 30 min), pose les cookies `teuf_vid` (visiteur) et `teuf_ref` (`slug` ou `slug:campagne`, 30 jours, dernier clic gagnant) puis redirige vers la billetterie de l'événement choisi (par défaut le prochain en vente).
   - À la réservation, `POST /api/billetterie/reserve` lit `teuf_ref` et le passe à `create_order(p_affiliate)`. Aucune remise pour l'acheteur. La commission (`rate_pct`, 20 %) est calculée sur le **total de la commande** (après remise de groupe ou code promo) et figée dans `orders.affiliate_commission_xof` ; elle ne compte que si la commande est **payée** (une commande remboursée ou annulée sort du décompte).

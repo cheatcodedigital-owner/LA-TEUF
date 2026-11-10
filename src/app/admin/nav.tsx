@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { logout } from "./login/actions";
 import type { Role } from "@/lib/admin/session";
@@ -15,9 +16,12 @@ export function AdminNav({ role, active }: { role: Role; active: "dashboard" | "
     </Link>
   );
   return (
-    <header className="flex flex-wrap items-center justify-between gap-3">
-      <p className="font-title text-2xl">
-        LA TEUF <span className="accent-word">admin</span>
+    <header className="flex flex-wrap items-center justify-between gap-3 border-b border-warm-ivory/25 pb-5">
+      <p className="flex items-center gap-3 font-title text-[28px] leading-none">
+        <span className="flex size-12 items-center justify-center rounded-full border border-warm-ivory">
+          <Image src="/brand/logo-pastille.svg" alt="" width={28} height={28} unoptimized className="size-7" />
+        </span>
+        LA TEUF <span className="text-solar-copper">admin</span>
       </p>
       <nav aria-label="Admin" className="flex flex-wrap items-center gap-2">
         {role === "admin" && item("/admin", "Tableau de bord", "dashboard")}

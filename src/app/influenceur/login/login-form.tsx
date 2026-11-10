@@ -1,10 +1,11 @@
 "use client";
 
 import { useActionState } from "react";
-import { Button } from "@/components/ui";
+import { Flip } from "@/components/ds/flip";
 import { loginAffiliate, type LoginState } from "./actions";
 
-const field = "mt-2 min-h-12 w-full rounded-full bg-cosmic-black px-5 text-warm-ivory";
+const field =
+  "mt-2 h-14 w-full rounded-full border border-warm-ivory bg-cosmic-black px-5 font-body text-[16px] text-warm-ivory outline-none placeholder:text-warm-ivory/50 focus:border-ultraviolet focus:ring-1 focus:ring-inset focus:ring-ultraviolet";
 
 export function LoginForm() {
   const [state, action, pending] = useActionState<LoginState, FormData>(loginAffiliate, {});
@@ -23,9 +24,9 @@ export function LoginForm() {
           {state.error}
         </p>
       )}
-      <Button type="submit" disabled={pending} className="w-full">
+      <Flip type="submit" tone="copper" size="h-14 w-full px-6 text-[16px]" className="w-full" disabled={pending}>
         {pending ? "Connexion…" : "Entrer"}
-      </Button>
+      </Flip>
     </form>
   );
 }

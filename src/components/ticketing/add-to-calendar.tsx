@@ -1,32 +1,32 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { Flip } from "@/components/ds/flip";
 
-// ❓ Durée de la soirée à confirmer : on suppose 6 h pour le rappel
+// Durée supposée quand l'heure de fin n'est pas connue
 const DURATION_MS = 6 * 3_600_000;
 
 const stamp = (d: Date) => d.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
 const escapeIcs = (s: string) => s.replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\n/g, "\\n");
 
-const button =
-  "hover-glow inline-flex min-h-11 items-center justify-center rounded-full px-7 py-3.5 font-label text-base uppercase tracking-wider";
-
 export function AddToCalendar({
   slug,
   name,
   startsAt,
+  endsAt,
   location,
   description,
 }: {
   slug: string;
   name: string;
   startsAt: string;
+  endsAt?: string;
   location: string;
   description: string;
 }) {
   const t = useTranslations("Thanks");
   const start = new Date(startsAt);
-  const end = new Date(start.getTime() + DURATION_MS);
+  const end = endsAt ? new Date(endsAt) : new Date(start.getTime() + DURATION_MS);
 
   const google = `https://calendar.google.com/calendar/render?${new URLSearchParams({
     action: "TEMPLATE",
@@ -67,13 +67,13 @@ export function AddToCalendar({
   }
 
   return (
-    <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-      <a href={google} target="_blank" rel="noopener noreferrer" className={`${button} bg-solar-copper text-cosmic-black`}>
+    <div className="flex flex-col gap-3 sm:flex-row">
+      <Flip href={google} external tone="ivory" size="h-[52px] px-6 text-[16px]">
         {t("google")}
-      </a>
-      <button type="button" onClick={downloadIcs} className={`${button} border border-warm-ivory/40 text-warm-ivory`}>
+      </Flip>
+      <Flip tone="outlineDark" size="h-[52px] px-6 text-[16px]" onClick={downloadIcs}>
         {t("ics")}
-      </button>
+      </Flip>
     </div>
   );
 }

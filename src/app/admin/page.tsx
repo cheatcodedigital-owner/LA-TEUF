@@ -159,7 +159,7 @@ async function Content({ searchParams }: { searchParams: Promise<{ event?: strin
               key={type}
               href={`/api/admin/export?event=${event.slug}&type=${type}`}
               download
-              className="hover-glow inline-flex min-h-11 items-center rounded-full border border-warm-ivory/40 px-5 font-label text-sm uppercase tracking-wider"
+              className="press inline-flex min-h-11 items-center rounded-full border border-warm-ivory/40 px-5 font-label text-sm uppercase tracking-wider"
             >
               {label} (CSV)
             </a>

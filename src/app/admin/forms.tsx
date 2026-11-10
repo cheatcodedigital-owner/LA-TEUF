@@ -36,7 +36,7 @@ function Status({ state }: { state: FormState }) {
   );
 }
 
-const submit = "hover-glow min-h-12 rounded-full bg-solar-copper px-7 font-label uppercase tracking-wider text-cosmic-black disabled:opacity-50";
+const submit = "press min-h-12 rounded-full bg-solar-copper px-7 font-label uppercase tracking-wider text-cosmic-black disabled:opacity-50";
 
 export function PromoForm({ action, events }: { action: Action; events: { id: string; name: string }[] }) {
   const { state, run, pending, ref } = useAdminForm(action);

@@ -1,8 +1,8 @@
 # LA TEUF — Design system (v2)
 
-> Charte validée le 10/11/2026. Source visuelle : fichier Paper **« LA TEUF — Design System »** (pages Fondations, Composants, Patterns, Templates, Maquettes). Référence codée : l'aperçu de l'accueil **`/apercu`** (`src/app/apercu/`, `src/components/apercu/`, styles dans `src/app/globals.css`).
+> Charte validée le 10/11/2026. Source visuelle : fichier Paper **« LA TEUF — Design System »** (pages Fondations, Composants, Patterns, Templates, Maquettes). Référence codée : composants partagés **`src/components/ds/`**, pages dans `src/app/[locale]/`, styles dans `src/app/globals.css`.
 > Inspirations : **Caldera** (mise en page centrée ou pleine largeur, cartes dates, communauté, footer), **Shelby** (duo de couleurs par section), **Slush** (bandes arrondies, stickers, rubans, pilules, boutons qui basculent, apparitions et défilement).
-> ⚠️ Le site public n'est pas encore migré : il suit l'ancienne charte (encadrés Indigo, lueur au survol). Ce document décrit la cible ; voir §13 pour l'ordre de migration.
+> Le site entier suit cette charte depuis le 10/11/2026 (voir §13). L'intro du portail (WebGL) est conservée telle quelle avant l'accueil.
 
 ## 1. Direction
 
@@ -126,7 +126,7 @@ Règles :
 - Bandeau d'annonce en haut de page (il part avec le défilement), puis **barre collante et transparente** : pastille logo à gauche, liens en **pilules à fond noir cerclées d'Ivoire**, sélecteur FR/EN, CTA **Billets** Cuivre. Les fonds pleins restent lisibles au-dessus de toutes les bandes.
 - Comme sur slush.app : après 50 px de défilement vers le bas, les liens remontent un par un hors de l'écran (750 ms, décalage 30 ms) ; ils reviennent dès qu'on remonte. Le logo et « Billets » restent toujours visibles.
 - **Mobile** : logo, Billets et bouton « + » toujours visibles. Le « + » ouvre un **menu plein écran Cuivre** : liens numérotés (01 à 05) en ATP Dizzy 48 px séparés par des filets, CTA noir « Prendre mon billet », réseaux IG / TT / WA en ronds, FR/EN en bas. Il se déplie du haut vers le bas, puis les éléments montent en cascade. La page derrière ne défile plus ; Échap ferme.
-- États d'un lien : repos (cerclé), survol (face Cuivre qui bascule), page active (point Copper), focus clavier (anneau 2 px).
+- États d'un lien : repos (cerclé), survol (face Cuivre qui bascule), page active (pilule Ivoire pleine, texte noir), focus clavier (anneau 2 px).
 
 ### 7.2 Boutons et badges (C2)
 
@@ -204,7 +204,7 @@ Autres patterns : P4 line-up DJs, P6 galerie (mosaïque, « Toutes les photos »
 - 4 étapes : (1) vaisseau seul ; (2) « Notre ambiance » + vidéo 1 ; (3) « électrique te » + vidéo 2 qui prend la place de la 1 ; (4) « fait voyager » + vidéo 3, arrivée sur la planète. Repères : 22 %, 50 %, 78 %, 100 %.
 - Chaque ligne monte de 0,35 em en apparaissant (600 ms) ; chaque vidéo se dévoile par-dessus la précédente de haut en bas (900 ms). Seule la vidéo visible joue (muette, en boucle).
 - **Mobile** : moitié haute = trajectoire horizontale + titre, moitié basse = vidéos ; vaisseau, lignes et vidéos progressent de **gauche à droite**.
-- Implémentation : `src/components/apercu/ambiance.tsx` ; storyboards dans Paper (Patterns, P3 web étapes 1 à 4 et mobile 4 étapes).
+- Implémentation : `src/components/home/ambiance.tsx` ; storyboards dans Paper (Patterns, P3 web étapes 1 à 4 et mobile 4 étapes).
 
 ### 9.4 Mouvement réduit
 
@@ -232,14 +232,12 @@ Accueil, Événement KARMA (panneau d'achat collant, volet d'achat sur mobile), 
 
 ## 13. Migration du site
 
-L'aperçu `/apercu` sert de référence. Ordre proposé :
-1. ✅ Fondations dans le code (10/11/2026) : tokens dans `globals.css`, stickers dans `public/stickers/`, logos dans `public/brand/`, composants partagés dans `src/components/ds/` (`Band`, `Flip`, `Sticker`, icônes, champs, navigation, footer, mouvement Slush), groupes de routes `(v1)` / `(v2)` sous `src/app/[locale]/`. Les cartes (date, dépliable, réseau) seront extraites de l'aperçu avec leurs pages.
-2. Page événement et billetterie (vente du KARMA en cours).
-3. Accueil, puis Tous les évènements.
-4. DJs, Galerie, FAQ, Contact, pages légales ; textes anglais.
-5. Admin et espace influenceur.
-6. Contrôles : mobile, accessibilité, build, licences des polices.
+Terminée le 10/11/2026 :
+1. Fondations : tokens, stickers (`public/stickers/`), logos (`public/brand/`), composants partagés `src/components/ds/`.
+2. Page événement et billetterie (panneau d'achat collant, volet sur mobile, merci), sans changement de la logique de vente.
+3. Accueil (avec l'intro du portail), Tous les évènements.
+4. DJs, Galerie (mosaïque seule), FAQ, Contact (formulaire seul), pages légales ; textes anglais.
+5. Admin et espace influenceur : habillage C7 (cartes 24 px, pilules, boutons qui basculent, logo).
+6. Contrôles : types, lint, build, rendu web et mobile. Reste à faire : licences web des polices.
 
-Marge de page 6 px et coins de bande 24 px sur mobile : appliqués par `SiteChrome` et `Band`.
-
-`CLAUDE.md` décrit la v2 et liste ce qui relève encore de l'ancienne charte (à retirer au fil de la migration).
+L'ancienne charte (encadrés Indigo, ciel étoilé, `hover-glow`, carrousel WebGL de la galerie, page `/design`, aperçu `/apercu`) est retirée du code.

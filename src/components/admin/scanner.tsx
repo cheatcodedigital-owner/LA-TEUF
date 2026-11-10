@@ -463,7 +463,7 @@ export function Scanner() {
             type="button"
             disabled={!slug || !online || busy}
             onClick={() => void refreshManifest(slug)}
-            className="hover-glow min-h-11 rounded-full bg-solar-copper px-6 font-label uppercase tracking-wider text-cosmic-black disabled:opacity-50"
+            className="press min-h-11 rounded-full bg-solar-copper px-6 font-label uppercase tracking-wider text-cosmic-black disabled:opacity-50"
           >
             {busy ? "Synchronisation…" : "Mettre à jour la liste"}
           </button>

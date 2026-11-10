@@ -5,6 +5,7 @@ export const flip = {
   copper: { face: "bg-solar-copper text-cosmic-black", back: "bg-warm-ivory text-cosmic-black border border-cosmic-black" },
   /* Navigation : fond plein pour rester lisible au-dessus des bandes claires */
   nav: { face: "bg-cosmic-black border border-warm-ivory text-warm-ivory", back: "bg-solar-copper text-cosmic-black border border-cosmic-black" },
+  navCurrent: { face: "bg-warm-ivory border border-warm-ivory text-cosmic-black", back: "bg-solar-copper text-cosmic-black border border-cosmic-black" },
   outlineDark: { face: "border border-warm-ivory text-warm-ivory", back: "bg-solar-copper text-cosmic-black border border-cosmic-black" },
   outlineLight: { face: "border border-cosmic-black text-cosmic-black", back: "bg-cosmic-black text-warm-ivory" },
   black: { face: "bg-cosmic-black text-solar-copper", back: "bg-violet-pale text-cosmic-black border border-cosmic-black" },

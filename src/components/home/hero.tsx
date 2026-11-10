@@ -1,86 +1,90 @@
 import Image from "next/image";
-import { getFormatter, getLocale, getTranslations } from "next-intl/server";
-import { Link } from "@/i18n/navigation";
+import { getFormatter, getTranslations } from "next-intl/server";
+import { Band } from "@/components/ds/band";
+import { Flip } from "@/components/ds/flip";
+import { ticketsHref } from "@/components/ds/links";
 import { nextEvent } from "@/data/events";
 import { Countdown } from "./countdown";
-import { RevealTitle } from "./reveal-title";
+import { Ribbon } from "./ribbon";
 
+/** P1 Hero (Nuit) : lieu et date de la prochaine soirée, « Passe le portail », ruban, photo, prix, compte à rebours */
 export async function Hero() {
-  const t = await getTranslations("Hero");
+  const t = await getTranslations("Home.hero");
+  const th = await getTranslations("Hero");
   const format = await getFormatter();
-  const locale = await getLocale();
-  // Titre borné par la largeur ET la hauteur de l'écran (svh) : le hero doit tenir en entier.
-  // Les lignes FR sont plus courtes (« Passe le » / « portail ») : on le grossit en proportion.
-  // Classes écrites en entier : Tailwind ne détecte pas celles construites par concaténation.
-  const titleSize =
-    locale === "fr"
-      ? "text-[clamp(3rem,min(calc(1.25rem+14vw),calc((100svh_-_34rem)_/_2.4)),9rem)] short:text-[clamp(3rem,min(calc(1.25rem+14vw),calc((100svh_-_28rem)_/_2.4)),9rem)] md:text-[clamp(3rem,min(calc(1.25rem+14vw),calc((100svh_-_26rem)_/_2.4)),9rem)] md:short:text-[clamp(3rem,min(calc(1.25rem+14vw),calc((100svh_-_24rem)_/_2.4)),9rem)] lg:text-[clamp(3rem,min(13vw,calc((100svh_-_29rem)_/_2.4)),10rem)] lg:short:text-[clamp(3rem,min(13vw,calc((100svh_-_21rem)_/_2.4)),10rem)]"
-      : "text-[clamp(3rem,min(calc(1.25rem+11.5vw),calc((100svh_-_34rem)_/_3)),9rem)] short:text-[clamp(3rem,min(calc(1.25rem+11.5vw),calc((100svh_-_28rem)_/_3)),9rem)] md:text-[clamp(3rem,min(calc(1.25rem+11.5vw),calc((100svh_-_26rem)_/_2.4)),9rem)] md:short:text-[clamp(3rem,min(calc(1.25rem+11.5vw),calc((100svh_-_24rem)_/_2.4)),9rem)] lg:text-[clamp(3rem,min(13.5vw,calc((100svh_-_29rem)_/_2.4)),10rem)] lg:short:text-[clamp(3rem,min(13.5vw,calc((100svh_-_21rem)_/_2.4)),10rem)]";
-
-  const date = format.dateTime(new Date(nextEvent.startsAt), {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-    timeZone: "UTC",
-  });
+  const e = nextEvent;
+  const start = new Date(e.startsAt);
+  const date = format.dateTime(start, { weekday: "short", day: "numeric", month: "short", timeZone: e.timeZone });
+  const time = format.dateTime(start, { hour: "numeric", timeZone: e.timeZone });
+  const price = e.priceFrom === null ? null : format.number(e.priceFrom);
 
   return (
-    <section className="home-reveal relative isolate flex min-h-[max(30rem,calc(100svh-6.25rem))] flex-col overflow-hidden border border-frame-line rounded-card bg-deep-indigo">
-      <Image
-        src="/images/hero-platines.jpg"
-        alt={t("imageAlt")}
-        fill
-        priority
-        sizes="(min-width: 1152px) 1152px, 100vw"
-        className="-z-20 object-cover object-[58%_50%]"
-      />
-      {/* Voile plus dense en haut (header lisible) et en bas (bloc infos) */}
-      <div
-        className="absolute inset-0 -z-10 bg-linear-to-b from-cosmic-black/70 via-cosmic-black/20 to-cosmic-black/70"
-        aria-hidden
-      />
-      {/* Dès 768 px, le titre est à gauche sur la foule éclairée : voile latéral pour le contraste */}
-      <div
-        className="absolute inset-0 -z-10 hidden bg-linear-to-r from-cosmic-black/80 via-cosmic-black/40 to-transparent md:block"
-        aria-hidden
-      />
+    <Band duo="nuit" line={false} className="isolate flex flex-col gap-5 overflow-hidden px-2 pb-4 pt-2 md:px-12 md:pb-12 md:pt-14 lg:h-[770px] lg:flex-row lg:gap-10">
+      {/* Ruban : sous le titre sur mobile, en travers du bas du hero sur grand écran */}
+      <Ribbon className="relative order-3 -mx-8 flex h-12 items-center px-6 lg:absolute lg:left-[-60px] lg:top-[585px] lg:m-0 lg:h-[72px] lg:w-[1560px] lg:origin-top-left lg:px-8" />
 
-      <div className="flex flex-1 flex-col justify-between gap-6 px-4 pb-4 pt-8 short:gap-4 short:pb-4 short:pt-6 sm:px-6 sm:pb-6 md:gap-8 md:px-8 md:pt-12 md:short:pt-8 lg:gap-10 lg:px-12 lg:pb-8 lg:pt-24 lg:short:pt-12">
-        <h1 className={`max-w-5xl font-title ${titleSize} leading-[1.05]`}>
-          <RevealTitle lines={[t("title1"), t("title2")]} accent={t("titleAccent")} />
+      {/* Colonne texte : ses enfants se rangent avec la photo sur mobile (contents) */}
+      <div className="contents lg:relative lg:z-10 lg:flex lg:grow-[1.35] lg:basis-0 lg:flex-col lg:justify-between lg:gap-8">
+        <div data-load-stagger className="order-1 flex items-center gap-4 md:gap-6">
+          {e.logo && (
+            <>
+              <Image src={e.logo} alt={e.venue ?? e.name} width={600} height={200} priority unoptimized className="h-11 w-auto md:h-16" />
+              <div className="h-11 w-px shrink-0 bg-warm-ivory/40 md:h-14" />
+            </>
+          )}
+          <div className="flex flex-col gap-0.5">
+            <p className="font-label text-[30px] uppercase leading-none tracking-[-0.02em] text-solar-copper md:text-[40px]">{date}</p>
+            <p className="font-label text-[11px] uppercase leading-[16px] tracking-[0.12em] md:text-[14px]">
+              {t("place", { city: e.city, country: e.country, time })}
+            </p>
+          </div>
+        </div>
+
+        <h1 data-anim-slant className="order-2 font-title text-[clamp(4.25rem,19vw,7rem)] leading-[86%] tracking-[-0.03em] md:text-[clamp(7rem,13.2vw,190px)]">
+          {th("title1")} <span className="text-solar-copper">{th("title2")}</span>
         </h1>
 
-        <div className="reveal-fade flex w-full flex-col items-start gap-5 rounded-card bg-cosmic-black p-4 short:gap-3 short:p-4 sm:p-5 md:flex-row md:items-center md:justify-between md:gap-6 md:p-6 md:short:gap-4 md:short:p-5 lg:gap-6 lg:p-8 lg:short:p-5 lg:max-xl:gap-4 lg:max-xl:p-6 xl:gap-8">
-          {/* Sous 1024 px : colonne gauche (infos + décompte) et colonne boutons ; dès 1024 px le groupe disparaît (contents) et les trois blocs sont alignés sur une ligne */}
-          <div className="flex w-full flex-col items-start gap-4 md:w-auto md:gap-5 lg:contents">
-            <div className="flex flex-col items-start gap-1 text-left">
-              <p className="font-label text-[clamp(1.5rem,1rem+2.8vw,2.25rem)] uppercase tracking-wide text-solar-copper short:text-[clamp(1.25rem,0.8rem+2.4vw,2rem)] lg:text-4xl lg:max-xl:text-[clamp(2rem,3.4vw,2.25rem)] lg:short:text-3xl">
-                {date}
-              </p>
-              <p className="text-[clamp(0.95rem,0.8rem+0.7vw,1.125rem)] text-warm-ivory short:text-base lg:text-lg">
-                {nextEvent.name} · {nextEvent.city}, {nextEvent.country}
-              </p>
-            </div>
-
-            <Countdown target={nextEvent.startsAt} />
+        <div className="order-5 flex flex-col-reverse gap-4 lg:flex-row lg:items-end lg:justify-between lg:gap-6">
+          <div data-load-stagger className="flex flex-col gap-3 sm:flex-row">
+            <Flip href={ticketsHref} tone="copper" size="h-14 px-8 text-[16px]">
+              {t("cta")}
+            </Flip>
+            <Flip href="/evenements" tone="outlineDark" size="h-14 px-7 text-[16px]">
+              {t("more")}
+            </Flip>
           </div>
-
-          <div className="grid w-full max-w-[26rem] grid-cols-[repeat(auto-fit,minmax(9.5rem,1fr))] gap-3 max-md:short:grid-cols-2 max-md:short:gap-2 md:max-w-none md:w-[clamp(10rem,18vw,11rem)] md:grid-cols-1 md:gap-4 lg:w-44 xl:w-48">
-            <Link
-              href={`/billetterie/${nextEvent.slug}`}
-              className="hover-glow flex min-h-11 items-center justify-center whitespace-nowrap rounded-full bg-solar-copper px-6 py-3 font-label text-base uppercase tracking-wider max-md:short:px-3 max-md:short:text-sm text-cosmic-black short:min-h-10 short:py-2 md:min-h-12 md:text-lg md:short:min-h-11 lg:min-h-11 lg:px-8 lg:py-3.5 lg:text-base lg:short:py-2"
-            >
-              {t("tickets")}
-            </Link>
-            <Link
-              href="/evenements"
-              className="hover-glow flex min-h-11 items-center justify-center whitespace-nowrap rounded-full border border-warm-ivory/40 px-6 py-3 font-label text-base uppercase tracking-wider max-md:short:px-3 max-md:short:text-sm text-warm-ivory short:min-h-10 short:py-2 md:min-h-12 md:text-lg md:short:min-h-11 lg:min-h-11 lg:px-8 lg:py-3.5 lg:text-base lg:short:py-2"
-            >
-              {t("agenda")}
-            </Link>
+          <div data-load-stagger>
+            <Countdown target={e.startsAt} />
           </div>
         </div>
       </div>
-    </section>
+
+      <div data-load-stagger className="relative order-4 lg:z-10 lg:min-w-0 lg:grow lg:basis-0">
+        <div className="relative aspect-[4/3] overflow-hidden rounded-[24px] border border-warm-ivory lg:aspect-auto lg:h-full lg:rounded-[32px]">
+          <Image src="/images/hero-karma.jpg" alt={th("imageAlt")} fill priority unoptimized className="object-cover" />
+        </div>
+        {price && (
+          <div
+            className="absolute -bottom-3 right-2 flex size-[104px] items-center justify-center lg:bottom-[-12px] lg:right-[-8px] lg:size-[140px]"
+            style={{ rotate: "-10deg" }}
+          >
+            <svg viewBox="0 0 160 160" className="absolute inset-0 size-full" aria-hidden>
+              <path
+                d="M80 4l13 26 27-12 1 30 29 8-17 25 17 25-29 8-1 30-27-12-13 26-13-26-27 12-1-30-29-8 17-25-17-25 29-8 1-30 27 12z"
+                fill="var(--color-solar-copper)"
+                stroke="var(--color-cosmic-black)"
+              />
+            </svg>
+            <p className="relative text-center font-label text-[12px] uppercase leading-[110%] text-cosmic-black lg:text-[15px]">
+              {t("from")}
+              <br />
+              {price}
+              <br />
+              {t("currency")}
+            </p>
+          </div>
+        )}
+      </div>
+    </Band>
   );
 }

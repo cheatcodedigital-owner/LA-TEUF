@@ -1,7 +1,8 @@
 export type TierKind = "early_bird" | "standard" | "table";
 
-/** upcoming : pas encore ouvert · on_sale · sold_out : quota atteint · closed : fenêtre terminée */
-export type TierState = "upcoming" | "on_sale" | "sold_out" | "closed";
+/** upcoming : pas encore ouvert · on_sale · sold_out : quota atteint · closed : fenêtre terminée ·
+ *  door : vendu uniquement à la porte le jour de la soirée (affiché, jamais réservable en ligne) */
+export type TierState = "upcoming" | "on_sale" | "sold_out" | "closed" | "door";
 
 export type Tier = {
   id: string;
@@ -49,7 +50,7 @@ export type OrderSummary = {
   subtotalXof: number;
   discountXof: number;
   totalXof: number;
-  /** Remise de groupe appliquée (0, 10 ou 20) */
+  /** Remise de groupe : supprimée (migration 0014), toujours 0 */
   autoDiscountPct: number;
   /** Un code promo a été appliqué (il l'emporte sur la remise de groupe) */
   promoApplied: boolean;

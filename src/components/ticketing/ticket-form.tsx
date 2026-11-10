@@ -1,23 +1,33 @@
 "use client";
 
+import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { useState, useSyncExternalStore, type FormEvent } from "react";
 import { createPortal } from "react-dom";
+import { Flip } from "@/components/ds/flip";
 import { getPathname, Link } from "@/i18n/navigation";
-import { COUNTRIES, groupDiscountPercent, MAX_PER_ORDER, TURNSTILE_TEST_SITE_KEY } from "@/lib/ticketing/config";
+import { COUNTRIES, HOLD_MINUTES, MAX_PER_ORDER, TURNSTILE_TEST_SITE_KEY } from "@/lib/ticketing/config";
 import { formatXof } from "@/lib/ticketing/format";
 import type { CheckoutResponse, ConfirmResponse, OrderSummary, PaymentConfig, PaymentFailure, ReserveResponse, Tier } from "@/lib/ticketing/types";
 import { openKkiapay } from "./kkiapay-widget";
 import { Turnstile } from "./turnstile";
 
-// Champs clairs sur fond Indigo : le formulaire est une carte Deep Indigo, les champs sont en Cosmic Black
+/*
+ * Panneau d'achat v2 (maquettes « Événement KARMA » et « Après « Réserver » ») : fond Ivoire, tarifs en cartes radio
+ * (sélection Cuivre ; le standard, vendu à la porte, reste affiché en pointillés), compteur − / +, champs en pilule,
+ * total, CTA Cuivre. Codes promo : early bird uniquement ; pas de remise de groupe. Après « Réserver » : en-tête Cuivre
+ * avec le compte à rebours, récapitulatif, « Payer ». La logique (réservation, anti-robot, Kkiapay, confirmation
+ * serveur) est inchangée.
+ */
+
+const label = "font-label text-[14px] uppercase leading-[18px] tracking-[0.06em] text-cosmic-black";
+const fieldLabel = "mb-1.5 block px-[22px] font-label text-[12px] uppercase leading-4 tracking-[0.06em] text-deep-indigo";
 const input =
-  "w-full rounded-full bg-cosmic-black px-6 py-3.5 text-warm-ivory outline-none ring-1 ring-warm-ivory/25 transition-shadow placeholder:text-warm-ivory/40 hover:ring-warm-ivory/50 focus:ring-2 focus:ring-ultraviolet aria-[invalid=true]:ring-2 aria-[invalid=true]:ring-solar-copper disabled:cursor-not-allowed disabled:opacity-50";
-const label = "mb-2 block px-2 font-label text-sm uppercase tracking-wider text-warm-ivory/80";
-const primary =
-  "hover-glow inline-flex min-h-11 items-center justify-center rounded-full bg-solar-copper py-3.5 font-label text-base uppercase tracking-wider text-cosmic-black disabled:cursor-not-allowed disabled:opacity-60";
-const secondary =
-  "inline-flex min-h-11 items-center justify-center rounded-full border border-warm-ivory/40 py-3.5 font-label text-base uppercase tracking-wider text-warm-ivory transition-colors hover:border-solar-copper hover:text-solar-copper disabled:cursor-not-allowed disabled:opacity-60";
+  "h-[52px] w-full rounded-full border border-cosmic-black bg-transparent px-[22px] font-body text-[16px] text-deep-indigo outline-none transition-colors placeholder:text-deep-indigo/55 focus:bg-violet-pale focus:ring-1 focus:ring-inset focus:ring-cosmic-black aria-[invalid=true]:border-copper-deep aria-[invalid=true]:ring-1 aria-[invalid=true]:ring-inset aria-[invalid=true]:ring-copper-deep disabled:cursor-not-allowed disabled:border-dashed disabled:bg-transparent";
+const alert = "rounded-[24px] border border-copper-deep bg-copper-pale px-5 py-4 font-body text-[15px] leading-[145%] text-deep-indigo";
+const tierBadge =
+  "rounded-full border border-cosmic-black bg-violet-pale px-2 py-0.5 font-label text-[11px] uppercase leading-[14px] text-cosmic-black";
+const cta = "h-[60px] w-full px-6 text-[18px] [&_.flip-front]:border [&_.flip-front]:border-cosmic-black";
 
 const SITE_KEY =
   process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || (process.env.NODE_ENV !== "production" ? TURNSTILE_TEST_SITE_KEY : undefined);
@@ -32,56 +42,56 @@ const getServerSeconds = () => null;
 type Saved = Record<string, string>;
 type PayStep = "idle" | "verifying" | "checking" | "ready" | "confirming" | "failed" | "paid" | "refund" | "error";
 
+function Alert({ children }: { children: React.ReactNode }) {
+  return (
+    <div role="alert" className={`${alert} flex gap-3`}>
+      <span aria-hidden className="flex size-7 shrink-0 items-center justify-center rounded-full bg-copper-deep font-label text-[16px] text-warm-ivory">
+        !
+      </span>
+      <div>{children}</div>
+    </div>
+  );
+}
+
 // Fenêtre bloquante pendant la vérification du paiement auprès de Kkiapay (portail : un parent transformé casserait `fixed`)
 function ValidatingDialog({ failure, onRetry }: { failure?: PaymentFailure; onRetry?: () => void }) {
   const t = useTranslations("Ticketing");
+  const card = "w-full max-w-[476px] rounded-band px-6 py-10 text-center md:rounded-band-lg md:px-10 md:py-14";
   if (failure) {
     return createPortal(
-      <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-cosmic-black/80 p-4 backdrop-blur-sm">
-        <div
-          role="alertdialog"
-          aria-modal="true"
-          aria-labelledby="failed-title"
-          aria-describedby="failed-text"
-          className="w-full max-w-sm rounded-card bg-deep-indigo p-8 text-center"
-        >
-          <div aria-hidden className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-solar-copper/15 font-label text-3xl text-solar-copper">
-            ✕
-          </div>
-          <h2 id="failed-title" className="mt-6 font-title text-2xl">
+      <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-cosmic-black/80 p-4">
+        <div role="alertdialog" aria-modal="true" aria-labelledby="failed-title" aria-describedby="failed-text" className={`${card} border-2 border-solar-copper bg-warm-ivory text-deep-indigo`}>
+          <span aria-hidden className="mx-auto flex size-12 items-center justify-center rounded-full bg-copper-deep font-label text-[24px] text-warm-ivory">
+            !
+          </span>
+          <h2 id="failed-title" className="mt-6 font-title text-[32px] leading-[100%]">
             {t("failure.title")}
           </h2>
-          <p id="failed-text" className="mt-3 text-warm-ivory/80">
+          <p id="failed-text" className="mt-4 font-body text-[16px] leading-[150%]">
             {t(`failure.${failure}`)}
           </p>
-          <p className="mt-3 text-sm text-warm-ivory/60">{t("failure.hint")}</p>
-          <button type="button" autoFocus onClick={onRetry} className={`${primary} mt-6 w-full`}>
-            {t("failure.retry")}
-          </button>
+          <p className="mt-3 font-body text-[14px] leading-[150%] opacity-80">{t("failure.hint")}</p>
+          <div className="mt-7">
+            <Flip tone="copper" size={cta} className="w-full" onClick={onRetry}>
+              {t("retry")}
+            </Flip>
+          </div>
         </div>
       </div>,
       document.body,
     );
   }
   return createPortal(
-    <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-cosmic-black/80 p-4 backdrop-blur-sm">
-      <div
-        role="alertdialog"
-        aria-modal="true"
-        aria-labelledby="validating-title"
-        aria-describedby="validating-text"
-        className="w-full max-w-sm rounded-card bg-deep-indigo p-8 text-center"
-      >
-        <div
-          aria-hidden
-          className="mx-auto h-14 w-14 animate-spin rounded-full border-4 border-warm-ivory/20 border-t-solar-copper motion-reduce:animate-pulse"
-        />
-        <h2 id="validating-title" className="mt-6 font-title text-2xl">
+    <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-cosmic-black/80 p-4">
+      <div role="alertdialog" aria-modal="true" aria-labelledby="validating-title" aria-describedby="validating-text" className={`${card} bg-violet-pale text-deep-indigo`}>
+        <div aria-hidden className="mx-auto size-20 animate-spin rounded-full border-[6px] border-warm-ivory border-t-violet-deep motion-reduce:animate-pulse" />
+        <h2 id="validating-title" className="mt-7 font-title text-[32px] leading-[100%] md:text-[38px]">
           {t("confirmingTitle")}
         </h2>
-        <p id="validating-text" aria-live="polite" className="mt-3 text-warm-ivory/80">
+        <p id="validating-text" aria-live="polite" className="mt-4 font-body text-[16px] leading-[150%]">
           {t("confirmingText")}
         </p>
+        <Image src="/stickers/fusee.png" alt="" width={200} height={200} unoptimized className="mx-auto mt-6 size-24 -rotate-6" />
       </div>
     </div>,
     document.body,
@@ -194,14 +204,14 @@ function Hold({
   if (step === "paid" || step === "refund") {
     const paid = step === "paid";
     return (
-      <div className="rounded-card bg-deep-indigo p-6 md:p-8">
+      <div className="flex flex-col gap-4 p-6 text-deep-indigo md:p-8">
         {paid && <ValidatingDialog />}
-        <h2 className="font-title text-3xl">{t(paid ? "paidTitle" : "refundTitle")}</h2>
-        <p className="mt-3 text-warm-ivory/80">
+        <h2 className="font-title text-[32px] leading-[100%]">{t(paid ? "paidTitle" : "refundTitle")}</h2>
+        <p className="font-body text-[16px] leading-[150%]">
           {paid ? t("paidText", { count: order.quantity * (order.seats || 1), email }) : t("refundText")}
         </p>
-        <p className="mt-6 text-sm text-warm-ivory/60">
-          {t("reference")} <span className="font-label tracking-wider text-warm-ivory">{order.orderId.slice(0, 8).toUpperCase()}</span>
+        <p className="font-body text-[14px]">
+          {t("reference")} <span className="font-label tracking-[0.06em]">{order.orderId.slice(0, 8).toUpperCase()}</span>
         </p>
       </div>
     );
@@ -209,12 +219,14 @@ function Hold({
 
   if (left === 0) {
     return (
-      <div className="rounded-card bg-deep-indigo p-6 md:p-8">
-        <h2 className="font-title text-3xl">{t("expiredTitle")}</h2>
-        <p className="mt-3 text-warm-ivory/80">{t("expiredText")}</p>
-        <button type="button" onClick={onRestart} className={`${primary} mt-6 w-full sm:w-48`}>
-          {t("restart")}
-        </button>
+      <div className="flex flex-col gap-4 p-6 text-deep-indigo md:p-8">
+        <h2 className="font-title text-[32px] leading-[100%]">{t("expiredTitle")}</h2>
+        <p className="font-body text-[16px] leading-[150%]">{t("expiredText")}</p>
+        <div className="mt-2">
+          <Flip tone="copper" size={cta} className="w-full" onClick={onRestart}>
+            {t("restart")}
+          </Flip>
+        </div>
       </div>
     );
   }
@@ -223,90 +235,103 @@ function Hold({
   const busy = step === "verifying" || step === "checking" || step === "confirming" || modifying;
 
   return (
-    <div className="rounded-card bg-deep-indigo p-6 md:p-8">
-      <h2 className="font-title text-3xl">{t("held")}</h2>
-      <p className="mt-3 text-warm-ivory/80">
-        {t("heldFor")} <span className="font-label text-xl tabular-nums text-solar-copper">{clock}</span>
-      </p>
-      <p className="mt-1 text-sm text-warm-ivory/60">{email}</p>
-
-      <dl className="mt-6 space-y-2 rounded-2xl bg-cosmic-black p-5">
-        <div className="flex justify-between gap-4">
-          <dt className="text-warm-ivory/70">
-            {order.quantity} × {formatXof(order.unitPriceXof, locale)}
-          </dt>
-          <dd>{formatXof(order.subtotalXof, locale)}</dd>
+    <div className="text-deep-indigo">
+      <div className="flex items-center justify-between gap-4 border-b border-cosmic-black bg-solar-copper px-6 py-5 text-cosmic-black md:px-8 md:py-6">
+        <div className="flex flex-col gap-1">
+          <h2 className="font-label text-[16px] uppercase leading-5 tracking-[0.04em]">{t("held")}</h2>
+          <p className="font-body text-[13px] leading-[18px]">{t("heldFor")}</p>
         </div>
-        {order.discountXof > 0 && (
-          <div className="flex justify-between gap-4">
-            <dt className="text-warm-ivory/70">
-              {order.autoDiscountPct > 0 ? t("groupDiscountLine", { pct: order.autoDiscountPct }) : t("discount")}
-            </dt>
-            <dd>− {formatXof(order.discountXof, locale)}</dd>
+        <p role="timer" aria-live="off" className="font-label text-[44px] leading-none tabular-nums md:text-[52px]">
+          {clock}
+        </p>
+      </div>
+
+      <div className="flex flex-col gap-6 p-6 md:p-8">
+        <div className="flex flex-col gap-3">
+          <p className={label}>{t("summary")}</p>
+          <dl className="flex flex-col gap-2 font-body text-[15px] leading-5">
+            <div className="flex justify-between gap-4">
+              <dt>
+                {order.quantity} × {formatXof(order.unitPriceXof, locale)}
+              </dt>
+              <dd className="font-label text-[17px]">{formatXof(order.subtotalXof, locale)}</dd>
+            </div>
+            {order.discountXof > 0 && (
+              <div className="flex justify-between gap-4 text-copper-deep">
+                <dt>{t("discount")}</dt>
+                <dd className="font-label text-[17px]">− {formatXof(order.discountXof, locale)}</dd>
+              </div>
+            )}
+            <div className="flex justify-between gap-4">
+              <dt className="sr-only">{t("email")}</dt>
+              <dd className="break-all">{email}</dd>
+            </div>
+          </dl>
+          <div className="flex items-baseline justify-between gap-4 border-t border-cosmic-black pt-4">
+            <p className="font-label text-[16px] uppercase tracking-[0.06em] text-cosmic-black">{t("total")}</p>
+            <p className="font-label text-[36px] leading-none text-cosmic-black md:text-[44px]">{formatXof(order.totalXof, locale)}</p>
+          </div>
+        </div>
+
+        {step === "verifying" && (
+          <div className="flex flex-col gap-2">
+            <p className={label}>{t("verifyTitle")}</p>
+            <p className="font-body text-[14px] leading-[150%]">{t("verifyText")}</p>
+            {SITE_KEY ? (
+              <Turnstile
+                siteKey={SITE_KEY}
+                locale={locale}
+                onToken={checkout}
+                onError={() => {
+                  setPayError("antibot");
+                  setStep("error");
+                }}
+              />
+            ) : (
+              <Alert>{t("payErrors.unavailable")}</Alert>
+            )}
           </div>
         )}
-        <div className="flex justify-between gap-4 border-t border-warm-ivory/15 pt-3">
-          <dt className="font-label text-sm uppercase tracking-wider">{t("total")}</dt>
-          <dd className="font-label text-2xl text-solar-copper">{formatXof(order.totalXof, locale)}</dd>
-        </div>
-      </dl>
+        {step === "checking" && <p className="font-body text-[15px]">{t("checking")}</p>}
+        {step === "confirming" && <ValidatingDialog />}
+        {step === "failed" && failure && (
+          <ValidatingDialog
+            failure={failure}
+            onRetry={() => {
+              setFailure(null);
+              setStep("idle");
+            }}
+          />
+        )}
+        {step === "ready" && <p className="rounded-[24px] bg-violet-pale px-5 py-4 font-body text-[15px] leading-[145%]">{t("payWaiting")}</p>}
+        {step === "error" && payError && <Alert>{t(`payErrors.${payError}`)}</Alert>}
 
-      {step === "verifying" && (
-        <div className="mt-6">
-          <p className="font-label text-sm uppercase tracking-wider text-warm-ivory/80">{t("verifyTitle")}</p>
-          <p className="mb-3 mt-1 text-sm text-warm-ivory/70">{t("verifyText")}</p>
-          {SITE_KEY ? (
-            <Turnstile
-              siteKey={SITE_KEY}
-              locale={locale}
-              onToken={checkout}
-              onError={() => {
-                setPayError("antibot");
-                setStep("error");
-              }}
-            />
-          ) : (
-            <p className="text-solar-copper">{t("payErrors.unavailable")}</p>
-          )}
+        <div className="flex flex-col gap-4">
+          <Flip
+            tone="copper"
+            size={cta}
+            className="w-full"
+            disabled={busy}
+            onClick={() => {
+              setPayError(null);
+              if (payment) void pay(payment);
+              else setStep("verifying");
+            }}
+          >
+            {t("pay", { amount: formatXof(order.totalXof, locale) })}
+          </Flip>
+          <p className="font-body text-[13px] leading-[19px]">{t("payHint")}</p>
+          <button
+            type="button"
+            disabled={step === "checking" || step === "confirming" || modifying}
+            onClick={modify}
+            className="self-center font-label text-[15px] uppercase tracking-[0.04em] text-copper-deep underline underline-offset-4 disabled:opacity-50"
+          >
+            {modifying ? t("modifying") : t("modify")}
+          </button>
+          <p className="text-center font-body text-[13px] leading-[19px]">{t("modifyHint")}</p>
         </div>
-      )}
-      {step === "checking" && <p className="mt-6 text-warm-ivory/80">{t("checking")}</p>}
-      {step === "confirming" && <ValidatingDialog />}
-      {step === "failed" && failure && (
-        <ValidatingDialog
-          failure={failure}
-          onRetry={() => {
-            setFailure(null);
-            setStep("idle");
-          }}
-        />
-      )}
-      {step === "ready" && <p className="mt-6 rounded-2xl bg-cosmic-black px-4 py-3 text-warm-ivory/90">{t("payWaiting")}</p>}
-      {step === "error" && payError && (
-        <p role="alert" className="mt-6 rounded-2xl bg-solar-copper/15 px-4 py-3 text-solar-copper">
-          {t(`payErrors.${payError}`)}
-        </p>
-      )}
-
-      <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-        <button
-          type="button"
-          disabled={busy}
-          onClick={() => {
-            setPayError(null);
-            if (payment) void pay(payment);
-            else setStep("verifying");
-          }}
-          className={`${primary} w-full sm:w-72`}
-        >
-          {t("pay", { amount: formatXof(order.totalXof, locale) })}
-        </button>
-        <button type="button" disabled={step === "checking" || step === "confirming" || modifying} onClick={modify} className={`${secondary} w-full sm:w-64`}>
-          {modifying ? t("modifying") : t("modify")}
-        </button>
       </div>
-      <p className="mt-4 max-w-md text-sm text-warm-ivory/60">{t("modifyHint")}</p>
-      <p className="mt-1 max-w-md text-sm text-warm-ivory/60">{t("payHint")}</p>
     </div>
   );
 }
@@ -320,11 +345,13 @@ export function TicketForm({ slug, tiers, sample, initialPromo }: { slug: string
   const [pending, setPending] = useState(false);
   const [restarted, setRestarted] = useState(0);
   const [saved, setSaved] = useState<Saved>(initialPromo ? { promo: initialPromo } : {});
-  const [tierId, setTierId] = useState(tiers.find((x) => x.onSale)?.id ?? "");
+  // Le standard est vendu uniquement à la porte : jamais sélectionnable en ligne, quel que soit l'état renvoyé par la base
+  const online = (x: Tier) => x.onSale && x.kind !== "standard" && x.state !== "door";
+  const [tierId, setTierId] = useState(tiers.find(online)?.id ?? "");
   const [quantity, setQuantity] = useState(1);
 
-  const tier = tiers.find((x) => x.id === tierId && x.onSale);
-  const anyOnSale = tiers.some((x) => x.onSale);
+  const tier = tiers.find((x) => x.id === tierId && online(x));
+  const anyOnSale = tiers.some(online);
   const max = Math.max(1, Math.min(MAX_PER_ORDER, tier?.remaining ?? 1));
   const qty = Math.min(quantity, max);
   const error = response?.status === "error" ? response : null;
@@ -333,10 +360,9 @@ export function TicketForm({ slug, tiers, sample, initialPromo }: { slug: string
   const dateFmt = new Intl.DateTimeFormat(locale, { day: "numeric", month: "long", timeZone: "UTC" });
 
   const subtotal = (tier?.priceXof ?? 0) * qty;
-  const pct = tier ? groupDiscountPercent(tier.kind, qty) : 0;
-  const discount = Math.floor((subtotal * pct) / 100);
   const tableSelected = tier?.kind === "table";
-  const noPromo = tier?.kind === "early_bird" || tableSelected;
+  // Codes promo : early bird uniquement
+  const noPromo = tier?.kind !== "early_bird";
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -387,85 +413,131 @@ export function TicketForm({ slug, tiers, sample, initialPromo }: { slug: string
   }
 
   return (
-    <form key={restarted} onSubmit={onSubmit} className="rounded-card bg-deep-indigo p-6 md:p-8" noValidate>
-      {sample && <p className="mb-6 rounded-2xl bg-solar-copper/15 px-4 py-3 text-sm text-solar-copper">{t("sampleNotice")}</p>}
+    <form key={restarted} onSubmit={onSubmit} className="flex flex-col gap-6 p-6 text-deep-indigo md:p-8" noValidate>
+      <h2 className="font-title text-[36px] leading-[96%] md:text-[44px]">{t("panelTitle")}</h2>
+      {sample && <p className="rounded-[24px] bg-copper-pale px-5 py-3 font-body text-[14px] leading-[145%]">{t("sampleNotice")}</p>}
 
       <input type="hidden" name="slug" value={slug} />
       <input type="hidden" name="ticketTypeId" value={tier?.id ?? ""} />
       <input type="hidden" name="quantity" value={qty} />
 
-      <fieldset>
-        <legend className={label}>{t("tier")}</legend>
-        <div className="grid gap-3 sm:grid-cols-2">
-          {tiers.map((x) => {
-            const isTable = x.kind === "table";
-            const selected = x.id === tier?.id;
-            const note =
-              x.state === "upcoming" && x.salesStart && x.kind !== "standard"
+      <fieldset className="flex flex-col gap-2">
+        <legend className={`${label} mb-2`}>{t("tier")}</legend>
+        {tiers.map((x) => {
+          const isTable = x.kind === "table";
+          const atDoor = x.kind === "standard" || x.state === "door";
+          const available = online(x);
+          const selected = x.id === tier?.id;
+          const note = atDoor
+            ? null
+            : x.state === "upcoming" && x.salesStart
                 ? t("availableFrom", { date: dateFmt.format(new Date(x.salesStart)) })
-                : x.state === "upcoming" && x.kind === "standard"
-                  ? t("afterEarly")
-                  : x.state === "sold_out"
+                : x.state === "sold_out"
                   ? t("soldOutTier")
                   : x.state === "closed"
                     ? t("closedTier")
                     : t(isTable ? "tableRemaining" : "tierRemaining", { count: x.remaining });
+          const badge = atDoor
+            ? t("doorBadge")
+              : x.state === "upcoming"
+                ? t("soonBadge")
+                : x.state === "sold_out"
+                  ? t("soldOutTier")
+                  : x.state === "closed"
+                    ? t("closedTier")
+                    : null;
+          // Standard (à la porte) : pastille sur la ligne du nom, puis « Consommation incluse » et le prix grisé
+          if (atDoor) {
             return (
-              <label
-                key={x.id}
-                aria-disabled={!x.onSale}
-                className={`flex items-center justify-between gap-4 rounded-2xl px-5 py-4 ring-1 transition-[box-shadow,background-color,color] ${isTable ? "sm:col-span-2 " : ""}${
-                  x.onSale
-                    ? selected
-                      ? "cursor-pointer bg-cosmic-black ring-2 ring-solar-copper"
-                      : "cursor-pointer bg-cosmic-black ring-warm-ivory/25 hover:ring-ultraviolet"
-                    : "cursor-not-allowed bg-cosmic-black/40 opacity-50 ring-transparent grayscale"
-                }`}
-              >
-                <span>
-                  <input
-                    type="radio"
-                    name="tierChoice"
-                    value={x.id}
-                    checked={selected}
-                    disabled={!x.onSale}
-                    onChange={() => setTierId(x.id)}
-                    className="sr-only"
-                  />
-                  <span className="block font-title text-xl">{t(`tierKinds.${x.kind}`)}</span>
-                  {isTable && <span className="block text-sm text-warm-ivory/70">{t("tableSeats", { seats: x.seats })}</span>}
-                  <span className="block text-sm text-warm-ivory/70">{note}</span>
-                  {isTable && x.onSale && x.nextPriceXof && x.nextPriceAt && (
-                    <span className="block text-sm text-solar-copper">
-                      {t("priceRises", { price: formatXof(x.nextPriceXof, locale), date: dateFmt.format(new Date(x.nextPriceAt)) })}
-                    </span>
-                  )}
+              <label key={x.id} aria-disabled className="flex cursor-not-allowed flex-col gap-1.5 rounded-[24px] border border-dashed border-cosmic-black px-[18px] py-4">
+                <input type="radio" name="tierChoice" value={x.id} checked={false} disabled readOnly className="sr-only" />
+                <span className="flex flex-wrap items-center gap-2">
+                  <span className="font-label text-[15px] uppercase leading-[18px] tracking-[0.04em]">{t(`tierKinds.${x.kind}`)}</span>
+                  <span className={`${tierBadge} whitespace-nowrap`}>{badge}</span>
                 </span>
-                <span className="font-label text-2xl text-solar-copper">{formatXof(x.priceXof, locale)}</span>
+                {/* pr-10 : le prix s'aligne sur ceux des autres tarifs (pastille radio de 24 px + écart) */}
+                <span className="flex items-baseline justify-between gap-4 pr-10">
+                  <span className="font-body text-[13px] leading-[18px]">{t("drinkIncluded")}</span>
+                  <span className="shrink-0 font-label text-[22px] leading-[30px] text-deep-indigo/55 md:text-[26px]">{formatXof(x.priceXof, locale)}</span>
+                </span>
               </label>
             );
-          })}
-        </div>
-        {noPromo && <p className="mt-3 px-2 text-sm text-warm-ivory/70">{t(tableSelected ? "tableNoPromo" : "earlyNoPromo")}</p>}
+          }
+          return (
+            <label
+              key={x.id}
+              aria-disabled={!available}
+              className={`flex items-center gap-4 rounded-[24px] px-[18px] py-4 transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-3 has-[:focus-visible]:outline-solar-copper ${
+                available
+                  ? selected
+                    ? "cursor-pointer border border-cosmic-black bg-solar-copper text-cosmic-black"
+                    : "cursor-pointer border border-cosmic-black hover:bg-copper-pale"
+                  : "cursor-not-allowed border border-dashed border-cosmic-black"
+              }`}
+            >
+              <input
+                type="radio"
+                name="tierChoice"
+                value={x.id}
+                checked={selected}
+                disabled={!available}
+                onChange={() => setTierId(x.id)}
+                className="sr-only"
+              />
+              <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+                <span className="flex flex-wrap items-center gap-2">
+                  <span className="font-label text-[15px] uppercase leading-[18px] tracking-[0.04em]">
+                    {t(`tierKinds.${x.kind}`)}
+                    {isTable ? ` · ${t("tableSeats", { seats: x.seats })}` : ""}
+                  </span>
+                  {badge && (
+                    <span className={tierBadge}>{badge}</span>
+                  )}
+                </span>
+                {!isTable && <span className="font-body text-[13px] leading-[18px]">{t("drinkIncluded")}</span>}
+                {note && <span className="font-body text-[13px] leading-[18px]">{note}</span>}
+                {isTable && available && x.nextPriceXof && x.nextPriceAt && (
+                  <span className="font-body text-[13px] leading-[18px]">
+                    {t("priceRises", { price: formatXof(x.nextPriceXof, locale), date: dateFmt.format(new Date(x.nextPriceAt)) })}
+                  </span>
+                )}
+              </span>
+              <span className={`shrink-0 font-label text-[22px] leading-[30px] md:text-[26px] ${available ? "" : "text-deep-indigo/55"}`}>
+                {formatXof(x.priceXof, locale)}
+              </span>
+              <span
+                aria-hidden
+                className={`flex size-6 shrink-0 items-center justify-center rounded-full ${
+                  !available ? "" : selected ? "bg-cosmic-black" : "border border-cosmic-black"
+                }`}
+              >
+                {selected && <span className="size-[9px] rounded-full bg-warm-ivory" />}
+              </span>
+            </label>
+          );
+        })}
+        {tableSelected && <p className="px-[18px] font-body text-[13px] leading-[18px] text-copper-deep">{t("tableNoPromo")}</p>}
       </fieldset>
 
       {!anyOnSale ? (
-        <p className="mt-8 rounded-2xl bg-cosmic-black px-5 py-4 text-warm-ivory/80">{t("noneOnSale")}</p>
+        <p className="rounded-[24px] bg-violet-pale px-5 py-4 font-body text-[15px] leading-[145%]">{t("noneOnSale")}</p>
       ) : (
         <>
-          <div className="mt-8">
-            <span className={label}>{t(tableSelected ? "quantityTables" : "quantity")}</span>
-            <div className="inline-flex items-center gap-4 rounded-full bg-cosmic-black p-1.5 ring-1 ring-warm-ivory/25">
+          <div className="flex flex-col gap-2">
+            <span className={label}>{tableSelected ? t("quantityTables") : t("quantityMax", { max: MAX_PER_ORDER })}</span>
+            <div className="flex h-14 items-center justify-between rounded-full border border-cosmic-black px-1.5">
               <button
                 type="button"
                 aria-label={t("decrease")}
                 onClick={() => setQuantity((q) => Math.max(1, Math.min(q, max) - 1))}
                 disabled={qty <= 1}
-                className="grid size-11 place-items-center rounded-full bg-deep-indigo text-2xl disabled:opacity-40"
+                className="flex size-11 items-center justify-center rounded-full border border-cosmic-black text-cosmic-black disabled:opacity-35"
               >
-                −
+                <svg viewBox="0 0 18 18" className="size-4" aria-hidden>
+                  <path d="M3 9h12" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+                </svg>
               </button>
-              <span className="w-8 text-center font-label text-2xl tabular-nums" aria-live="polite">
+              <span className="font-label text-[26px] leading-[30px] tabular-nums text-cosmic-black" aria-live="polite">
                 {qty}
               </span>
               <button
@@ -473,26 +545,28 @@ export function TicketForm({ slug, tiers, sample, initialPromo }: { slug: string
                 aria-label={t("increase")}
                 onClick={() => setQuantity((q) => Math.min(max, Math.min(q, max) + 1))}
                 disabled={qty >= max}
-                className="grid size-11 place-items-center rounded-full bg-deep-indigo text-2xl disabled:opacity-40"
+                className="flex size-11 items-center justify-center rounded-full bg-cosmic-black text-warm-ivory disabled:opacity-35"
               >
-                +
+                <svg viewBox="0 0 18 18" className="size-4" aria-hidden>
+                  <path d="M9 3v12M3 9h12" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+                </svg>
               </button>
             </div>
-            <p className="mt-3 max-w-lg px-2 text-sm text-warm-ivory/70">{t(tableSelected ? "tableHint" : "groupHint", { seats: tier?.seats ?? 1 })}</p>
+            {tableSelected && <p className="px-[22px] font-body text-[13px] leading-[18px]">{t("tableHint", { seats: tier?.seats ?? 1 })}</p>}
           </div>
 
-          <h2 className="mt-10 font-title text-2xl">{t("you")}</h2>
-          <div className="mt-5 grid gap-5 md:grid-cols-2">
+          <div className="flex flex-col gap-3.5">
+            <p className={label}>{t("you")}</p>
             <div>
-              <label htmlFor="name" className={label}>{t("name")}</label>
+              <label htmlFor="name" className={fieldLabel}>{t("name")}</label>
               <input id="name" name="name" autoComplete="name" defaultValue={saved.name} className={input} aria-invalid={errors?.name} required />
             </div>
             <div>
-              <label htmlFor="email" className={label}>{t("email")}</label>
+              <label htmlFor="email" className={fieldLabel}>{t("email")}</label>
               <input id="email" name="email" type="email" autoComplete="email" defaultValue={saved.email} className={input} aria-invalid={errors?.email} required />
             </div>
             <div>
-              <label htmlFor="whatsapp" className={label}>{t("whatsapp")}</label>
+              <label htmlFor="whatsapp" className={fieldLabel}>{t("whatsapp")}</label>
               <input
                 id="whatsapp"
                 name="whatsapp"
@@ -505,39 +579,50 @@ export function TicketForm({ slug, tiers, sample, initialPromo }: { slug: string
                 aria-describedby="whatsapp-hint"
                 required
               />
-              <p id="whatsapp-hint" className="mt-2 px-2 text-xs text-warm-ivory/60">{t("whatsappHint")}</p>
+              <p id="whatsapp-hint" className="mt-1.5 px-[22px] font-body text-[13px] leading-[18px]">{t("whatsappHint")}</p>
             </div>
-            <div>
-              <label htmlFor="country" className={label}>{t("country")}</label>
-              <select id="country" name="country" defaultValue={saved.country ?? "TG"} className={`${input} appearance-none`} aria-invalid={errors?.country}>
+            <div className="relative">
+              <label htmlFor="country" className={fieldLabel}>{t("country")}</label>
+              <select id="country" name="country" defaultValue={saved.country ?? "TG"} className={`${input} appearance-none pr-12`} aria-invalid={errors?.country}>
                 {COUNTRIES.map((c) => (
                   <option key={c} value={c}>
                     {c === "OTHER" ? t("countryOther") : countryNames.of(c)}
                   </option>
                 ))}
               </select>
+              <svg viewBox="0 0 14 14" className="pointer-events-none absolute bottom-[19px] right-[22px] size-3.5" aria-hidden>
+                <path d="M3 5l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
             </div>
-            <div className="md:col-span-2">
-              <label htmlFor="promo" className={label}>{t("promo")}</label>
+            <div>
+              <label htmlFor="promo" className={fieldLabel}>{t("promo")}</label>
               <input
                 id="promo"
                 name="promo"
                 autoCapitalize="characters"
                 defaultValue={saved.promo}
                 disabled={noPromo}
-                placeholder={noPromo ? t("promoEarly") : undefined}
-                className={`${input} uppercase md:max-w-xs`}
+                placeholder={noPromo ? t("promoEarly") : t("promoPlaceholder")}
+                className={`${input} uppercase placeholder:normal-case`}
                 aria-invalid={errors?.promo}
               />
             </div>
           </div>
 
-          <label className="mt-8 flex items-start gap-3">
-            <input type="checkbox" name="terms" defaultChecked={saved.terms === "on"} className="mt-1 size-5 accent-solar-copper" aria-invalid={errors?.terms} />
-            <span className={errors?.terms ? "text-solar-copper" : "text-warm-ivory/80"}>
+          <label className="flex cursor-pointer items-start gap-3">
+            <input type="checkbox" name="terms" defaultChecked={saved.terms === "on"} className="peer sr-only" aria-invalid={errors?.terms} />
+            <span
+              aria-hidden
+              className="mt-px flex size-6 shrink-0 items-center justify-center rounded-full border border-cosmic-black text-transparent peer-checked:bg-cosmic-black peer-checked:text-warm-ivory peer-focus-visible:outline-2 peer-focus-visible:outline-offset-3 peer-focus-visible:outline-solar-copper"
+            >
+              <svg viewBox="0 0 12 12" className="size-3">
+                <path d="M2.5 6.2l2.3 2.3 4.7-5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </span>
+            <span className={`font-body text-[15px] leading-[20px] ${errors?.terms ? "text-copper-deep" : ""}`}>
               {t.rich("terms", {
                 link: (chunks) => (
-                  <Link href="/cgv" target="_blank" className="underline underline-offset-4 hover:text-solar-copper">
+                  <Link href="/cgv" target="_blank" className="underline underline-offset-4">
                     {chunks}
                   </Link>
                 ),
@@ -545,34 +630,26 @@ export function TicketForm({ slug, tiers, sample, initialPromo }: { slug: string
             </span>
           </label>
 
-          {error && (
-            <p role="alert" className="mt-6 rounded-2xl bg-solar-copper/15 px-4 py-3 text-solar-copper">
-              {error.code ? t(`errors.${error.code}`, { count: error.remaining ?? 0 }) : t("errors.form")}
-            </p>
-          )}
+          {error && <Alert>{error.code ? t(`errors.${error.code}`, { count: error.remaining ?? 0 }) : t("errors.form")}</Alert>}
 
-          <div className="mt-8 flex flex-col gap-4 border-t border-warm-ivory/15 pt-6 md:flex-row md:items-end md:justify-between">
-            <dl className="space-y-1">
-              {discount > 0 && (
-                <>
-                  <div className="flex gap-3 text-warm-ivory/70">
-                    <dt>{t("subtotal")}</dt>
-                    <dd>{formatXof(subtotal, locale)}</dd>
-                  </div>
-                  <div className="flex gap-3 text-solar-copper">
-                    <dt>{t("groupDiscountLine", { pct })}</dt>
-                    <dd>− {formatXof(discount, locale)}</dd>
-                  </div>
-                </>
-              )}
-              <div className="flex items-baseline gap-3">
-                <dt className="font-label text-sm uppercase tracking-wider text-warm-ivory/80">{t("total")}</dt>
-                <dd className="font-label text-3xl text-solar-copper">{formatXof(subtotal - discount, locale)}</dd>
+          <dl className="flex flex-col gap-2.5 border-t border-cosmic-black pt-[18px]">
+            {tier && (
+              <div className="flex justify-between gap-4 font-body text-[15px] leading-5">
+                <dt>{t("summaryLine", { count: qty, tier: t(`tierKinds.${tier.kind}`) })}</dt>
+                <dd className="font-label text-[17px]">{formatXof(subtotal, locale)}</dd>
               </div>
-            </dl>
-            <button type="submit" disabled={pending || !tier} className={`${primary} w-full md:w-64`}>
+            )}
+            <div className="flex items-baseline justify-between gap-4">
+              <dt className="font-label text-[16px] uppercase tracking-[0.06em] text-cosmic-black">{t("total")}</dt>
+              <dd className="font-label text-[36px] leading-[44px] text-cosmic-black md:text-[40px]">{formatXof(subtotal, locale)}</dd>
+            </div>
+          </dl>
+
+          <div className="flex flex-col gap-4">
+            <Flip type="submit" tone="copper" size={cta} className="w-full" disabled={pending || !tier}>
               {pending ? t("submitting") : t("submit")}
-            </button>
+            </Flip>
+            <p className="text-center font-body text-[13px] leading-[19px]">{t("panelHint", { minutes: HOLD_MINUTES })}</p>
           </div>
         </>
       )}

@@ -43,8 +43,8 @@ async function Content() {
       <AdminNav role={role} active="codes" />
       <h1 className="mt-6 font-title text-4xl">Codes promo</h1>
       <p className="mt-2 max-w-2xl text-warm-ivory/70">
-        Chaque code a un nombre d&apos;utilisations limité (une utilisation = une commande payée). Il ne s&apos;applique qu&apos;au tarif standard, jamais à l&apos;early bird, et ne se cumule pas avec la
-        remise de groupe : la remise la plus avantageuse est retenue.
+        Chaque code a un nombre d&apos;utilisations limité (une utilisation = une commande payée). Il s&apos;applique uniquement aux
+        billets early bird vendus en ligne (le standard est vendu à la porte, les tables ont leur propre prix).
       </p>
 
       <section className="mt-6 rounded-card bg-deep-indigo p-6">

@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import Lenis from "lenis";
 import { useEffect } from "react";
+import { introStore } from "@/components/intro/intro-state";
 
 /*
  * Mouvements repris de slush.app (leur script public, mêmes valeurs), DESIGN.md §9 :
@@ -51,7 +52,15 @@ export function SmoothScroll() {
     const raf = (time: number) => lenis.raf(time * 1000);
     gsap.ticker.add(raf);
     gsap.ticker.lagSmoothing(0);
+    // Pendant l'intro du portail, la page ne défile pas (l'intro bloque déjà le défilement natif)
+    const syncIntro = () => {
+      if (!introStore.get().played && document.getElementById("portal-intro")) lenis.stop();
+      else lenis.start();
+    };
+    syncIntro();
+    const unsubscribe = introStore.subscribe(syncIntro);
     return () => {
+      unsubscribe();
       gsap.ticker.remove(raf);
       lenis.destroy();
       delete (window as LenisWindow).__lenis;
@@ -59,6 +68,28 @@ export function SmoothScroll() {
   }, []);
 
   return null;
+}
+
+/** Pendant l'intro du portail (accueil), le titre du hero attend que le tunnel s'ouvre (3,2 s),
+ *  ou se joue dès « Passer » / la fin de l'intro. Sans intro, il se joue tout de suite. */
+const INTRO_REVEAL_MS = 3200;
+function playAfterIntro(tl: gsap.core.Timeline) {
+  if (introStore.get().played || !document.getElementById("portal-intro")) {
+    tl.play();
+    return () => {};
+  }
+  const play = () => {
+    if (!tl.isActive() && tl.progress() === 0) tl.play();
+  };
+  const timer = window.setTimeout(play, INTRO_REVEAL_MS);
+  const unsubscribe = introStore.subscribe(() => {
+    const { played, delay } = introStore.get();
+    if (played || delay) play();
+  });
+  return () => {
+    window.clearTimeout(timer);
+    unsubscribe();
+  };
 }
 
 /** Apparitions au défilement : à placer en dernier dans chaque page v2 */
@@ -75,6 +106,7 @@ export function Reveals() {
     // SplitText découpe en lignes : on attend les polices pour couper au bon endroit
     let ctx: gsap.Context | undefined;
     let cancelled = false;
+    let stopIntroWait = () => {};
     document.fonts.ready.then(() => {
       if (cancelled) return;
       ctx = gsap.context(() => {
@@ -90,8 +122,8 @@ export function Reveals() {
           chars = slantSplit.chars;
           gsap.set(chars, { x: "-0.25em", autoAlpha: 0 });
         }
-        gsap
-          .timeline({ delay: 0.1, defaults: { ease: "slush-bounce" } })
+        const heroTl = gsap
+          .timeline({ paused: true, delay: 0.1, defaults: { ease: "slush-bounce" } })
           .to(
             chars,
             {
@@ -104,6 +136,7 @@ export function Reveals() {
             0,
           )
           .to(stagger, { y: "0em", autoAlpha: 1, duration: 1, stagger: 0.1, clearProps: clear }, 0.5);
+        stopIntroWait = playAfterIntro(heroTl);
 
         // Titres de section : lignes en 3D
         gsap.utils.toArray<HTMLElement>("[data-heading-reveal]").forEach((el) => {
@@ -164,6 +197,7 @@ export function Reveals() {
 
     return () => {
       cancelled = true;
+      stopIntroWait();
       ctx?.revert();
       splits.forEach((s) => s.revert());
     };

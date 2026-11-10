@@ -1,6 +1,6 @@
 import "server-only";
 import { events as sampleEvents } from "@/data/events";
-import { groupDiscountPercent, HOLD_MINUTES, MAX_PER_ORDER, TABLE_SEATS } from "./config";
+import { HOLD_MINUTES, MAX_PER_ORDER, TABLE_SEATS } from "./config";
 import { getKkiapayConfig, verifyTransaction } from "./kkiapay";
 import { getAdminClient, isSupabaseConfigured } from "./supabase";
 import { sendTicketsEmail } from "./ticket-email";
@@ -32,9 +32,8 @@ function sampleSales(slug: string): EventSales | null {
   const e = sampleEvents.find((x) => x.slug === slug);
   if (!e) return null;
 
-  // Mêmes règles que le seed : ventes dès le 9 novembre (J-11) ; early bird jusqu'à épuisement ; standard sans date
-  // (ouvert seulement quand l'early bird est épuisé, jamais en démo : rien n'y est vendu) ; early bird et standard
-  // fermés le jour J (minuit UTC) ; tables jusqu'à l'événement (100 000 dès le 18 novembre, J-2).
+  // Mêmes règles que le seed : ventes dès le 9 novembre (J-11) ; early bird jusqu'à épuisement ou la veille à midi ;
+  // standard à la porte uniquement (jamais en ligne) ; tables jusqu'à l'événement (100 000 dès le 18 novembre, J-2).
   const start = new Date(e.startsAt);
   const dayJ = Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate());
   const now = sampleNow();
@@ -70,13 +69,14 @@ function sampleSales(slug: string): EventSales | null {
     soldOut: false,
     tiers: [
       // ⚠️ Prix d'exemple, visibles uniquement en développement sans Supabase (early bird 5000 ×70, standard 8000 ×30, 4 tables à 80000)
-      make("00000000-0000-4000-8000-000000000001", "early_bird", 5000, 70, dayJ - 11 * DAY, dayJ),
+      make("00000000-0000-4000-8000-000000000001", "early_bird", 5000, 70, dayJ - 11 * DAY, dayJ - DAY / 2),
       {
         ...make("00000000-0000-4000-8000-000000000002", "standard", 8000, 30, dayJ, dayJ),
-        state: now >= dayJ ? "closed" : "upcoming",
+        state: "door",
         remaining: 0,
         onSale: false,
         salesStart: null,
+        salesEnd: null,
       },
       make(
         "00000000-0000-4000-8000-000000000003",
@@ -116,10 +116,9 @@ export async function reserve(input: ReservationInput, affiliateRef?: string | n
     const sales = sampleSales(input.slug);
     const tier = sales?.tiers.find((t) => t.id === input.ticketTypeId && t.onSale);
     if (!sales || !tier) return { ok: false, code: "type_unavailable" };
-    if (input.promo) return { ok: false, code: tier.kind === "early_bird" || tier.kind === "table" ? "promo_not_allowed" : "invalid_promo" };
+    // Démo : aucun code promo n'existe ; ils ne s'appliquent de toute façon qu'à l'early bird
+    if (input.promo) return { ok: false, code: tier.kind === "early_bird" ? "invalid_promo" : "promo_not_allowed" };
     const subtotal = tier.priceXof * input.quantity;
-    const pct = groupDiscountPercent(tier.kind, input.quantity);
-    const discount = Math.floor((subtotal * pct) / 100);
     return {
       ok: true,
       sample: true,
@@ -129,9 +128,9 @@ export async function reserve(input: ReservationInput, affiliateRef?: string | n
         quantity: input.quantity,
         unitPriceXof: tier.priceXof,
         subtotalXof: subtotal,
-        discountXof: discount,
-        totalXof: subtotal - discount,
-        autoDiscountPct: pct,
+        discountXof: 0,
+        totalXof: subtotal,
+        autoDiscountPct: 0,
         promoApplied: false,
         seats: tier.seats,
       },

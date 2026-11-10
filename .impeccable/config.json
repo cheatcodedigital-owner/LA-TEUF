@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "border-accent-on-rounded",
+        "value": "*",
+        "files": [
+          "src/components/ticketing/purchase-shell.tsx"
+        ],
+        "createdAt": "2026-11-10T04:08:22.184Z",
+        "reason": "Maquette Paper « Événement KARMA » : le panneau d'achat est spécifié rounded-band + border-2 border-solar-copper (nœud Panneau d'achat — collant)"
+      }
+    ]
+  }
+}

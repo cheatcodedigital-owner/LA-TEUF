@@ -1,8 +1,6 @@
 @import "tailwindcss";
 
-/* Design tokens LA TEUF — voir DESIGN.md */
-/* Écrans bas (portable 13", paysage mobile, petits téléphones) : le hero se compacte pour tenir */
-@custom-variant short (@media (max-height: 760px));
+/* Design tokens LA TEUF (charte v2) — voir DESIGN.md */
 
 @theme {
   --color-cosmic-black: #090a10;
@@ -20,21 +18,20 @@
   --radius-band-lg: 40px;
   --animate-marquee: marquee 40s linear infinite;
   --animate-marquee-slow: marquee 60s linear infinite;
-  /* Filet fin des encadrés de section : les détache du ciel étoilé sans faire néon */
-  --color-frame-line: rgb(243 233 213 / 0.1);
 
   --font-display: var(--font-tropic), serif;
   --font-title: var(--font-dizzy), sans-serif;
   --font-label: var(--font-anton), sans-serif;
   --font-body: var(--font-pain), sans-serif;
 
-  --radius-card: 28px;
+  /* Cartes (Paper : radius-card) */
+  --radius-card: 24px;
 
+  /* Seule lueur autorisée : visuel d'une carte date au survol (DESIGN.md §5) */
   --shadow-glow: 0 0 0 1px rgb(118 85 255 / 0.6), 0 0 32px rgb(118 85 255 / 0.55);
 
-  /* Une seule courbe pour l'interface ; le léger rebond est réservé aux titres révélés */
+  /* Fondu de l'intro du portail */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-wave: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 @layer base {
@@ -51,130 +48,20 @@
   }
 }
 
-@layer components {
-  .section-light {
-    background: var(--color-warm-ivory);
-    color: var(--color-deep-indigo);
-  }
-  .accent-word {
-    color: var(--color-solar-copper);
-  }
-  .section-light .accent-word {
-    color: var(--color-copper-deep);
-  }
-  /* Survol : filet et lueur Ultraviolet discrets (DESIGN.md §4), pression légère.
-     Pas d'animation en boucle, pas de zoom : seules l'ombre et la transformation changent. */
-  .hover-glow {
-    position: relative;
-    isolation: isolate;
-    transition:
-      box-shadow 160ms var(--ease-out),
-      transform 160ms var(--ease-out);
-  }
-  .hover-glow:not(:disabled):hover {
-    box-shadow:
-      0 0 0 1px rgb(150 124 255 / 0.7),
-      0 0 24px rgb(118 85 255 / 0.3);
-  }
-  .hover-glow:not(:disabled):active {
-    transform: scale(0.98);
-  }
-}
-
-/* Barre de navigation : Cosmic Black presque opaque et filet clair, sans effet verre */
-.liquid-glass {
-  background: rgb(9 10 16 / 0.92);
-  border: 1px solid rgb(243 233 213 / 0.1);
-}
-.liquid-glass-solid {
-  background: var(--color-cosmic-black);
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .hover-glow:not(:disabled):active {
-    transform: none;
-  }
   html {
     scroll-behavior: auto;
   }
 }
 
-/* Révélation au scroll : voir src/components/reveal.tsx */
-.reveal {
-  opacity: 0;
-  transform: translate3d(0, 12px, 0);
-  transition:
-    opacity 0.5s var(--ease-out),
-    transform 0.5s var(--ease-out);
-  transition-delay: var(--reveal-delay, 0ms);
-}
-.reveal[data-in] {
-  opacity: 1;
-  transform: none;
-}
-@media (prefers-reduced-motion: reduce) {
-  .reveal {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-}
-
-/* Intro portail (WebGL) + révélation du hero (voir DESIGN.md §7) */
-.intro-scope {
-  --intro-delay: 3.2s;
-}
-
-@keyframes word-in {
-  from { transform: translateY(110%); }
-  to { transform: translateY(0); }
-}
-@keyframes fade-up {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-/* La page « remonte » vers nous quand le tunnel s'ouvre */
-@keyframes home-zoom {
-  from { transform: scale(1.22); }
-  to { transform: scale(1); }
-}
-
-.reveal-word,
-.reveal-fade,
-.home-reveal {
-  animation-fill-mode: both;
-}
-/* Uniquement pendant l'intro : une fois `data-seen` posé, un changement de langue
-   ou un retour sur l'accueil ne rejoue rien */
-.intro-scope:not([data-seen]) .reveal-word {
-  animation: word-in 0.9s var(--ease-wave) both;
-  animation-delay: calc(var(--intro-delay) + var(--i, 0) * 110ms);
-}
-.intro-scope:not([data-seen]) .reveal-fade {
-  animation: fade-up 0.8s ease-out both;
-  animation-delay: calc(var(--intro-delay) + 0.45s);
-}
-.intro-scope:not([data-seen]) .home-reveal {
-  animation: home-zoom 1.9s cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: max(0s, calc(var(--intro-delay) - 0.7s));
-}
-
+/* Intro du portail (WebGL, src/components/intro/) : masquée avec reduced-motion */
 @media (prefers-reduced-motion: reduce) {
   #portal-intro {
     display: none;
   }
-  .intro-scope {
-    --intro-delay: 0s;
-  }
-  .intro-scope:not([data-seen]) .reveal-word,
-  .intro-scope:not([data-seen]) .reveal-fade,
-  .intro-scope:not([data-seen]) .home-reveal {
-    animation: none;
-  }
 }
 
-
-/* Bandeaux défilants de l'aperçu (/apercu) : le contenu est doublé, on glisse d'une moitié */
+/* Bandeaux défilants (annonce, bande géante) : le contenu est doublé, on glisse d'une moitié */
 @keyframes marquee {
   from { transform: translate3d(0, 0, 0); }
   to { transform: translate3d(-50%, 0, 0); }

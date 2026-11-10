@@ -17,6 +17,8 @@ import { getLenis, prefersReducedMotion, registerSlush } from "./slush-motion";
    bandeau d'annonce défilant, barre collante transparente façon slush.app, menu mobile plein écran Cuivre. */
 
 const desktopItems = navItems.filter((i) => i.key !== "contact");
+// « Billets » cerclé de noir : reste lisible quand la barre passe au-dessus d'une bande Cuivre
+const OUTLINED = "[&_.flip-front]:border [&_.flip-front]:border-cosmic-black";
 
 function Announce() {
   const t = useTranslations("Nav");
@@ -171,8 +173,7 @@ export function SiteHeader() {
             const active = isActive(href);
             return (
               <div key={key} data-nav-item className="pointer-events-auto">
-                <Flip href={href} current={active} tone="nav" size="h-10 px-[18px] text-[14px]">
-                  {active && <span aria-hidden className="size-1.5 rounded-full bg-solar-copper" />}
+                <Flip href={href} current={active} tone={active ? "navCurrent" : "nav"} size="h-10 px-[18px] text-[14px]">
                   {t(key)}
                 </Flip>
               </div>
@@ -182,7 +183,7 @@ export function SiteHeader() {
             <LanguagePill variant="bar" />
           </div>
           <div className="pointer-events-auto">
-            <Flip href={ticketsHref} tone="copper" size="h-10 px-[22px] text-[14px]">
+            <Flip href={ticketsHref} tone="copper" size="h-10 px-[22px] text-[14px]" className={OUTLINED}>
               {t("tickets")}
             </Flip>
           </div>
@@ -190,7 +191,7 @@ export function SiteHeader() {
 
         <div className="flex items-center gap-2 lg:hidden">
           <div className="pointer-events-auto">
-            <Flip href={ticketsHref} tone="copper" size="h-11 px-5 text-[14px]">
+            <Flip href={ticketsHref} tone="copper" size="h-11 px-5 text-[14px]" className={OUTLINED}>
               {t("tickets")}
             </Flip>
           </div>

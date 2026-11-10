@@ -2,6 +2,7 @@
 
 import { useLocale, useTranslations } from "next-intl";
 import { useState, type FormEvent } from "react";
+import { Flip } from "@/components/ds/flip";
 import { Turnstile } from "@/components/ticketing/turnstile";
 import type { ContactResponse } from "@/lib/contact";
 import { TURNSTILE_TEST_SITE_KEY } from "@/lib/ticketing/config";
@@ -9,10 +10,10 @@ import { TURNSTILE_TEST_SITE_KEY } from "@/lib/ticketing/config";
 const SITE_KEY =
   process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || (process.env.NODE_ENV !== "production" ? TURNSTILE_TEST_SITE_KEY : undefined);
 
-// Champs en Cosmic Black sur la carte Deep Indigo (même style que la billetterie)
+// Champs v2 sur bande Ivoire (maquette « Contact ») : pilules cerclées, focus contour 2 px et fond Lilas
 const field =
-  "w-full bg-cosmic-black px-6 py-3.5 text-warm-ivory outline-none ring-1 ring-warm-ivory/25 transition-shadow placeholder:text-warm-ivory/40 hover:ring-warm-ivory/50 focus:ring-2 focus:ring-ultraviolet disabled:opacity-50";
-const label = "mb-2 block px-2 font-label text-sm uppercase tracking-wider text-warm-ivory/80";
+  "w-full border border-cosmic-black bg-transparent px-5 font-body text-[16px] text-deep-indigo outline-none transition-colors placeholder:text-deep-indigo/60 focus:bg-violet-pale focus:ring-1 focus:ring-inset focus:ring-cosmic-black disabled:opacity-50";
+const label = "mb-1.5 block font-label text-[13px] uppercase leading-4 tracking-[0.06em] text-deep-indigo";
 
 type State = "idle" | "sending" | "sent" | Extract<ContactResponse, { status: "error" }>["code"];
 
@@ -50,16 +51,12 @@ export function ContactForm() {
 
   if (state === "sent") {
     return (
-      <div role="status" className="rounded-3xl bg-cosmic-black p-6">
-        <p className="font-title text-2xl">{t("sentTitle")}</p>
-        <p className="mt-2 text-warm-ivory/80">{t("sentText")}</p>
-        <button
-          type="button"
-          onClick={() => setState("idle")}
-          className="mt-6 inline-flex min-h-11 items-center rounded-full border border-warm-ivory/40 px-6 font-label text-sm uppercase tracking-wider transition-colors hover:border-solar-copper hover:text-solar-copper"
-        >
+      <div role="status" className="flex flex-col items-start gap-3 rounded-[24px] bg-violet-pale p-6 text-deep-indigo md:p-8">
+        <p className="font-title text-[28px] leading-[100%]">{t("sentTitle")}</p>
+        <p className="font-body text-[16px] leading-[150%]">{t("sentText")}</p>
+        <Flip tone="outlineLight" size="h-12 px-6 text-[15px]" className="mt-3" onClick={() => setState("idle")}>
           {t("another")}
-        </button>
+        </Flip>
       </div>
     );
   }
@@ -67,21 +64,21 @@ export function ContactForm() {
   const sending = state === "sending";
 
   return (
-    <form onSubmit={submit} className="space-y-5">
-      <div className="grid gap-5 sm:grid-cols-2">
+    <form onSubmit={submit} className="flex flex-col gap-3 md:gap-5">
+      <div className="grid gap-3 md:grid-cols-[1fr_1fr_1.4fr] md:gap-3">
         <label className="block">
           <span className={label}>{t("name")}</span>
-          <input name="name" required minLength={2} maxLength={80} autoComplete="name" className={`${field} rounded-full`} disabled={sending} />
+          <input name="name" required minLength={2} maxLength={80} autoComplete="name" className={`${field} h-[52px] rounded-full`} disabled={sending} />
         </label>
         <label className="block">
           <span className={label}>{t("email")}</span>
-          <input name="email" type="email" required maxLength={254} autoComplete="email" className={`${field} rounded-full`} disabled={sending} />
+          <input name="email" type="email" required maxLength={254} autoComplete="email" className={`${field} h-[52px] rounded-full`} disabled={sending} />
+        </label>
+        <label className="block">
+          <span className={label}>{t("subject")}</span>
+          <input name="subject" required minLength={2} maxLength={120} className={`${field} h-[52px] rounded-full`} disabled={sending} />
         </label>
       </div>
-      <label className="block">
-        <span className={label}>{t("subject")}</span>
-        <input name="subject" required minLength={2} maxLength={120} className={`${field} rounded-full`} disabled={sending} />
-      </label>
       <label className="block">
         <span className={label}>{t("message")}</span>
         <textarea
@@ -91,32 +88,35 @@ export function ContactForm() {
           maxLength={4000}
           rows={6}
           placeholder={t("messagePlaceholder")}
-          className={`${field} resize-y rounded-3xl`}
+          className={`${field} min-h-[130px] resize-y rounded-[20px] py-4 md:min-h-[180px]`}
           disabled={sending}
         />
       </label>
       {/* Piège à robots : invisible pour les humains */}
       <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
 
-      {SITE_KEY ? (
-        <Turnstile key={widget} siteKey={SITE_KEY} locale={locale} onToken={setToken} onError={() => setState("antibot")} />
-      ) : (
-        <p className="text-solar-copper">{t("errors.unavailable")}</p>
-      )}
-
       {state !== "idle" && state !== "sending" && (
-        <p role="alert" className="rounded-2xl bg-solar-copper/15 px-4 py-3 text-solar-copper">
+        <p role="alert" className="rounded-[24px] border border-copper-deep bg-copper-pale px-5 py-4 font-body text-[15px] leading-[145%] text-deep-indigo">
           {t(`errors.${state}`)}
         </p>
       )}
 
-      <button
-        type="submit"
-        disabled={!token || sending}
-        className="hover-glow inline-flex min-h-11 w-full items-center justify-center rounded-full bg-solar-copper py-3.5 font-label text-base uppercase tracking-wider text-cosmic-black disabled:cursor-not-allowed disabled:opacity-60 sm:w-56"
-      >
-        {sending ? t("sending") : t("send")}
-      </button>
+      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        {SITE_KEY ? (
+          <Turnstile key={widget} siteKey={SITE_KEY} locale={locale} onToken={setToken} onError={() => setState("antibot")} />
+        ) : (
+          <p className="font-body text-copper-deep">{t("errors.unavailable")}</p>
+        )}
+        <Flip
+          type="submit"
+          tone="copper"
+          size="h-14 px-10 text-[16px]"
+          className="w-full md:w-auto [&_.flip-front]:border [&_.flip-front]:border-cosmic-black"
+          disabled={!token || sending}
+        >
+          {sending ? t("sending") : t("send")}
+        </Flip>
+      </div>
     </form>
   );
 }

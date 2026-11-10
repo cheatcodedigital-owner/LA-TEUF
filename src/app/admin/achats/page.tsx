@@ -104,7 +104,7 @@ async function Content({ searchParams }: { searchParams: Promise<Record<string, 
         </label>
         <button
           type="submit"
-          className="hover-glow min-h-12 rounded-full bg-solar-copper px-7 font-label uppercase tracking-wider text-cosmic-black"
+          className="press min-h-12 rounded-full bg-solar-copper px-7 font-label uppercase tracking-wider text-cosmic-black"
         >
           Rechercher
         </button>
@@ -175,7 +175,7 @@ async function Content({ searchParams }: { searchParams: Promise<Record<string, 
                     <td className="py-3 text-right">
                       <Link
                         href={`/admin/achats/${o.id}`}
-                        className="hover-glow inline-flex min-h-11 items-center rounded-full border border-warm-ivory/40 px-4 font-label text-xs uppercase tracking-wider"
+                        className="press inline-flex min-h-11 items-center rounded-full border border-warm-ivory/40 px-4 font-label text-xs uppercase tracking-wider"
                       >
                         Billets
                         <span className="sr-only"> de {o.buyer_name}</span>

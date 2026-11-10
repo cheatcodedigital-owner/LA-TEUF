@@ -42,10 +42,7 @@
     "skip": "Passer"
   },
   "Hero": {
-    "titleAccent": "portail",
     "imageAlt": "DJ aux platines, de dos, face au public d'une soirée LA TEUF en terrasse sous les guirlandes lumineuses",
-    "tickets": "Billets",
-    "agenda": "Voir l'agenda",
     "countdown": {
       "label": "Compte à rebours avant la soirée",
       "days": "Jours",
@@ -89,13 +86,48 @@
     "ticketsSoon": "Les billets ouvrent bientôt.",
     "items": {
       "la-teuf-karma": {
-        "description": "LA TEUF s'installe au KARMA, à Lomé. DJs et instrumentistes live, scénographie soignée autour du trou de serrure, jeux de lumière : une soirée chaleureuse et décontractée pour sortir de ta routine, dans le respect de chacun."
+        "description": "LA TEUF s'installe au KARMA, à Lomé. DJs et instrumentistes live, scénographie soignée autour du trou de serrure, jeux de lumière : une soirée chaleureuse et décontractée pour sortir de ta routine, dans le respect de chacun.",
+        "card": "Karma",
+        "teaser": "Édition rooftop qui introduit la connexion entre les DJs électroniques de la scène togolaise et béninoise",
+        "hoverTitle": "Une nouvelle expérience électronique qui fait vibrer les frontières !",
+        "hoverText": "2 scènes, une seule piste, une même énergie pour célébrer la musique électronique et la connexion entre Lomé et Cotonou.",
+        "imageAlt": "La cabine DJ LA TEUF dans la fumée bleue",
+        "aboutTitle": "LA TEUF : de Lomé à Cotonou",
+        "aboutLead": "Une nouvelle expérience électronique qui fait vibrer les frontières !",
+        "about": [
+          "Le vendredi 20 novembre 2026, rendez-vous au KARMA, de 21 h à 3 h, pour une nuit de House, Afro House, Afro Tech et SA Tech avec Shayn, AK2M, Wafa et Famouz.",
+          "2 scènes, une seule piste, une même énergie pour célébrer la musique électronique et la connexion entre Lomé et Cotonou.",
+          "Prépare-toi à vivre LA TEUF ! 🔊"
+        ],
+        "aboutImageAlt": "La cabine DJ LA TEUF sous les projecteurs bleus"
       },
       "la-teuf-cotonou": {
-        "description": "LA TEUF traverse la frontière pour une édition à Cotonou. Le lieu et le line-up seront annoncés prochainement."
+        "description": "LA TEUF traverse la frontière pour une édition à Cotonou, à Zone 5 Plage. Le line-up sera annoncé prochainement.",
+        "card": "Zone 5 Plage",
+        "teaser": "Line-up et tarifs annoncés bientôt. Rejoins le groupe WhatsApp pour être prévenu en premier.",
+        "hoverTitle": "LA TEUF traverse la frontière",
+        "hoverText": "Une première édition à Cotonou, au bord de la plage. Le line-up sera annoncé prochainement.",
+        "imageAlt": "Une teufeuse sur la terrasse d'une soirée LA TEUF",
+        "aboutTitle": "LA TEUF traverse la frontière",
+        "aboutLead": "Une première édition à Cotonou, au bord de la plage.",
+        "about": [
+          "Rendez-vous à Zone 5 Plage. Le line-up et les tarifs seront annoncés prochainement : rejoins le groupe WhatsApp pour être prévenu en premier."
+        ],
+        "aboutImageAlt": "Une teufeuse sur la terrasse d'une soirée LA TEUF"
       }
     },
-    "close": "Fermer"
+    "close": "Fermer",
+    "card": {
+      "from": "Dès {price} FCFA",
+      "priceTbd": "Tarifs à venir",
+      "tickets": "Billets",
+      "ticketsMobile": "Prendre mon billet",
+      "notify": "Me prévenir",
+      "lineup": "Line-up",
+      "lineupSoon": "Line-up annoncé bientôt"
+    },
+    "heading": "Les <line><accent>rendez-vous</accent></line>",
+    "archivesTitle": "Les éditions passées"
   },
   "Djs": {
     "metaTitle": "DJs",
@@ -113,28 +145,9 @@
     "photoAlt": "Portrait de {name}",
     "ctaTitle": "Viens les voir <accent>en vrai</accent>",
     "ctaText": "Le line-up de chaque soirée est annoncé sur la page de l'événement.",
-    "ctaButton": "Prochaines soirées"
-  },
-  "Ambiance": {
-    "parts": [
-      "Notre ambiance",
-      "électrique",
-      "te fait voyager"
-    ],
-    "label": "Notre ambiance électrique te fait voyager"
-  },
-  "Concept": {
-    "title": "Qu'est-ce que LA TEUF ?",
-    "text": "Un rendez-vous festif de musique électronique à Lomé, pour sortir de la routine : DJs, instrumentistes live et scénographies soignées, dans une ambiance chaleureuse et ouverte à tous.",
-    "missions": [
-      "Donner un terrain d'expression à toute forme d'art",
-      "Faire connaître la musique électronique sur la scène africaine",
-      "Cultiver l'art de faire la fête librement, dans le respect",
-      "Se rassembler autour de l'art et soutenir les œuvres artistiques"
-    ]
-  },
-  "HomeEvents": {
-    "title": "Prochains rendez-vous"
+    "ctaButton": "Prochaines soirées",
+    "heading": "Les <accent>DJs</accent>",
+    "wallTitle": "Ils ont déjà fait danser <accent>LA TEUF</accent>"
   },
   "Gallery": {
     "metaTitle": "Galerie",
@@ -165,7 +178,11 @@
       "La cabine du DJ vue depuis le dancefloor, sous les guirlandes",
       "Deux amis complices posent enlacés",
       "Des silhouettes devant la scène dans la lumière rouge"
-    ]
+    ],
+    "heading": "Vu sur le <line><accent>dancefloor</accent></line>",
+    "clickHint": "Clique sur une photo pour l'agrandir.",
+    "next": "La prochaine, c'est le {date}",
+    "nextCta": "Prendre ton billet"
   },
   "Contact": {
     "metaTitle": "Contact",
@@ -197,14 +214,15 @@
         "rate": "Trop de messages envoyés. Réessaie dans une heure.",
         "unavailable": "L'envoi est momentanément indisponible. Écris-nous à hello@lateufelectronic.com."
       }
-    }
+    },
+    "heading": "Parlons-<accent>en</accent>"
   },
   "Ticketing": {
     "metaTitle": "Billetterie",
     "back": "Tous les événements",
     "sampleNotice": "Mode démo : Supabase n'est pas configuré, rien n'est réellement réservé.",
     "unavailableTitle": "Billetterie indisponible",
-    "unavailableText": "La billetterie est momentanément indisponible. Réessayez dans un instant.",
+    "unavailableText": "La billetterie est momentanément indisponible. Réessaie dans un instant.",
     "soonTitle": "Billets bientôt",
     "soonText": "Les billets de cette soirée ouvrent bientôt.",
     "endedTitle": "Soirée terminée",
@@ -222,7 +240,7 @@
     "quantity": "Quantité",
     "decrease": "Moins",
     "increase": "Plus",
-    "you": "Vos informations",
+    "you": "Tes informations",
     "name": "Nom complet",
     "email": "Email",
     "whatsapp": "WhatsApp",
@@ -234,7 +252,7 @@
     "total": "Total",
     "submit": "Réserver mes places",
     "submitting": "Réservation…",
-    "invalidField": "Vérifiez ce champ",
+    "invalidField": "Vérifie ce champ",
     "errors": {
       "sold_out": "Ce tarif est complet.",
       "not_enough": "{count, plural, one {Il ne reste qu'# place pour ce tarif.} other {Il ne reste que # places pour ce tarif.}}",
@@ -244,13 +262,13 @@
       "invalid_promo": "Code promo invalide ou expiré.",
       "promo_exhausted": "Ce code promo n'est plus utilisable.",
       "event_not_found": "Soirée introuvable.",
-      "unavailable": "La billetterie est momentanément indisponible. Réessayez dans un instant.",
-      "unknown": "Une erreur est survenue. Réessayez.",
+      "unavailable": "La billetterie est momentanément indisponible. Réessaie dans un instant.",
+      "unknown": "Une erreur est survenue. Réessaie.",
       "form": "Certains champs sont incomplets ou invalides.",
-      "promo_not_allowed": "Les codes promo ne s'appliquent pas aux early birds ni aux tables."
+      "promo_not_allowed": "Les codes promo s'appliquent uniquement aux billets early bird."
     },
     "held": "Places réservées",
-    "heldFor": "Vos places sont gardées encore",
+    "heldFor": "Tes places sont gardées encore",
     "summary": "Récapitulatif",
     "discount": "Réduction",
     "pay": "Payer {amount}",
@@ -259,77 +277,110 @@
     "restart": "Recommencer",
     "availableFrom": "Disponible à partir du {date}",
     "soldOutTier": "Épuisé",
-    "closedTier": "Vente terminée",
-    "earlyNoPromo": "Les codes promo ne s'appliquent pas aux early birds.",
-    "promoEarly": "Non applicable à ce tarif",
-    "groupHint": "Remise automatique sur le tarif standard : −10 % dès 5 billets, −15 % dès 8 billets, −20 % pour 10 billets.",
+    "closedTier": "Vente en ligne terminée",
     "groupDiscountLine": "Remise de groupe −{pct} %",
     "subtotal": "Sous-total",
-    "noneOnSale": "Aucun tarif n'est en vente pour le moment. Revenez à la date d'ouverture indiquée.",
+    "noneOnSale": "La vente en ligne est fermée. Les billets standard sont vendus à la porte le jour de la soirée, dans la limite des places disponibles.",
     "modify": "Modifier mes informations",
     "modifying": "Libération des places…",
-    "modifyHint": "Vos places seront libérées et vous reviendrez au formulaire.",
+    "modifyHint": "Tes places seront libérées et tu reviendras au formulaire.",
     "verifyTitle": "Vérification de sécurité",
-    "verifyText": "Confirmez que vous n'êtes pas un robot pour continuer.",
+    "verifyText": "Confirme que tu n'es pas un robot pour continuer.",
     "checking": "Vérification…",
     "payErrors": {
-      "antibot": "La vérification a échoué. Réessayez.",
-      "not_payable": "Cette réservation a expiré ou a été annulée. Revenez au formulaire.",
-      "unavailable": "Le paiement est momentanément indisponible. Réessayez dans un instant.",
-      "failed": "Le paiement a échoué ou a été annulé. Vous pouvez réessayer.",
-      "not_confirmed": "Nous n'avons pas pu confirmer le paiement. Si vous avez été débité, contactez-nous avec la référence de commande : vos billets seront émis dès la confirmation."
+      "antibot": "La vérification a échoué. Réessaie.",
+      "not_payable": "Cette réservation a expiré ou a été annulée. Reviens au formulaire.",
+      "unavailable": "Le paiement est momentanément indisponible. Réessaie dans un instant.",
+      "failed": "Le paiement a échoué ou a été annulé. Tu peux réessayer.",
+      "not_confirmed": "Nous n'avons pas pu confirmer le paiement. Si tu as été débité, contacte-nous avec la référence de commande : tes billets seront émis dès la confirmation."
     },
     "hold": "Réservation en cours",
     "payHint": "Un contrôle anti-robot est demandé, puis le paiement s'ouvre dans la fenêtre sécurisée de Kkiapay.",
-    "payWaiting": "Le paiement est ouvert dans la fenêtre Kkiapay (Mobile Money ou carte). Vos places restent gardées pendant le compte à rebours. Fenêtre fermée ? Cliquez de nouveau sur « Payer ».",
+    "payWaiting": "Le paiement est ouvert dans la fenêtre Kkiapay (Mobile Money ou carte). Tes places restent gardées pendant le compte à rebours. Fenêtre fermée ? Clique de nouveau sur « Payer ».",
     "confirming": "Confirmation du paiement…",
-    "confirmingTitle": "Validation de votre paiement",
-    "confirmingText": "Merci de patienter, nous confirmons votre paiement auprès de Kkiapay. Ne fermez pas cette page.",
+    "confirmingTitle": "Validation de ton paiement",
+    "confirmingText": "Merci de patienter, nous confirmons ton paiement auprès de Kkiapay. Ne ferme pas cette page.",
     "failure": {
       "title": "Paiement non abouti",
-      "processing_error": "Une erreur est survenue pendant le traitement de votre paiement. Le paiement n'a pas abouti.",
-      "insufficient_funds": "Le solde de votre compte Mobile Money ou de votre carte est insuffisant. Rechargez-le ou utilisez un autre moyen de paiement.",
-      "declined": "Votre paiement a été refusé par votre opérateur ou votre banque. Vérifiez vos informations ou essayez un autre moyen de paiement.",
+      "processing_error": "Une erreur est survenue pendant le traitement de ton paiement. Le paiement n'a pas abouti.",
+      "insufficient_funds": "Le solde de ton compte Mobile Money ou de ta carte est insuffisant. Recharge-le ou utilise un autre moyen de paiement.",
+      "declined": "Ton paiement a été refusé par ton opérateur ou ta banque. Vérifie tes informations ou essaie un autre moyen de paiement.",
       "unknown": "Le paiement a échoué ou a été annulé.",
-      "hint": "Vos places restent gardées pendant le compte à rebours. Cliquez sur « Payer » pour réessayer.",
+      "hint": "Tes places restent gardées pendant le compte à rebours. Clique sur « Réessayer » pour relancer le paiement.",
       "retry": "Réessayer"
     },
     "paidTitle": "Paiement confirmé",
-    "paidText": "Vos {count, plural, one {# billet est confirmé} other {# billets sont confirmés}}. Ils seront envoyés à {email}.",
+    "paidText": "{count, plural, one {Ton billet est confirmé} other {Tes # billets sont confirmés}}. Ils seront envoyés à {email}.",
     "refundTitle": "Paiement reçu, mais plus de places",
-    "refundText": "Votre réservation avait expiré et les places ont été prises entre-temps. Vous serez remboursé : contactez-nous avec la référence ci-dessous.",
+    "refundText": "Ta réservation avait expiré et les places ont été prises entre-temps. Tu seras remboursé : contacte-nous avec la référence ci-dessous.",
     "reference": "Référence de commande :",
     "tableRemaining": "{count, plural, one {# table restante} other {# tables restantes}}",
     "tableSeats": "Salon de {seats} personnes",
     "priceRises": "Passe à {price} dès le {date}",
-    "tableNoPromo": "Les codes promo et la remise de groupe ne s'appliquent pas aux tables.",
+    "tableNoPromo": "Les codes promo ne s'appliquent pas aux tables.",
     "quantityTables": "Nombre de tables",
     "tableHint": "Chaque table donne {seats} billets individuels (un par personne), envoyés à l'adresse e-mail de la réservation.",
-    "afterEarly": "Ouvre quand les early birds sont épuisés"
+    "panelTitle": "Prends ton billet",
+    "quantityMax": "Quantité (max {max})",
+    "promoPlaceholder": "Code promo",
+    "namePlaceholder": "Nom complet",
+    "emailPlaceholder": "E-mail",
+    "whatsappPlaceholder": "WhatsApp, avec l'indicatif",
+    "summaryLine": "{count} × {tier}",
+    "panelHint": "Paiement Mobile Money (Flooz, T-Money, MTN, Moov) ou carte, via Kkiapay. Tes places sont gardées {minutes} minutes. La vente en ligne ferme la veille de la soirée à midi.",
+    "from": "Billets dès",
+    "openPanel": "Prendre ton billet",
+    "closePanel": "Fermer la billetterie",
+    "panelLabel": "Billetterie",
+    "header": {
+      "date": "Date",
+      "time": "Heure",
+      "venue": "Lieu",
+      "tickets": "Billets",
+      "capacity": "Capacité",
+      "capacityValue": "{count} + {tables} tables",
+      "from": "Dès {price} FCFA",
+      "tbd": "À venir"
+    },
+    "lineupTitle": "Ils mixent au <accent>{venue}</accent>",
+    "lineupPastTitle": "Ils ont déjà fait danser <accent>LA TEUF</accent>",
+    "lineupMeta": "{genres} : {count} DJs, 2 scènes, une seule piste.",
+    "allDjs": "Tous les DJs",
+    "faqTitle": "Avant de réserver",
+    "faqCount": "{count} questions",
+    "faqMore": "Les réponses complètes sont dans la <link>page FAQ</link>.",
+    "faqOpen": "Afficher les questions",
+    "faqClose": "Replier",
+    "retry": "Réessayer",
+    "soonBadge": "Bientôt",
+    "doorBadge": "Uniquement disponible à la porte",
+    "drinkIncluded": "Consommation incluse",
+    "remainingOnline": "{count, plural, one {# billet en ligne restant} other {# billets en ligne restants}}",
+    "promoEarly": "Réservé aux billets early bird"
   },
   "Cgv": {
     "metaTitle": "Conditions générales de vente",
     "title": "Conditions générales de vente",
-    "updated": "Dernière mise à jour : 22 octobre 2026",
+    "updated": "Dernière mise à jour : 10 novembre 2026",
     "sections": [
       {
         "title": "1. Organisateur et objet",
         "body": [
           "Les présentes conditions générales de vente (CGV) régissent la vente de billets d'entrée aux soirées LA TEUF, organisées par LA TEUF ÉLECTRONIQUE (« l'organisateur ») à Lomé (Togo) et à Cotonou (Bénin).",
-          "Elles s'appliquent à toute commande passée sur lateufelectronic.com. La vente de billets sur place le jour de la soirée reste possible dans la limite des places disponibles.",
+          "Elles s'appliquent à toute commande passée sur lateufelectronic.com. Les billets standard sont vendus uniquement à la porte le jour de la soirée, dans la limite des places disponibles.",
           "En validant sa commande, l'acheteur reconnaît avoir lu et accepté les présentes CGV."
         ]
       },
       {
         "title": "2. Billets et tarifs",
         "body": [
-          "Les prix sont indiqués en francs CFA (FCFA). Pour l'édition du KARMA (20 novembre 2026), la vente en ligne ouvre le 9 novembre. Le nombre de billets individuels est limité à 100 par soirée.",
-          "Early bird : 5 000 FCFA, 70 billets, en vente dès le 9 novembre jusqu'à épuisement du quota, sans date de fin.",
-          "Standard : 8 000 FCFA, 30 billets, en vente uniquement une fois les 70 early birds vendus. Les ventes en ligne early bird et standard sont fermées le jour de la soirée : les billets restants sont vendus sur place, dans la limite des places disponibles.",
+          "Les prix sont indiqués en francs CFA (FCFA), consommation incluse. Pour l'édition du KARMA (20 novembre 2026), la vente en ligne ouvre le 9 novembre. Le nombre de billets individuels est limité à 100 par soirée.",
+          "Early bird (vente en ligne) : 5 000 FCFA, consommation incluse. Ces billets sont en quantité limitée selon la taille du lieu (70 pour le KARMA) et en vente jusqu'à épuisement, au plus tard jusqu'à la veille de la soirée à midi (19 novembre à 12 h, heure de Lomé), heure de fermeture de la vente en ligne.",
+          "Standard : 8 000 FCFA, consommation incluse, vendu uniquement à la porte le jour de la soirée, dans la limite des places disponibles. Il n'est pas vendu en ligne.",
           "Tables : 4 tables (salons) de 6 personnes sont proposées en plus des 100 billets, à 80 000 FCFA la table du 9 au 17 novembre, puis 100 000 FCFA la table du 18 au 20 novembre. Une table donne 6 billets individuels.",
           "Une commande comprend 10 billets au maximum.",
-          "Une remise de groupe est appliquée automatiquement au tarif standard : −10 % à partir de 5 billets, −15 % à partir de 8 billets, −20 % pour 10 billets.",
-          "Les codes promo ne s'appliquent ni aux early birds ni aux tables. Ils ne se cumulent pas avec la remise de groupe : la remise la plus avantageuse est retenue."
+          "Aucune remise de groupe n'est appliquée.",
+          "Les codes promo s'appliquent uniquement aux billets early bird ; ils ne s'appliquent pas aux tables."
         ]
       },
       {
@@ -395,7 +446,16 @@
     "calendarDescription": "LA TEUF ÉLECTRONIQUE : prépare-toi à faire la fête avec la communauté.",
     "followTitle": "Suis-nous",
     "followText": "Rejoins la communauté sur nos réseaux pour les line-ups, les coulisses et les prochaines dates.",
-    "allEvents": "Tous les événements"
+    "allEvents": "Tous les événements",
+    "badge": "Paiement confirmé",
+    "heading": "Tu fais partie de <accent>la fête</accent>",
+    "text": "Tes billets sont confirmés et envoyés par e-mail et sur WhatsApp. Toute l'équipe de LA TEUF t'attend au {venue}.",
+    "ticketQr": "Ton QR code est dans l'e-mail de confirmation",
+    "ticketHint": "Présente-le à l'entrée. Usage unique.",
+    "ticketDate": "Date",
+    "ticketTime": "Heure",
+    "ticketVenue": "Lieu",
+    "ticketCity": "Ville"
   },
   "LegalNotice": {
     "metaTitle": "Mentions légales",
@@ -541,7 +601,7 @@
           },
           {
             "q": "Quelle est la prochaine soirée ?",
-            "a": "LA TEUF au KARMA, à Lomé (Togo), le 20 novembre 2026. La suivante a lieu à Cotonou (Bénin) le 12 décembre 2026 : le lieu et le line-up seront annoncés prochainement. Toutes les dates sont dans la page Événements."
+            "a": "LA TEUF au KARMA, à Lomé (Togo), le 20 novembre 2026. La suivante a lieu à Cotonou (Bénin) le 12 décembre 2026 : à Zone 5 Plage : le line-up sera annoncé prochainement. Toutes les dates sont dans la page Événements."
           },
           {
             "q": "Qui joue ?",
@@ -562,19 +622,19 @@
         "items": [
           {
             "q": "Quand ouvre la vente des billets du KARMA ?",
-            "a": "La vente en ligne ouvre le 9 novembre 2026, sur la page Billetterie de la soirée : early bird et tables sont disponibles dès cette date."
+            "a": "La vente en ligne ouvre le 9 novembre 2026 sur la page Billetterie de la soirée et ferme la veille de la soirée à midi (le 19 novembre à 12 h, heure de Lomé). Les tables restent réservables en ligne jusqu'à l'heure de la soirée."
           },
           {
             "q": "Quels sont les tarifs ?",
-            "a": "Early bird : 5 000 FCFA, 70 billets, en vente dès le 9 novembre jusqu'à épuisement. Standard : 8 000 FCFA, 30 billets, ouvert uniquement quand les 70 early birds sont vendus. Le tarif standard reste affiché, grisé, en attendant."
+            "a": "Early bird, en ligne : 5 000 FCFA, consommation incluse. Standard : 8 000 FCFA, consommation incluse, vendu uniquement à la porte le jour de la soirée. Les tables ont leur propre tarif (voir « Réserver une table »)."
           },
           {
-            "q": "Que se passe-t-il quand les early birds sont épuisés ?",
-            "a": "Dès que le 70e early bird est vendu (ou réservé), le tarif standard à 8 000 FCFA s'ouvre automatiquement, pour 30 billets. Il n'y a pas de date : tout dépend de la vitesse de vente des early birds. Si une réservation early bird expire sans paiement, la place revient en early bird."
+            "q": "Combien de billets early bird sont disponibles ?",
+            "a": "Les early birds sont en quantité limitée, selon la taille du lieu : 70 billets en ligne pour le KARMA. Une fois épuisés, ou après midi la veille de la soirée, les billets se prennent à la porte au tarif standard, dans la limite des places disponibles."
           },
           {
             "q": "Y a-t-il des réductions pour les groupes ?",
-            "a": "Oui, sur le tarif standard : −10 % à partir de 5 billets, −15 % à partir de 8 billets et −20 % pour 10 billets. La remise est appliquée automatiquement, sans code, dès que le standard est ouvert (après les 70 early birds)."
+            "a": "Non, il n'y a pas de remise de groupe. Pour venir à plusieurs, réserve une table (salon de 6 personnes) ou utilise un code promo sur les billets early bird."
           },
           {
             "q": "Combien de billets puis-je acheter à la fois ?",
@@ -582,11 +642,11 @@
           },
           {
             "q": "Comment utiliser un code promo ?",
-            "a": "Saisis-le dans le champ « Code promo » du formulaire de réservation, ou utilise le lien partagé avec le code, qui le pré-remplit. Il ne s'applique pas aux early birds ni aux tables, et ne se cumule pas avec la remise de groupe : la remise la plus avantageuse est retenue."
+            "a": "Saisis-le dans le champ « Code promo » du formulaire de réservation, ou utilise le lien partagé avec le code, qui le pré-remplit. Il s'applique uniquement aux billets early bird, pas aux tables."
           },
           {
             "q": "Peut-on acheter sur place le jour de la soirée ?",
-            "a": "Oui. Le jour de la soirée, la vente en ligne early bird et standard est fermée et les billets restants se vendent sur place, dans la limite des places disponibles. Pour être sûr d'avoir ta place (et au meilleur prix), prends ton billet en ligne avant."
+            "a": "Oui : les billets standard (8 000 FCFA, consommation incluse) sont vendus uniquement à la porte le jour de la soirée, dans la limite des places disponibles. Pour avoir ta place au meilleur prix, prends un early bird en ligne avant la veille à midi."
           }
         ]
       },
@@ -607,7 +667,7 @@
           },
           {
             "q": "Les codes promo marchent-ils sur les tables ?",
-            "a": "Non, ni les codes promo ni la remise de groupe ne s'appliquent aux tables."
+            "a": "Non, les codes promo ne s'appliquent pas aux tables."
           },
           {
             "q": "J'ai une question sur le salon ou son emplacement.",
@@ -682,6 +742,72 @@
           }
         ]
       }
-    ]
+    ],
+    "heading": "Tes questions, <line><accent>nos réponses</accent></line>",
+    "count": "{n} · {count} questions",
+    "jump": "Aller à la rubrique"
+  },
+  "Home": {
+    "hero": {
+      "place": "{city} · {country} · À partir de {time}",
+      "cta": "Prendre ton billet",
+      "more": "Voir plus",
+      "from": "Dès",
+      "currency": "FCFA"
+    },
+    "ambiance": {
+      "lines": [
+        "Notre ambiance",
+        "<accent>électrique</accent> te",
+        "fait voyager"
+      ],
+      "label": "Notre ambiance électrique te fait voyager"
+    },
+    "concept": {
+      "title": "Qu'est-ce que <line><accent>LA TEUF</accent> ?</line>",
+      "intro": "Un rendez-vous festif de musique électronique dans une ambiance chaleureuse et ouverte à tous.",
+      "cards": [
+        {
+          "title": "Une piste portée par la musique électronique",
+          "text": "Afro house, deep house, tech house, afro tech : des DJs de la scène togolaise et béninoise se relaient aux platines."
+        },
+        {
+          "title": "Des performances live selon l'édition",
+          "text": "Percussions, instrumentistes et danseurs rejoignent les DJs selon les soirées, pour que chaque édition ait sa surprise."
+        },
+        {
+          "title": "Des rencontres chaleureuses",
+          "text": "Une ambiance ouverte à tous, dans le respect de chacun : on vient pour la musique, on repart avec de nouveaux amis."
+        }
+      ]
+    },
+    "dates": {
+      "title": "Prochains rendez-vous"
+    },
+    "ticketsBand": {
+      "title": "Early bird à<br></br>{price} FCFA",
+      "cta": "Prendre mes billets",
+      "note": "Consommation incluse. Billets en ligne en quantité limitée, jusqu'à la veille de la soirée à midi."
+    },
+    "community": {
+      "title": "Rejoins la <accent>communauté</accent>",
+      "tiktok": "Les extraits des soirées",
+      "whatsapp": "La communauté, en direct",
+      "newsTitle": "Sois le premier au courant des prochaines dates",
+      "newsCta": "Rejoindre le groupe WhatsApp",
+      "newsNote": "Les dates, line-ups et ouvertures de billetterie y sont annoncés en premier."
+    }
+  },
+  "Legal": {
+    "surtitle": "Informations légales",
+    "toc": "Sommaire",
+    "ctaText": "Écrivez à {email} ou appelez le {phone}.",
+    "ctaContact": "Nous contacter",
+    "ctaFaq": "Voir la FAQ",
+    "ctaTitle": {
+      "Cgv": "Une question sur votre commande ?",
+      "LegalNotice": "Une question ?",
+      "Privacy": "Une question sur vos données ?"
+    }
   }
 }
