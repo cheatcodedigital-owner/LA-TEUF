@@ -11,6 +11,15 @@
   --color-solar-copper: #e66c3f;
   --color-copper-deep: #a8451a; /* ❓ copper sur fond Ivory (contraste) */
   --color-ultraviolet: #7655ff;
+  /* Teintes de la charte v2 (Paper, DESIGN.md §2) */
+  --color-copper-pale: #f7c9ae;
+  --color-violet-pale: #d8cfff;
+  --color-violet-deep: #4b32c8;
+  /* Bandes v2 : 24 px sur mobile (rounded-band), 40 px dès 768 px (md:rounded-band-lg) */
+  --radius-band: 24px;
+  --radius-band-lg: 40px;
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-marquee-slow: marquee 60s linear infinite;
   /* Filet fin des encadrés de section : les détache du ciel étoilé sans faire néon */
   --color-frame-line: rgb(243 233 213 / 0.1);
 
@@ -164,3 +173,262 @@
   }
 }
 
+
+/* Bandeaux défilants de l'aperçu (/apercu) : le contenu est doublé, on glisse d'une moitié */
+@keyframes marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee,
+  .animate-marquee-slow {
+    animation: none;
+  }
+}
+
+/* Charte v2 — boutons qui basculent en 3D au survol, comme slush.app :
+   la face avant pivote vers le haut, la face de couleur arrive par-dessous avec un léger rebond */
+.flip-btn {
+  --ease-elastic: linear(0, 0.5737 7.6%, 0.8382 11.87%, 0.9463 14.19%, 1.0292 16.54%, 1.0886 18.97%, 1.1258 21.53%, 1.137 22.97%, 1.1424 24.48%, 1.1423 26.1%, 1.1366 27.86%, 1.1165 31.01%, 1.0507 38.62%, 1.0219 42.57%, 0.9995 46.99%, 0.9872 51.63%, 0.9842 58.77%, 1.0011 81.26%, 1);
+  display: inline-grid;
+  perspective: 500px;
+  transform-style: preserve-3d;
+  /* scale (et non transform) : laisse transform libre pour les apparitions GSAP */
+  transition: scale 0.5s var(--ease-elastic);
+}
+.flip-btn:active {
+  scale: 0.955;
+}
+.flip-face {
+  grid-area: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.flip-front {
+  transition:
+    translate 0.85s var(--ease-elastic),
+    rotate 0.75s var(--ease-elastic),
+    opacity 0.15s ease-out;
+}
+.flip-back {
+  opacity: 0;
+  translate: 0 1em -3em;
+  rotate: 1 0 0 -90deg;
+  transition:
+    translate 0.85s var(--ease-elastic),
+    rotate 0.75s var(--ease-elastic),
+    opacity 0.15s ease-out;
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .flip-btn:is(:hover, :focus-visible) .flip-front {
+    translate: 0 -1em -3em;
+    rotate: 1 0 0 85deg;
+    opacity: 0;
+  }
+  .flip-btn:is(:hover, :focus-visible) .flip-back {
+    translate: 0 0 0;
+    rotate: 1 0 0 0deg;
+    opacity: 1;
+    transition:
+      translate 0.85s var(--ease-elastic),
+      rotate 0.75s var(--ease-elastic),
+      opacity 0.075s ease-in;
+  }
+}
+@media (hover: hover) and (prefers-reduced-motion: reduce) {
+  .flip-btn:is(:hover, :focus-visible) .flip-front {
+    opacity: 0;
+  }
+  .flip-btn:is(:hover, :focus-visible) .flip-back {
+    opacity: 1;
+    rotate: none;
+    translate: none;
+  }
+}
+/* Cartes cliquables (réseaux) : légère pression élastique au survol, sans lueur */
+.press {
+  transition: scale 0.5s linear(0, 0.5737 7.6%, 0.8382 11.87%, 0.9463 14.19%, 1.0292 16.54%, 1.0886 18.97%, 1.1258 21.53%, 1.137 22.97%, 1.1424 24.48%, 1.1423 26.1%, 1.1366 27.86%, 1.1165 31.01%, 1.0507 38.62%, 1.0219 42.57%, 0.9995 46.99%, 0.9872 51.63%, 0.9842 58.77%, 1.0011 81.26%, 1);
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .press:hover {
+    scale: 0.96;
+  }
+}
+
+/* Charte v2 — P3 « Le vaisseau ouvre la voie » (src/components/apercu/ambiance.tsx), 4 étapes pilotées par le scroll.
+   Grand écran : les lignes montent, chaque vidéo se dévoile de haut en bas (sens du vaisseau).
+   Mobile : lignes et vidéos se dévoilent de gauche à droite, comme le vaisseau.
+   Sans JS ou avec reduced-motion, data-anim n'est pas posé : tout reste visible. */
+.p3[data-anim] .p3-line {
+  opacity: 0;
+  translate: 0 0.35em;
+  transition:
+    opacity 0.6s cubic-bezier(0.65, 0.05, 0, 1),
+    translate 0.6s cubic-bezier(0.65, 0.05, 0, 1);
+}
+.p3[data-anim] .p3-layer {
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 0.9s cubic-bezier(0.65, 0.05, 0, 1);
+}
+@media (max-width: 1023px) {
+  .p3[data-anim] .p3-line {
+    translate: -0.3em 0;
+    /* marges négatives en haut et en bas : les jambages (y, g) ne sont jamais coupés */
+    clip-path: inset(-0.4em 100% -0.4em 0);
+    transition:
+      clip-path 0.8s cubic-bezier(0.65, 0.05, 0, 1),
+      opacity 0.4s ease-out,
+      translate 0.8s cubic-bezier(0.65, 0.05, 0, 1);
+  }
+  .p3[data-anim] .p3-layer {
+    clip-path: inset(0 100% 0 0);
+  }
+}
+.p3[data-anim] .p3-line[data-on] {
+  opacity: 1;
+  translate: 0 0;
+  clip-path: inset(-0.4em -0.4em -0.4em 0);
+}
+.p3[data-anim] .p3-layer[data-on] {
+  clip-path: inset(0 0 0 0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .p3-track {
+    height: auto !important;
+  }
+  .p3-sticky {
+    position: static !important;
+  }
+}
+
+/* Charte v2 — ruban du hero : scintillement interne (src/components/apercu/ribbon.tsx).
+   Une copie du mot, remplie d'un dégradé lumineux découpé par le texte, apparaît puis s'éteint.
+   Pas de text-shadow : la lumière ne déborde jamais des lettres. */
+.twinkle-word {
+  position: relative;
+  display: inline-block;
+}
+.twinkle-word::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 55% 140% at var(--tw-x, 50%) 50%,
+    #ffffff 0%,
+    var(--color-warm-ivory) 30%,
+    var(--color-violet-pale) 70%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  opacity: 0;
+  animation: twinkle var(--tw-dur, 4s) ease-in-out var(--tw-delay, 0s) infinite;
+}
+.twinkle-star {
+  display: inline-block;
+  animation: twinkle-star var(--tw-dur, 4s) ease-in-out var(--tw-delay, 0s) infinite;
+}
+@keyframes twinkle {
+  0%, 55%, 100% { opacity: 0; }
+  72% { opacity: 1; }
+}
+@keyframes twinkle-star {
+  0%, 55%, 100% { color: var(--color-violet-pale); scale: 1; }
+  72% { color: #ffffff; scale: 1.35; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .twinkle-word::after,
+  .twinkle-star {
+    animation: none;
+  }
+}
+
+/* Lenis (défilement de l'aperçu) : il gère lui-même la douceur, on coupe le smooth natif */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* Charte v2 — menu mobile : le panneau se déplie du haut vers le bas (courbe « slush »),
+   puis les liens montent en cascade avec le rebond des boutons. Fermeture : remontée rapide. */
+.menu-sheet {
+  --ease-elastic: linear(0, 0.5737 7.6%, 0.8382 11.87%, 0.9463 14.19%, 1.0292 16.54%, 1.0886 18.97%, 1.1258 21.53%, 1.137 22.97%, 1.1424 24.48%, 1.1423 26.1%, 1.1366 27.86%, 1.1165 31.01%, 1.0507 38.62%, 1.0219 42.57%, 0.9995 46.99%, 0.9872 51.63%, 0.9842 58.77%, 1.0011 81.26%, 1);
+  clip-path: inset(0 0 100% 0 round 0 0 40px 40px);
+  visibility: hidden;
+  transition:
+    clip-path 0.55s cubic-bezier(0.65, 0.05, 0, 1),
+    visibility 0s linear 0.55s;
+}
+.menu-sheet[data-open] {
+  clip-path: inset(0 0 0 0 round 0 0 0 0);
+  visibility: visible;
+  transition:
+    clip-path 0.75s cubic-bezier(0.65, 0.05, 0, 1),
+    visibility 0s;
+}
+.menu-sheet .menu-item {
+  opacity: 0;
+  translate: 0 1.2em;
+  transition:
+    opacity 0.2s ease-out,
+    translate 0.3s ease-out;
+}
+.menu-sheet[data-open] .menu-item {
+  opacity: 1;
+  translate: 0 0;
+  transition:
+    opacity 0.5s ease-out calc(0.2s + var(--i, 0) * 0.05s),
+    translate 0.9s var(--ease-elastic) calc(0.2s + var(--i, 0) * 0.05s);
+}
+@media (prefers-reduced-motion: reduce) {
+  .menu-sheet,
+  .menu-sheet[data-open],
+  .menu-sheet .menu-item,
+  .menu-sheet[data-open] .menu-item {
+    transition: none;
+  }
+}
+
+/* Charte v2 — stickers (composant Sticker) : pop à l'arrivée (GSAP), puis flottement lent ±6 px / ±2°
+   et redressement à 0° au survol. Rien ne bouge avec reduced-motion. */
+.sticker {
+  pointer-events: auto;
+}
+.sticker-float {
+  animation: sticker-float 5s ease-in-out infinite;
+}
+.sticker:hover .sticker-float {
+  animation-play-state: paused;
+}
+.sticker-img {
+  rotate: var(--r, 0deg);
+  transition: rotate 0.6s linear(0, 0.5737 7.6%, 0.8382 11.87%, 0.9463 14.19%, 1.0292 16.54%, 1.0886 18.97%, 1.1258 21.53%, 1.137 22.97%, 1.1424 24.48%, 1.1423 26.1%, 1.1366 27.86%, 1.1165 31.01%, 1.0507 38.62%, 1.0219 42.57%, 0.9995 46.99%, 0.9872 51.63%, 0.9842 58.77%, 1.0011 81.26%, 1);
+}
+.sticker:hover .sticker-img {
+  rotate: 0deg;
+}
+@keyframes sticker-float {
+  0%, 100% { translate: 0 0; rotate: 0deg; }
+  50% { translate: 0 -6px; rotate: 2deg; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sticker-float {
+    animation: none;
+  }
+  .sticker-img {
+    transition: none;
+  }
+}

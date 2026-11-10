@@ -6,11 +6,12 @@ export const navItems = [
   { key: "contact", href: "/contact" },
 ] as const;
 
+// Partagé par l'ancienne et la nouvelle charte (short : pastille du menu mobile v2, handle : tuiles du footer v2)
 export const socials = [
-  { label: "Instagram", href: "https://www.instagram.com/la_teuf_electronic/" },
-  { label: "TikTok", href: "https://www.tiktok.com/@shayntheproducer" },
-  { label: "WhatsApp", href: "https://chat.whatsapp.com/Cggl1KC8ZgDBkZWS5URH0e" },
-  { label: "Linktree", href: "https://linktr.ee/la_teuf" },
+  { label: "Instagram", short: "IG", handle: "@la_teuf_electronic", href: "https://www.instagram.com/la_teuf_electronic/" },
+  { label: "TikTok", short: "TT", handle: "@shayntheproducer", href: "https://www.tiktok.com/@shayntheproducer" },
+  { label: "WhatsApp", short: "WA", handle: null, href: "https://chat.whatsapp.com/Cggl1KC8ZgDBkZWS5URH0e" },
+  { label: "Linktree", short: "LT", handle: null, href: "https://linktr.ee/la_teuf" },
 ] as const;
 
 export const CONTACT_EMAIL = "hello@lateufelectronic.com";

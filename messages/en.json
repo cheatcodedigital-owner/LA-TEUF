@@ -14,7 +14,12 @@
     "closeMenu": "Close menu",
     "mainNav": "Main navigation",
     "language": "Language",
-    "faq": "FAQ"
+    "faq": "FAQ",
+    "menu": "Menu",
+    "ticketsCta": "Get my ticket",
+    "onSale": "Tickets on sale",
+    "skipToContent": "Skip to content",
+    "announce": "Upcoming dates"
   },
   "Footer": {
     "tagline": "The gateway to free partying. Electronic music, art and connection in Lomé and Cotonou.",
@@ -24,7 +29,14 @@
     "legal": "Legal notice",
     "terms": "Terms of sale",
     "privacy": "Privacy",
-    "rights": "All rights reserved."
+    "rights": "All rights reserved.",
+    "brand": "A festive event built on a love of electronic music",
+    "colParty": "The party",
+    "colHelp": "Help",
+    "writeUs": "Write to us",
+    "whatsappSub": "Join the group",
+    "copyright": "© 2026 LA TEUF Électronique",
+    "socials": "Social media"
   },
   "Intro": {
     "skip": "Skip"
@@ -104,7 +116,11 @@
     "ctaButton": "Upcoming nights"
   },
   "Ambiance": {
-    "parts": ["Our vibe", "electric", "takes you places"],
+    "parts": [
+      "Our vibe",
+      "electric",
+      "takes you places"
+    ],
     "label": "Our electric vibe takes you places"
   },
   "Concept": {

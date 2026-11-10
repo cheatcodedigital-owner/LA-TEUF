@@ -14,7 +14,12 @@
     "closeMenu": "Fermer le menu",
     "mainNav": "Navigation principale",
     "language": "Langue",
-    "faq": "FAQ"
+    "faq": "FAQ",
+    "menu": "Menu",
+    "ticketsCta": "Prendre mon billet",
+    "onSale": "Billets en vente",
+    "skipToContent": "Aller au contenu",
+    "announce": "Prochaines dates"
   },
   "Footer": {
     "tagline": "Le portail vers la fête libre. Musique électronique, art et rencontres à Lomé et Cotonou.",
@@ -24,7 +29,14 @@
     "legal": "Mentions légales",
     "terms": "CGV",
     "privacy": "Confidentialité",
-    "rights": "Tous droits réservés."
+    "rights": "Tous droits réservés.",
+    "brand": "Évènement festif tourné vers l’amour de la musique électronique",
+    "colParty": "La teuf",
+    "colHelp": "Aide",
+    "writeUs": "Écris-nous",
+    "whatsappSub": "Rejoins le groupe",
+    "copyright": "© 2026 LA TEUF Électronique",
+    "socials": "Réseaux sociaux"
   },
   "Intro": {
     "skip": "Passer"
@@ -104,7 +116,11 @@
     "ctaButton": "Prochaines soirées"
   },
   "Ambiance": {
-    "parts": ["Notre ambiance", "électrique", "te fait voyager"],
+    "parts": [
+      "Notre ambiance",
+      "électrique",
+      "te fait voyager"
+    ],
     "label": "Notre ambiance électrique te fait voyager"
   },
   "Concept": {
