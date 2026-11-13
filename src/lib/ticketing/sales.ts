@@ -23,6 +23,10 @@ const KNOWN_ERRORS: ReserveErrorCode[] = [
 // travailler l'interface. En production, l'absence de configuration rend la billetterie indisponible.
 const sampleMode = () => !isSupabaseConfigured() && process.env.NODE_ENV !== "production";
 
+// Fermeture côté site : une soirée « bientot » dans src/data/events.ts reste fermée même si la base la dit en vente
+// (garde-fou tant que la migration de fermeture n'est pas appliquée). La base reste seule juge pour ouvrir.
+const closedOnSite = (slug: string) => sampleEvents.find((x) => x.slug === slug)?.status === "bientot";
+
 const DAY = 86_400_000;
 
 // Horloge de la démo : TICKETING_SAMPLE_NOW (ISO) permet de simuler une date, pour tester les phases de vente
@@ -107,11 +111,15 @@ export async function getEventSales(slug: string): Promise<SalesResult> {
     console.error("[ticketing] event_sales", error.message);
     return { kind: "unavailable" };
   }
-  return data ? { kind: "ok", sales: data as EventSales, sample: false } : { kind: "not_found" };
+  if (!data) return { kind: "not_found" };
+  const sales = data as EventSales;
+  if (closedOnSite(slug) && sales.event.status === "on_sale") sales.event.status = "soon";
+  return { kind: "ok", sales, sample: false };
 }
 
 /** `affiliateRef` : valeur du cookie d'attribution (`slug` ou `slug:campagne`), déjà posé par /r/<slug>. */
 export async function reserve(input: ReservationInput, affiliateRef?: string | null): Promise<ReserveResult> {
+  if (closedOnSite(input.slug)) return { ok: false, code: "sales_closed" };
   if (sampleMode()) {
     const sales = sampleSales(input.slug);
     const tier = sales?.tiers.find((t) => t.id === input.ticketTypeId && t.onSale);

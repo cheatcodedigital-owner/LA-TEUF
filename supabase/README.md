@@ -23,16 +23,19 @@
 
 ## Règles de vente
 Politique du 10/11/2026 (migration 0014, testée par `npm run test:db`) :
+- **13/11/2026 (migration 0015)** : soirée du KARMA repoussée au **27 novembre 2026** (21 h) et **billetterie provisoirement fermée**
+  (`events.status = 'soon'` : `create_order` renvoie `sales_closed`, la page affiche « Billetterie fermée »). Pour rouvrir :
+  `update events set status = 'on_sale' where slug = 'la-teuf-karma';` et repasser `status: "en-vente"` dans `src/data/events.ts`.
 - **Billets en ligne = early bird uniquement** : 5 000 FCFA, consommation incluse, en quantité limitée selon la taille du lieu
   (KARMA : **70**). En vente dès le **9 novembre** (KARMA) jusqu'à épuisement, et **au plus tard jusqu'à la veille de la soirée à midi**
-  (heure locale ; KARMA : 19 novembre 12:00 UTC = 12 h à Lomé), via `ticket_types.sales_end`.
+  (heure locale ; KARMA : 26 novembre 12:00 UTC = 12 h à Lomé), via `ticket_types.sales_end`.
 - **Standard** : 8 000 FCFA, consommation incluse, **vendu uniquement à la porte le jour de la soirée** (`ticket_types.door_only = true`).
   Il reste affiché sur la billetterie (état `door` renvoyé par `_tiers`) mais n'est jamais réservable en ligne. Capacité générale : 100
   (70 en ligne + la porte) ; les ventes à la porte se saisissent dans l'admin.
 - **Pas de remise de groupe** : `_group_discount_pct` renvoie toujours 0 (`autoDiscountPct` reste à 0 dans les réponses).
 - **Codes promo : early bird uniquement** (`promo_not_allowed` sur les tables).
 - **Tables** (`kind = 'table'`, migration 0009, politique inchangée) : 4 salons de 6 personnes, **80 000 FCFA** du 9 au 17 novembre puis
-  **100 000 FCFA** du 18 au 20 novembre (`price_step_at` / `price_after_xof`, le prix est calculé par `_tiers`), en vente en ligne jusqu'à
+  **100 000 FCFA** du 18 au 27 novembre (`price_step_at` / `price_after_xof`, le prix est calculé par `_tiers`), en vente en ligne jusqu'à
   l'heure de la soirée. Offre **additionnelle** : elle n'entame pas la capacité générale de 100. Une table = 1 unité commandée = 6 billets
   nominatifs (`ticket_types.seats`), émis par `mark_order_paid` (un QR par personne, tous envoyés à l'e-mail de la réservation). Pas de code
   promo sur les tables. Pour modifier prix, dates ou quota : `update ticket_types` (colonnes `price_xof`, `price_after_xof`, `price_step_at`, `quota`).

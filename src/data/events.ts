@@ -47,9 +47,10 @@ export const events: TeufEvent[] = [
     country: "Togo",
     timeZone: "Africa/Lome",
     // 21 h - 3 h à Lomé (UTC+0)
-    startsAt: "2026-11-20T21:00:00Z",
-    endsAt: "2026-11-21T03:00:00Z",
-    status: "en-vente",
+    startsAt: "2026-11-27T21:00:00Z",
+    endsAt: "2026-11-28T03:00:00Z",
+    // Billetterie provisoirement fermée (date d'ouverture à annoncer) : repasser à "en-vente" à l'ouverture
+    status: "bientot",
     capacity: 100,
     tables: 4,
     priceFrom: 5000,
@@ -62,7 +63,7 @@ export const events: TeufEvent[] = [
     lineup: [
       { name: "Shayn", photo: "/images/lineup/dj-shayn.png", tint: "copper-pale" },
       { name: "AK2M", photo: "/images/lineup/dj-ak2m.png", tint: "violet-pale" },
-      { name: "Wafa", photo: "/images/lineup/dj-wafa.png", tint: "solar-copper" },
+      { name: "Jaguar", photo: "/images/lineup/dj-jaguar.png", tint: "solar-copper" },
       { name: "Famouz", photo: "/images/lineup/dj-famouz.png", tint: "warm-ivory" },
     ],
   },

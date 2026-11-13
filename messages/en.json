@@ -95,7 +95,7 @@
         "aboutTitle": "LA TEUF: from Lomé to Cotonou",
         "aboutLead": "A new electronic experience that makes borders vibrate!",
         "about": [
-          "On Friday 20 November 2026, meet us at KARMA from 9 PM to 3 AM for a night of House, Afro House, Afro Tech and SA Tech with Shayn, AK2M, Wafa and Famouz.",
+          "On Friday 27 November 2026, meet us at KARMA from 9 PM to 3 AM for a night of House, Afro House, Afro Tech and SA Tech with Shayn, AK2M, Jaguar and Famouz.",
           "2 stages, one dancefloor, the same energy to celebrate electronic music and the connection between Lomé and Cotonou.",
           "Get ready to live LA TEUF! 🔊"
         ],
@@ -223,8 +223,8 @@
     "sampleNotice": "Demo mode: Supabase is not configured, nothing is actually reserved.",
     "unavailableTitle": "Ticketing unavailable",
     "unavailableText": "Ticketing is temporarily unavailable. Please try again in a moment.",
-    "soonTitle": "Tickets soon",
-    "soonText": "Tickets for this night open soon.",
+    "soonTitle": "Ticket sales closed",
+    "soonText": "Ticket sales for this night are temporarily closed. The opening date will be announced very soon on our socials and in the WhatsApp group.",
     "endedTitle": "Night is over",
     "endedText": "This night is over.",
     "soldOutTitle": "Sold out",
@@ -361,7 +361,7 @@
   "Cgv": {
     "metaTitle": "Terms of sale",
     "title": "Terms of sale",
-    "updated": "Last updated: November 10, 2026",
+    "updated": "Last updated: November 13, 2026",
     "sections": [
       {
         "title": "1. Organizer and purpose",
@@ -374,10 +374,10 @@
       {
         "title": "2. Tickets and prices",
         "body": [
-          "Prices are in CFA francs (FCFA), drink included. For the KARMA night (20 November 2026), online sales open on 9 November. Individual tickets are limited to 100 per night.",
-          "Early bird (online): 5,000 FCFA, drink included. These tickets are limited according to the size of the venue (70 for KARMA) and on sale until sold out, at the latest until noon the day before the night (19 November at 12 PM, Lomé time), when online sales close.",
+          "Prices are in CFA francs (FCFA), drink included. For the KARMA night (27 November 2026), online sales are temporarily closed; the opening date will be announced on our socials. Individual tickets are limited to 100 per night.",
+          "Early bird (online): 5,000 FCFA, drink included. These tickets are limited according to the size of the venue (70 for KARMA) and on sale until sold out, at the latest until noon the day before the night (26 November at 12 PM, Lomé time), when online sales close.",
           "Standard: 8,000 FCFA, drink included, sold only at the door on the day of the night, while places last. It is not sold online.",
-          "Tables: 4 lounges for 6 people are offered on top of the 100 tickets, at 80,000 FCFA per table from 9 to 17 November, then 100,000 FCFA per table from 18 to 20 November. A table comes with 6 individual tickets.",
+          "Tables: 4 lounges for 6 people are offered on top of the 100 tickets, at 80,000 FCFA per table until 17 November, then 100,000 FCFA per table from 18 to 27 November. A table comes with 6 individual tickets.",
           "An order includes at most 10 tickets.",
           "No group discount is applied.",
           "Promo codes only apply to early bird tickets; they do not apply to tables."
@@ -601,7 +601,7 @@
           },
           {
             "q": "When is the next night?",
-            "a": "LA TEUF at KARMA, in Lomé (Togo), on 20 November 2026. The next one is in Cotonou (Benin) on 12 December 2026: at Zone 5 Plage: the line-up will be announced soon. All dates are on the Events page."
+            "a": "LA TEUF at KARMA, in Lomé (Togo), on 27 November 2026. The next one is in Cotonou (Benin) on 12 December 2026: at Zone 5 Plage: the line-up will be announced soon. All dates are on the Events page."
           },
           {
             "q": "Who is playing?",
@@ -622,7 +622,7 @@
         "items": [
           {
             "q": "When do KARMA ticket sales open?",
-            "a": "Online sales open on 9 November 2026 on the night's Tickets page and close at noon the day before the night (19 November at 12 PM, Lomé time). Tables can be booked online until the start of the night."
+            "a": "Ticket sales are temporarily closed: the opening date will be announced very soon on our socials and in the WhatsApp group. Once open, tickets are sold on the night's Tickets page until noon the day before the night (26 November at 12 PM, Lomé time). Tables can be booked online until the start of the night."
           },
           {
             "q": "What are the prices?",
@@ -659,7 +659,7 @@
           },
           {
             "q": "How much is a table?",
-            "a": "80,000 FCFA per table from 9 to 17 November, then 100,000 FCFA from 18 to 20 November. Book early for the best price."
+            "a": "80,000 FCFA per table until 17 November, then 100,000 FCFA from 18 to 27 November. Book early for the best price."
           },
           {
             "q": "How are the tickets of a table sent?",
@@ -751,6 +751,7 @@
     "hero": {
       "place": "{city} · {country} · From {time}",
       "cta": "Get your ticket",
+      "ctaSoon": "Discover the night",
       "more": "See more",
       "from": "From",
       "currency": "FCFA"

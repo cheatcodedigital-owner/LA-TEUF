@@ -1,15 +1,15 @@
--- Données de départ (état final après les migrations jusqu'à 0014).
--- Édition du KARMA (20 novembre 2026, 21 h à Lomé) :
+-- Données de départ (état final après les migrations jusqu'à 0015).
+-- Édition du KARMA (27 novembre 2026, 21 h à Lomé ; repoussée du 20 novembre), billetterie provisoirement fermée (status 'soon') :
 --   early bird : 5 000 FCFA consommation incluse, 70 billets en ligne, en vente dès le 9 novembre jusqu'à la veille
---                à midi (19 novembre 12:00) ou épuisement ; codes promo possibles ;
+--                à midi (26 novembre 12:00) ou épuisement ; codes promo possibles ;
 --   standard   : 8 000 FCFA consommation incluse, vendu uniquement à la porte le jour de la soirée (affiché, jamais
 --                réservable en ligne) ;
 --   capacité générale : 100 ; pas de remise de groupe ;
---   tables (salons) de 6 personnes : 4 tables, 80 000 FCFA du 9 au 17 novembre, 100 000 FCFA du 18 au 20 novembre
+--   tables (salons) de 6 personnes : 4 tables, 80 000 FCFA du 9 au 17 novembre, 100 000 FCFA du 18 au 27 novembre
 --   (offre additionnelle, hors capacité générale, en vente jusqu'à l'heure de la soirée).
 
 insert into events (slug, name, venue, city, country, starts_at, capacity, status) values
-  ('la-teuf-karma',   'LA TEUF au KARMA', 'KARMA', 'Lomé',    'Togo',  '2026-11-20T21:00:00Z', 100, 'on_sale'),
+  ('la-teuf-karma',   'LA TEUF au KARMA', 'KARMA', 'Lomé',    'Togo',  '2026-11-27T21:00:00Z', 100, 'soon'),
   ('la-teuf-cotonou', 'LA TEUF · Cotonou', 'Zone 5 Plage', 'Cotonou', 'Bénin', '2026-12-12T15:00:00Z', 100, 'soon');
 
 -- Vente en ligne fermée la veille à midi (Lomé = UTC)

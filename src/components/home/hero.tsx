@@ -2,7 +2,7 @@ import Image from "next/image";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { Band } from "@/components/ds/band";
 import { Flip } from "@/components/ds/flip";
-import { ticketsHref } from "@/components/ds/links";
+import { eventOnSale, ticketsHref } from "@/components/ds/links";
 import { nextEvent } from "@/data/events";
 import { Countdown } from "./countdown";
 import { Ribbon } from "./ribbon";
@@ -47,7 +47,7 @@ export async function Hero() {
         <div className="order-5 flex flex-col-reverse gap-4 lg:flex-row lg:items-end lg:justify-between lg:gap-6">
           <div data-load-stagger className="flex flex-col gap-3 sm:flex-row">
             <Flip href={ticketsHref} tone="copper" size="h-14 px-8 text-[16px]">
-              {t("cta")}
+              {eventOnSale ? t("cta") : t("ctaSoon")}
             </Flip>
             <Flip href="/evenements" tone="outlineDark" size="h-14 px-7 text-[16px]">
               {t("more")}

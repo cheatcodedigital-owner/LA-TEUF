@@ -95,7 +95,7 @@
         "aboutTitle": "LA TEUF : de Lomé à Cotonou",
         "aboutLead": "Une nouvelle expérience électronique qui fait vibrer les frontières !",
         "about": [
-          "Le vendredi 20 novembre 2026, rendez-vous au KARMA, de 21 h à 3 h, pour une nuit de House, Afro House, Afro Tech et SA Tech avec Shayn, AK2M, Wafa et Famouz.",
+          "Le vendredi 27 novembre 2026, rendez-vous au KARMA, de 21 h à 3 h, pour une nuit de House, Afro House, Afro Tech et SA Tech avec Shayn, AK2M, Jaguar et Famouz.",
           "2 scènes, une seule piste, une même énergie pour célébrer la musique électronique et la connexion entre Lomé et Cotonou.",
           "Prépare-toi à vivre LA TEUF ! 🔊"
         ],
@@ -223,8 +223,8 @@
     "sampleNotice": "Mode démo : Supabase n'est pas configuré, rien n'est réellement réservé.",
     "unavailableTitle": "Billetterie indisponible",
     "unavailableText": "La billetterie est momentanément indisponible. Réessaie dans un instant.",
-    "soonTitle": "Billets bientôt",
-    "soonText": "Les billets de cette soirée ouvrent bientôt.",
+    "soonTitle": "Billetterie fermée",
+    "soonText": "La billetterie de cette soirée est provisoirement fermée. La date d'ouverture sera annoncée très vite sur nos réseaux et dans le groupe WhatsApp.",
     "endedTitle": "Soirée terminée",
     "endedText": "Cette soirée est terminée.",
     "soldOutTitle": "Complet",
@@ -361,7 +361,7 @@
   "Cgv": {
     "metaTitle": "Conditions générales de vente",
     "title": "Conditions générales de vente",
-    "updated": "Dernière mise à jour : 10 novembre 2026",
+    "updated": "Dernière mise à jour : 13 novembre 2026",
     "sections": [
       {
         "title": "1. Organisateur et objet",
@@ -374,10 +374,10 @@
       {
         "title": "2. Billets et tarifs",
         "body": [
-          "Les prix sont indiqués en francs CFA (FCFA), consommation incluse. Pour l'édition du KARMA (20 novembre 2026), la vente en ligne ouvre le 9 novembre. Le nombre de billets individuels est limité à 100 par soirée.",
-          "Early bird (vente en ligne) : 5 000 FCFA, consommation incluse. Ces billets sont en quantité limitée selon la taille du lieu (70 pour le KARMA) et en vente jusqu'à épuisement, au plus tard jusqu'à la veille de la soirée à midi (19 novembre à 12 h, heure de Lomé), heure de fermeture de la vente en ligne.",
+          "Les prix sont indiqués en francs CFA (FCFA), consommation incluse. Pour l'édition du KARMA (27 novembre 2026), la vente en ligne est provisoirement fermée ; sa date d'ouverture sera annoncée sur nos réseaux. Le nombre de billets individuels est limité à 100 par soirée.",
+          "Early bird (vente en ligne) : 5 000 FCFA, consommation incluse. Ces billets sont en quantité limitée selon la taille du lieu (70 pour le KARMA) et en vente jusqu'à épuisement, au plus tard jusqu'à la veille de la soirée à midi (26 novembre à 12 h, heure de Lomé), heure de fermeture de la vente en ligne.",
           "Standard : 8 000 FCFA, consommation incluse, vendu uniquement à la porte le jour de la soirée, dans la limite des places disponibles. Il n'est pas vendu en ligne.",
-          "Tables : 4 tables (salons) de 6 personnes sont proposées en plus des 100 billets, à 80 000 FCFA la table du 9 au 17 novembre, puis 100 000 FCFA la table du 18 au 20 novembre. Une table donne 6 billets individuels.",
+          "Tables : 4 tables (salons) de 6 personnes sont proposées en plus des 100 billets, à 80 000 FCFA la table jusqu'au 17 novembre, puis 100 000 FCFA la table du 18 au 27 novembre. Une table donne 6 billets individuels.",
           "Une commande comprend 10 billets au maximum.",
           "Aucune remise de groupe n'est appliquée.",
           "Les codes promo s'appliquent uniquement aux billets early bird ; ils ne s'appliquent pas aux tables."
@@ -601,7 +601,7 @@
           },
           {
             "q": "Quelle est la prochaine soirée ?",
-            "a": "LA TEUF au KARMA, à Lomé (Togo), le 20 novembre 2026. La suivante a lieu à Cotonou (Bénin) le 12 décembre 2026 : à Zone 5 Plage : le line-up sera annoncé prochainement. Toutes les dates sont dans la page Événements."
+            "a": "LA TEUF au KARMA, à Lomé (Togo), le 27 novembre 2026. La suivante a lieu à Cotonou (Bénin) le 12 décembre 2026 : à Zone 5 Plage : le line-up sera annoncé prochainement. Toutes les dates sont dans la page Événements."
           },
           {
             "q": "Qui joue ?",
@@ -622,7 +622,7 @@
         "items": [
           {
             "q": "Quand ouvre la vente des billets du KARMA ?",
-            "a": "La vente en ligne ouvre le 9 novembre 2026 sur la page Billetterie de la soirée et ferme la veille de la soirée à midi (le 19 novembre à 12 h, heure de Lomé). Les tables restent réservables en ligne jusqu'à l'heure de la soirée."
+            "a": "La billetterie est provisoirement fermée : la date d'ouverture sera annoncée très vite sur nos réseaux et dans le groupe WhatsApp. Une fois ouverte, la vente en ligne se fait sur la page Billetterie de la soirée et ferme la veille de la soirée à midi (le 26 novembre à 12 h, heure de Lomé). Les tables restent réservables en ligne jusqu'à l'heure de la soirée."
           },
           {
             "q": "Quels sont les tarifs ?",
@@ -659,7 +659,7 @@
           },
           {
             "q": "Combien coûte une table ?",
-            "a": "80 000 FCFA la table du 9 au 17 novembre, puis 100 000 FCFA du 18 au 20 novembre. Réserve tôt pour profiter du meilleur prix."
+            "a": "80 000 FCFA la table jusqu'au 17 novembre, puis 100 000 FCFA du 18 au 27 novembre. Réserve tôt pour profiter du meilleur prix."
           },
           {
             "q": "Comment sont envoyés les billets d'une table ?",
@@ -751,6 +751,7 @@
     "hero": {
       "place": "{city} · {country} · À partir de {time}",
       "cta": "Prendre ton billet",
+      "ctaSoon": "Découvrir la soirée",
       "more": "Voir plus",
       "from": "Dès",
       "currency": "FCFA"

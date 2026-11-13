@@ -36,7 +36,7 @@ Réussite : le visiteur passe d'un lien social à un billet payé, avec un QR un
 ## Capabilities and Constraints
 
 - Billetterie : places réservées de façon atomique avant paiement, paiement vérifié côté serveur avant d'émettre un billet. Les règles de vente vivent dans les migrations SQL (`supabase/migrations/`), qui font foi.
-- KARMA (Lomé, 20 novembre 2026) : capacité de 100 places (70 early bird à 5 000 FCFA, puis 30 standard à 8 000 FCFA), plus 4 tables de 6 personnes hors capacité. Ventes en ligne fermées le jour J. Détails dans `supabase/README.md`.
+- KARMA (Lomé, 27 novembre 2026, repoussé du 20 ; billetterie provisoirement fermée) : capacité de 100 places (70 early bird à 5 000 FCFA, puis 30 standard à 8 000 FCFA), plus 4 tables de 6 personnes hors capacité. Ventes en ligne fermées le jour J. Détails dans `supabase/README.md`.
 - Édition de Cotonou : 12 décembre 2026.
 - Statuts d'événement : `Bientôt`, `En vente`, `Complet`, `Terminé`.
 - Pages existantes : accueil, événements, billetterie, DJs, galerie, FAQ, contact, CGV, mentions légales, confidentialité.

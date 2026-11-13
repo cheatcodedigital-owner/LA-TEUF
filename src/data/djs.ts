@@ -20,7 +20,7 @@ export type Dj = {
 export const djs: Dj[] = [
   { slug: "shayn", name: "Shayn", kind: "dj", portrait: "/images/djs/cutouts/shayn.png", tint: "copper-pale" },
   { slug: "ak2m", name: "AK2M", kind: "dj", portrait: "/images/djs/cutouts/ak2m.png", tint: "violet-pale" },
-  { slug: "wafa", name: "Wafa", kind: "dj", portrait: "/images/djs/cutouts/wafa.png", tint: "solar-copper" },
+  { slug: "jaguar", name: "Jaguar", kind: "dj", portrait: "/images/djs/cutouts/jaguar.png", tint: "solar-copper" },
   { slug: "famouz", name: "Famouz", kind: "dj", portrait: "/images/djs/cutouts/famouz.png", tint: "warm-ivory" },
   { slug: "ivalmok", name: "Ivalmok", kind: "dj", portrait: "/images/djs/cutouts/ivalmok.png", tint: "violet-pale" },
   { slug: "manu-drums", name: "Manu Drums", kind: "live", portrait: "/images/djs/cutouts/manu-drums.jpg", tint: "cosmic-black" },

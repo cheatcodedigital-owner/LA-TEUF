@@ -162,7 +162,7 @@ Fond Cosmic Black, cartes Indigo, pilules ; pas de bandeau, de sticker ni de foo
 
 | Pattern | Contenu |
 |---|---|
-| P1 Hero (Nuit) | Logo KARMA rooftop + date (« Ven. 20 nov. », « Lomé · Togo · À partir de 21 h »), titre « Passe le portail », ruban, photo, badge prix, CTA « Prendre ton billet » + « Voir plus », compte à rebours avec secondes. Aucun sticker. |
+| P1 Hero (Nuit) | Logo KARMA rooftop + date (« Ven. 27 nov. », « Lomé · Togo · À partir de 21 h »), titre « Passe le portail », ruban, photo, badge prix, CTA « Prendre ton billet » + « Voir plus », compte à rebours avec secondes. Aucun sticker. |
 | P3 Ambiance (Violet) | Animation au scroll en 4 étapes (§9.3), web et mobile. |
 | P2 Concept (Ivoire) | « Qu'est-ce que LA TEUF ? », intro courte, 3 cartes dépliables fermées. |
 | P9 Prochains rendez-vous (Lilas) | Titre + sticker calendrier collé à droite (au-dessus sur mobile), cartes dates en quinconce. |
