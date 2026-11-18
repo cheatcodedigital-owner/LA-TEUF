@@ -68,6 +68,12 @@ export type ReserveErrorCode =
   | "invalid_promo"
   | "promo_exhausted"
   | "promo_not_allowed"
+  /** Réservation déjà en cours pour cet e-mail ou ce numéro WhatsApp (anti-blocage des places) */
+  | "pending_exists"
+  /** Vérification anti-robot (Turnstile) échouée */
+  | "antibot"
+  /** Trop de réservations depuis cette connexion */
+  | "rate"
   | "unavailable"
   | "unknown";
 

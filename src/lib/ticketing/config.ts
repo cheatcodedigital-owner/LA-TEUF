@@ -4,6 +4,8 @@ export const HOLD_MINUTES = 10;
 export const TABLE_SEATS = 6;
 /** Nombre maximum de billets par commande */
 export const MAX_PER_ORDER = 10;
+/** Réservations non payées en cours autorisées en même temps pour un même e-mail ou numéro WhatsApp */
+export const MAX_ACTIVE_HOLDS = 2;
 
 export const COUNTRIES = ["TG", "BJ", "FR", "CI", "SN", "CM", "GH", "NG", "BE", "CA", "US", "OTHER"] as const;
 

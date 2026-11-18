@@ -265,7 +265,10 @@
       "unavailable": "La billetterie est momentanément indisponible. Réessaie dans un instant.",
       "unknown": "Une erreur est survenue. Réessaie.",
       "form": "Certains champs sont incomplets ou invalides.",
-      "promo_not_allowed": "Les codes promo s'appliquent uniquement aux billets early bird."
+      "promo_not_allowed": "Les codes promo s'appliquent uniquement aux billets early bird.",
+      "pending_exists": "Tu as déjà une réservation en cours avec cet e-mail ou ce numéro WhatsApp. Termine son paiement, ou attends quelques minutes qu'elle expire.",
+      "antibot": "La vérification anti-robot a échoué. Réessaie.",
+      "rate": "Trop de réservations depuis ta connexion. Réessaie dans quelques minutes."
     },
     "held": "Places réservées",
     "heldFor": "Tes places sont gardées encore",

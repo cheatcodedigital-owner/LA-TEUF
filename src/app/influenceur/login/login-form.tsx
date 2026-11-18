@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { LoginTurnstile } from "@/components/admin/login-turnstile";
 import { Flip } from "@/components/ds/flip";
 import { loginAffiliate, type LoginState } from "./actions";
 
@@ -19,6 +20,7 @@ export function LoginForm() {
         <span className="font-label text-sm uppercase tracking-wider">Mot de passe</span>
         <input type="password" name="password" required autoComplete="current-password" className={field} />
       </label>
+      <LoginTurnstile key={state.attempt ?? 0} />
       {state.error && (
         <p role="alert" className="text-sm text-solar-copper">
           {state.error}

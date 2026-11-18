@@ -1,35 +1,29 @@
 "use server";
 
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import {
-  clearAttempts,
-  isAdminConfigured,
-  createSessionValue,
-  recordFailedAttempt,
-  roleForPassword,
-  SESSION_COOKIE,
-  sessionCookieOptions,
-  tooManyAttempts,
-} from "@/lib/admin/session";
+import { isAdminConfigured, createSessionValue, roleForPassword, SESSION_COOKIE, sessionCookieOptions } from "@/lib/admin/session";
+import { guardLogin, loginFailed, loginSucceeded } from "@/lib/security/login-guard";
+import { LIMITS } from "@/lib/security/rate-limit";
 
-export type LoginState = { error?: string };
+/** `attempt` change à chaque réponse : le formulaire remonte un widget Turnstile neuf (un jeton ne sert qu'une fois) */
+export type LoginState = { error?: string; attempt?: number };
 
-export async function login(_prev: LoginState, form: FormData): Promise<LoginState> {
-  if (!isAdminConfigured()) return { error: "Accès non configuré (ADMIN_PASSWORD, STAFF_PASSWORD et TICKET_SIGNING_SECRET)." };
-  const h = await headers();
-  const ip = h.get("x-forwarded-for")?.split(",")[0]?.trim() || "local";
-  if (tooManyAttempts(ip)) return { error: "Trop d'essais. Réessaie dans quelques minutes." };
+export async function login(prev: LoginState, form: FormData): Promise<LoginState> {
+  const attempt = (prev.attempt ?? 0) + 1;
+  if (!isAdminConfigured()) return { error: "Accès non configuré (ADMIN_PASSWORD, STAFF_PASSWORD et TICKET_SIGNING_SECRET).", attempt };
+  const guard = await guardLogin(LIMITS.adminLogin, form);
+  if (!guard.ok) return { error: guard.error, attempt };
 
-  const password = String(form.get("password") ?? "");
+  const password = String(form.get("password") ?? "").slice(0, 256);
   const role = password ? roleForPassword(password) : null;
   const value = role && createSessionValue(role);
   if (!role || !value) {
-    recordFailedAttempt(ip);
-    return { error: "Mot de passe incorrect." };
+    await loginFailed(LIMITS.adminLogin, guard.ip);
+    return { error: "Mot de passe incorrect.", attempt };
   }
 
-  clearAttempts(ip);
+  await loginSucceeded(LIMITS.adminLogin, guard.ip);
   (await cookies()).set(SESSION_COOKIE, value, sessionCookieOptions);
   redirect(role === "admin" ? "/admin" : "/admin/scan");
 }

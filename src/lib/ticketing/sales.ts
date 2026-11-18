@@ -1,7 +1,7 @@
 import "server-only";
 import { after } from "next/server";
 import { events as sampleEvents } from "@/data/events";
-import { HOLD_MINUTES, MAX_PER_ORDER, TABLE_SEATS } from "./config";
+import { HOLD_MINUTES, MAX_ACTIVE_HOLDS, MAX_PER_ORDER, TABLE_SEATS } from "./config";
 import { getKkiapayConfig, verifyTransaction } from "./kkiapay";
 import { cancelCheckoutSession, createCheckoutSession, getCheckoutSessionStatus, getSaspayConfig, verifyPayment } from "./saspay";
 import { getAdminClient, isSupabaseConfigured } from "./supabase";
@@ -157,6 +157,16 @@ export async function reserve(input: ReservationInput, affiliateRef?: string | n
     };
   }
   if (!isSupabaseConfigured()) return { ok: false, code: "unavailable" };
+
+  // Réservations actives plafonnées par e-mail ou numéro WhatsApp (2 : une page rechargée ne bloque pas l'acheteur) :
+  // on ne bloque pas des places en série sans payer.
+  // (« Modifier » annule la réservation en cours avant d'en refaire une.) Sans la migration 0017, le contrôle est sauté.
+  const { data: holds, error: holdsError } = await getAdminClient().rpc("active_holds", {
+    p_email: input.email,
+    p_whatsapp: input.whatsapp,
+  });
+  if (holdsError) console.error("[ticketing] active_holds", holdsError.message);
+  else if (typeof holds === "number" && holds >= MAX_ACTIVE_HOLDS) return { ok: false, code: "pending_exists" };
 
   const { data, error } = await getAdminClient().rpc("create_order", {
     p_event_slug: input.slug,

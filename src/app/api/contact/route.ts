@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 import type { ContactResponse } from "@/lib/contact";
+import { clientIp, hitLimit, LIMITS } from "@/lib/security/rate-limit";
 import { verifyTurnstile } from "@/lib/ticketing/turnstile";
 
 const schema = z.object({
@@ -16,15 +17,6 @@ const schema = z.object({
 const reply = (body: ContactResponse, status = 200) =>
   NextResponse.json(body, { status, headers: { "Cache-Control": "no-store" } });
 
-// Limite simple par IP (en mémoire, par instance) : 5 messages par heure
-const sent = new Map<string, number[]>();
-function limited(ip: string) {
-  const now = Date.now();
-  const recent = (sent.get(ip) ?? []).filter((t) => now - t < 3_600_000);
-  sent.set(ip, recent);
-  return recent.length >= 5;
-}
-
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
 
 // Formulaire de la page /contact : le message part vers la boîte de l'équipe, « Répondre » écrit au visiteur.
@@ -36,8 +28,9 @@ export async function POST(request: NextRequest) {
   if (!parsed.success) return reply({ status: "error", code: "invalid" }, 400);
   const { name, email, subject, message, token } = parsed.data;
 
-  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "local";
-  if (limited(ip)) return reply({ status: "error", code: "rate" }, 429);
+  // 5 envois par heure et par IP, comptés en base (partagés entre instances)
+  const ip = clientIp(request.headers);
+  if (await hitLimit(LIMITS.contact, ip)) return reply({ status: "error", code: "rate" }, 429);
 
   const antibot = await verifyTurnstile(token, ip);
   if (antibot === "unavailable") return reply({ status: "error", code: "unavailable" }, 503);
@@ -67,6 +60,5 @@ export async function POST(request: NextRequest) {
     return reply({ status: "error", code: "unavailable" }, 502);
   }
 
-  sent.get(ip)?.push(Date.now());
   return reply({ status: "sent" });
 }

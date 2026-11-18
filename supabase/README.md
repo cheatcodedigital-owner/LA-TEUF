@@ -17,6 +17,7 @@
    - `migrations/0014_door_standard_online_early.sql` (en ligne = early bird jusqu'à la veille midi, standard à la porte, plus de remise de groupe, codes promo sur l'early bird)
    - `migrations/0015_karma_postponed_sales_closed.sql` (KARMA repoussé au 27 novembre, billetterie fermée)
    - `migrations/0016_saspay.sql` (second prestataire SasPay : colonnes `payment_provider`, `saspay_*`, `attach_saspay_session`, `mark_order_paid` avec le prestataire). **À appliquer avant de déployer le code qui l'utilise** (l'admin lit ces colonnes).
+   - `migrations/0017_rate_limits.sql` (audit de sécurité du 18/11/2026 : table `rate_limits` et fonctions `rate_limit_hit` / `rate_limit_count` / `rate_limit_clear`, compteurs partagés entre instances Vercel ; `active_holds`, réservations actives par e-mail ou WhatsApp). Sans elle, le code se replie sur des compteurs en mémoire et saute le plafond de réservations actives.
    - `seed.sql` (événements de départ — early bird 5 000, standard 8 000 FCFA, tables 80 000 → 100 000 FCFA ; **uniquement pour une base vide** : sur une base existante, appliquer la 0009)
 2. Copier `.env.example` en `.env.local` et renseigner `SUPABASE_URL` et `SUPABASE_SERVICE_ROLE_KEY`
    (Project Settings → API). La clé service_role reste côté serveur uniquement.
@@ -43,9 +44,13 @@ Politique du 10/11/2026 (migration 0014, testée par `npm run test:db`) :
   promo sur les tables. Pour modifier prix, dates ou quota : `update ticket_types` (colonnes `price_xof`, `price_after_xof`, `price_step_at`, `quota`).
 - 10 billets (ou tables) maximum par commande.
 - Nouvelle soirée : early bird avec `sales_end` = veille à midi (heure locale), standard avec `door_only = true`, quota early bird selon le lieu.
-- Anti-bot (Cloudflare Turnstile) après le clic sur « Payer » : variables `NEXT_PUBLIC_TURNSTILE_SITE_KEY`
-  et `TURNSTILE_SECRET_KEY` (clés de test utilisées automatiquement en développement).
-- Paiement Kkiapay : après l'anti-bot, `POST /api/billetterie/checkout` renvoie la clé publique et le widget
+- Anti-blocage des places (une réservation tient les places sans paiement) : au clic sur « Réserver », anti-bot Cloudflare
+  Turnstile vérifié par `POST /api/billetterie/reserve` (variables `NEXT_PUBLIC_TURNSTILE_SITE_KEY` et `TURNSTILE_SECRET_KEY`,
+  clés de test utilisées automatiquement en développement), 20 réservations par IP et par 10 minutes (large : IP partagées
+  des opérateurs mobiles), et 2 réservations actives au plus par e-mail ou numéro WhatsApp (`active_holds`, `MAX_ACTIVE_HOLDS`).
+- Limites de débit (`src/lib/security/rate-limit.ts`, migration 0017) : connexions `/admin` et `/influenceur` (8 échecs par IP
+  et par 10 minutes, plus Turnstile ; si Cloudflare est injoignable, la connexion reste possible), contact (5 par heure).
+- Paiement Kkiapay : au clic sur « Payer », `POST /api/billetterie/checkout` renvoie la clé publique et le widget
   s'ouvre (partnerId = id de la commande). Le succès est revérifié côté serveur (SDK `verify` : statut
   SUCCESS, montant, commande visée) avant `mark_order_paid`, par `POST /api/billetterie/confirm` (navigateur)
   et par le webhook `POST /api/billetterie/kkiapay-webhook` (en-tête `x-kkiapay-secret` = `KKIAPAY_WEBHOOK_SECRET`,

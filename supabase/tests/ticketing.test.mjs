@@ -331,5 +331,31 @@ const g = await q(`select
   has_function_privilege('service_role','cancel_order(uuid,text)','execute') s2`);
 ok("fonctions interdites à anon, permises à service_role", !g[0].a1 && !g[0].a2 && !g[0].a3 && g[0].s1 && g[0].s2);
 
+// --- Limites de débit et réservations actives (0017) ------------------------------------------
+await q("delete from rate_limits");
+const hits = [];
+for (let i = 0; i < 3; i++) hits.push((await q("select rate_limit_hit('t:a', 600) as h"))[0].h);
+ok("rate_limit_hit compte 1, 2, 3 dans la fenêtre", hits.join() === "1,2,3", hits.join());
+ok("rate_limit_count lit sans compter", (await q("select rate_limit_count('t:a', 600) as c"))[0].c === 3);
+ok("les clés sont indépendantes", (await q("select rate_limit_hit('t:b', 600) as h"))[0].h === 1);
+await q("update rate_limits set window_start = now() - interval '11 minutes' where key = 't:a'");
+ok("fenêtre expirée : le compteur repart de 0", (await q("select rate_limit_count('t:a', 600) as c"))[0].c === 0
+  && (await q("select rate_limit_hit('t:a', 600) as h"))[0].h === 1);
+await q("select rate_limit_clear('t:a')");
+ok("rate_limit_clear remet à zéro", (await q("select rate_limit_count('t:a', 600) as c"))[0].c === 0);
+
+await resetOrders();
+await setEventIn(5);
+const ebId = (await q("select id from ticket_types where kind='early_bird'"))[0].id;
+await order(ebId, 1, { email: "hold@x.com" });
+ok("active_holds : une réservation en cours pour cet e-mail", (await q("select active_holds('HOLD@x.com', '+000') as n"))[0].n === 1);
+ok("active_holds : retrouvée aussi par le numéro WhatsApp", (await q("select active_holds('autre@x.com', '+22890000000') as n"))[0].n >= 1);
+await q("update orders set expires_at = now() - interval '1 minute' where buyer_email = 'hold@x.com'");
+ok("active_holds : une réservation expirée ne compte plus", (await q("select active_holds('hold@x.com', '+000') as n"))[0].n === 0);
+const rl = await q(`select has_table_privilege('anon','rate_limits','select') t,
+  has_function_privilege('anon','rate_limit_hit(text,int)','execute') f1, has_function_privilege('anon','active_holds(text,text)','execute') f2,
+  has_function_privilege('service_role','rate_limit_hit(text,int)','execute') s1, has_function_privilege('service_role','active_holds(text,text)','execute') s2`);
+ok("limites de débit : interdites à anon, permises à service_role", !rl[0].t && !rl[0].f1 && !rl[0].f2 && rl[0].s1 && rl[0].s2);
+
 console.log(`\n${pass} réussis, ${fail} échoués`);
 process.exit(fail ? 1 : 0);

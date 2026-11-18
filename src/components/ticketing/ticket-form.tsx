@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
-import { useEffect, useState, useSyncExternalStore, type FormEvent } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore, type FormEvent } from "react";
 import { createPortal } from "react-dom";
 import { Flip } from "@/components/ds/flip";
 import { getPathname, Link } from "@/i18n/navigation";
@@ -16,8 +16,8 @@ import { Turnstile } from "./turnstile";
  * Panneau d'achat v2 (maquettes « Événement KARMA » et « Après « Réserver » ») : fond Ivoire, tarifs en cartes radio
  * (sélection Cuivre ; le standard, vendu à la porte, reste affiché en pointillés), compteur − / +, champs en pilule,
  * total, CTA Cuivre. Codes promo : early bird uniquement ; pas de remise de groupe. Après « Réserver » : en-tête Cuivre
- * avec le compte à rebours, récapitulatif, « Payer ». La logique (réservation, anti-robot, Kkiapay, confirmation
- * serveur) est inchangée.
+ * avec le compte à rebours, récapitulatif, « Payer ». Anti-robot (Turnstile) au clic sur « Réserver » : une réservation
+ * bloque des places, c'est elle qu'il faut protéger ; « Payer » part ensuite directement vers le paiement.
  */
 
 const label = "font-label text-[14px] uppercase leading-[18px] tracking-[0.06em] text-cosmic-black";
@@ -40,7 +40,7 @@ const getSeconds = () => Math.floor(Date.now() / 1000);
 const getServerSeconds = () => null;
 
 type Saved = Record<string, string>;
-type PayStep = "idle" | "verifying" | "checking" | "ready" | "redirecting" | "confirming" | "failed" | "paid" | "refund" | "error";
+type PayStep = "idle" | "checking" | "ready" | "redirecting" | "confirming" | "failed" | "paid" | "refund" | "error";
 
 function Alert({ children }: { children: React.ReactNode }) {
   return (
@@ -130,13 +130,13 @@ function Hold({
     return () => window.removeEventListener("pageshow", onShow);
   }, []);
 
-  async function checkout(token: string) {
+  async function checkout() {
     setStep("checking");
     try {
       const res = await fetch("/api/billetterie/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ orderId: order.orderId, token, locale }),
+        body: JSON.stringify({ orderId: order.orderId, locale }),
       });
       const data = (await res.json()) as CheckoutResponse;
       if (data.status === "ready") {
@@ -248,7 +248,7 @@ function Hold({
   }
 
   const clock = left === null ? "--:--" : `${String(Math.floor(left / 60)).padStart(2, "0")}:${String(left % 60).padStart(2, "0")}`;
-  const busy = step === "verifying" || step === "checking" || step === "redirecting" || step === "confirming" || modifying;
+  const busy = step === "checking" || step === "redirecting" || step === "confirming" || modifying;
 
   return (
     <div className="text-deep-indigo">
@@ -289,25 +289,6 @@ function Hold({
           </div>
         </div>
 
-        {step === "verifying" && (
-          <div className="flex flex-col gap-2">
-            <p className={label}>{t("verifyTitle")}</p>
-            <p className="font-body text-[14px] leading-[150%]">{t("verifyText")}</p>
-            {SITE_KEY ? (
-              <Turnstile
-                siteKey={SITE_KEY}
-                locale={locale}
-                onToken={checkout}
-                onError={() => {
-                  setPayError("antibot");
-                  setStep("error");
-                }}
-              />
-            ) : (
-              <Alert>{t("payErrors.unavailable")}</Alert>
-            )}
-          </div>
-        )}
         {step === "checking" && <p className="font-body text-[15px]">{t("checking")}</p>}
         {step === "redirecting" && (
           <p role="status" className="rounded-[24px] bg-violet-pale px-5 py-4 font-body text-[15px] leading-[145%]">
@@ -336,7 +317,7 @@ function Hold({
             onClick={() => {
               setPayError(null);
               if (payment) void pay(payment);
-              else setStep("verifying");
+              else void checkout();
             }}
           >
             {t("pay", { amount: formatXof(order.totalXof, locale) })}
@@ -364,6 +345,9 @@ export function TicketForm({ slug, tiers, sample, initialPromo }: { slug: string
   const locale = useLocale();
   const [response, setResponse] = useState<ReserveResponse | null>(null);
   const [pending, setPending] = useState(false);
+  // Clic sur « Réserver » : le formulaire attend le jeton anti-robot avant de partir
+  const [verifying, setVerifying] = useState(false);
+  const submitted = useRef<FormData | null>(null);
   const [restarted, setRestarted] = useState(0);
   const [saved, setSaved] = useState<Saved>(initialPromo ? { promo: initialPromo } : {});
   // Le standard est vendu uniquement à la porte : jamais sélectionnable en ligne, quel que soit l'état renvoyé par la base
@@ -385,13 +369,27 @@ export function TicketForm({ slug, tiers, sample, initialPromo }: { slug: string
   // Codes promo : early bird uniquement
   const noPromo = tier?.kind !== "early_bird";
 
-  async function onSubmit(event: FormEvent<HTMLFormElement>) {
+  function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (pending || !tier) return;
+    if (pending || verifying || !tier) return;
     const form = new FormData(event.currentTarget);
     setSaved(
       Object.fromEntries([...form.entries()].filter(([, v]) => typeof v === "string")) as Saved,
     );
+    setResponse(null);
+    if (!SITE_KEY) {
+      setResponse({ status: "error", code: "unavailable" });
+      return;
+    }
+    submitted.current = form;
+    setVerifying(true);
+  }
+
+  async function send(token: string) {
+    const form = submitted.current;
+    setVerifying(false);
+    if (!form) return;
+    form.set("token", token);
     setPending(true);
     try {
       const res = await fetch("/api/billetterie/reserve", { method: "POST", body: form });
@@ -667,8 +665,23 @@ export function TicketForm({ slug, tiers, sample, initialPromo }: { slug: string
           </dl>
 
           <div className="flex flex-col gap-4">
-            <Flip type="submit" tone="copper" size={cta} className="w-full" disabled={pending || !tier}>
-              {pending ? t("submitting") : t("submit")}
+            {verifying && SITE_KEY && (
+              <div className="flex flex-col gap-2">
+                <p className={label}>{t("verifyTitle")}</p>
+                <p className="font-body text-[14px] leading-[150%]">{t("verifyText")}</p>
+                <Turnstile
+                  siteKey={SITE_KEY}
+                  locale={locale}
+                  onToken={send}
+                  onError={() => {
+                    setVerifying(false);
+                    setResponse({ status: "error", code: "antibot" });
+                  }}
+                />
+              </div>
+            )}
+            <Flip type="submit" tone="copper" size={cta} className="w-full" disabled={pending || verifying || !tier}>
+              {pending || verifying ? t("submitting") : t("submit")}
             </Flip>
             <p className="text-center font-body text-[13px] leading-[19px]">{t("panelHint", { minutes: HOLD_MINUTES })}</p>
           </div>

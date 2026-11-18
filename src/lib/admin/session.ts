@@ -79,27 +79,6 @@ export function hasRole(request: NextRequest, need: Role): boolean {
   return allowed(readSessionValue(request.cookies.get(SESSION_COOKIE)?.value), need);
 }
 
-// Limite de tentatives de connexion (en mémoire : suffit contre l'essai de mots de passe sur une instance)
-const attempts = new Map<string, { count: number; resetAt: number }>();
-const MAX_ATTEMPTS = 8;
-const WINDOW_MS = 10 * 60_000;
-
-export function tooManyAttempts(ip: string): boolean {
-  const now = Date.now();
-  const a = attempts.get(ip);
-  if (!a || a.resetAt < now) return false;
-  return a.count >= MAX_ATTEMPTS;
-}
-export function recordFailedAttempt(ip: string) {
-  const now = Date.now();
-  const a = attempts.get(ip);
-  if (!a || a.resetAt < now) attempts.set(ip, { count: 1, resetAt: now + WINDOW_MS });
-  else a.count++;
-}
-export function clearAttempts(ip: string) {
-  attempts.delete(ip);
-}
-
 /** Server Action : refuse l'appel sans session suffisante (une action est un point d'entrée public, comme une route). */
 export async function assertRole(need: Role): Promise<void> {
   const role = readSessionValue((await cookies()).get(SESSION_COOKIE)?.value);

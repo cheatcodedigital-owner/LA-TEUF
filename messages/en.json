@@ -265,7 +265,10 @@
       "unavailable": "Ticketing is temporarily unavailable. Please try again in a moment.",
       "unknown": "Something went wrong. Please try again.",
       "form": "Some fields are incomplete or invalid.",
-      "promo_not_allowed": "Promo codes only apply to early bird tickets."
+      "promo_not_allowed": "Promo codes only apply to early bird tickets.",
+      "pending_exists": "You already have a reservation in progress with this email or WhatsApp number. Finish paying for it, or wait a few minutes for it to expire.",
+      "antibot": "The anti-bot check failed. Please try again.",
+      "rate": "Too many reservations from your connection. Please try again in a few minutes."
     },
     "held": "Tickets reserved",
     "heldFor": "Your tickets are held for another",

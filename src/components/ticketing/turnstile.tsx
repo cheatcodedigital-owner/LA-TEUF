@@ -1,6 +1,11 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { TURNSTILE_TEST_SITE_KEY } from "@/lib/ticketing/config";
+
+/** Clé publique du widget ; en développement sans clé, la clé de test de Cloudflare (le défi réussit toujours) */
+export const TURNSTILE_SITE_KEY =
+  process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || (process.env.NODE_ENV !== "production" ? TURNSTILE_TEST_SITE_KEY : undefined);
 
 type TurnstileApi = {
   render: (el: HTMLElement, options: Record<string, unknown>) => string;
