@@ -86,14 +86,16 @@ async function Content({ searchParams }: { searchParams: Promise<{ event?: strin
         <section className="mt-6 rounded-card bg-deep-indigo p-6 ring-2 ring-solar-copper">
           <h2 className="font-title text-2xl">À rembourser ({d.refundNeeded.length})</h2>
           <p className="mt-1 text-sm text-warm-ivory/70">
-            Paiements reçus après expiration de la réservation, sans place disponible. À rembourser depuis Kkiapay.
+            Paiements reçus après expiration de la réservation, sans place disponible. À rembourser depuis le tableau de bord du prestataire (Kkiapay ou SasPay).
           </p>
           <ul className="mt-4 space-y-2">
             {d.refundNeeded.map((o) => (
               <li key={o.id} className="rounded-3xl bg-cosmic-black p-4 text-sm">
                 <span className="font-label uppercase tracking-wider">{fcfa(o.total_xof)}</span> · {o.buyer_name} · {o.buyer_email} · {o.buyer_whatsapp}
                 <br />
-                <span className="text-warm-ivory/60">Transaction Kkiapay : {o.kkiapay_transaction_id ?? "—"}</span>
+                <span className="text-warm-ivory/60">
+                  {o.saspay_transaction_id ? `Transaction SasPay : ${o.saspay_transaction_id}` : `Transaction Kkiapay : ${o.kkiapay_transaction_id ?? "—"}`}
+                </span>
               </li>
             ))}
           </ul>

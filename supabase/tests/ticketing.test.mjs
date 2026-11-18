@@ -286,6 +286,36 @@ ok("paiement après expiration sans place → refund_needed", lp.status === "ref
 ok("jamais plus de billets que la capacité", (await q("select count(*)::int n from tickets where status in ('valid','used')"))[0].n <= 3);
 await q("update events set capacity = 100 where slug = 'la-teuf-karma'");
 
+// --- SasPay (migration 0016) ------------------------------------------------------------------
+await resetOrders();
+const sp = await order(eb.id, 2, { email: "saspay@x.com" });
+const attach = async (o, sid) => (await q("select attach_saspay_session($1,$2,$3) as r", [o.orderId, sid, `https://pay.test/${sid}`]))[0].r;
+ok("SasPay : sans session rattachée, une transaction SasPay ne paie pas la commande",
+  (await err(() => q("select mark_order_paid($1,'spx',$2,'saspay')", [sp.orderId, sp.totalXof]))) === "provider_mismatch");
+const a1 = await attach(sp, "sess-1");
+const a2 = await attach(sp, "sess-2");
+ok("SasPay : première session rattachée, la seconde (double clic) renvoie la première",
+  a1.result === "attached" && a2.result === "existing" && a2.sessionId === "sess-1" && a2.checkoutUrl === "https://pay.test/sess-1", JSON.stringify(a2));
+const sp1 = (await q("select mark_order_paid($1,'sptx-1',$2,'saspay') as p", [sp.orderId, sp.totalXof]))[0].p;
+const sp2 = (await q("select mark_order_paid($1,'sptx-1',$2,'saspay') as p", [sp.orderId, sp.totalXof]))[0].p;
+ok("SasPay : webhook rejoué → mêmes 2 billets, aucun de plus",
+  sp1.status === "paid" && sp1.ticketIds.length === 2 && JSON.stringify(sp1.ticketIds) === JSON.stringify(sp2.ticketIds)
+  && (await q("select count(*)::int n from tickets where order_id=$1", [sp.orderId]))[0].n === 2);
+const spRow = (await q("select payment_provider, saspay_transaction_id, kkiapay_transaction_id from orders where id=$1", [sp.orderId]))[0];
+ok("SasPay : prestataire et transaction enregistrés", spRow.payment_provider === "saspay" && spRow.saspay_transaction_id === "sptx-1" && spRow.kkiapay_transaction_id === null);
+ok("SasPay : commande payée, plus de session rattachable", (await attach(sp, "sess-3")).result === "not_payable");
+const sp3 = await order(eb.id, 1, { email: "saspay2@x.com" });
+await attach(sp3, "sess-4");
+ok("SasPay : une transaction ne paie jamais deux commandes",
+  (await err(() => q("select mark_order_paid($1,'sptx-1',$2,'saspay')", [sp3.orderId, sp3.totalXof]))) !== null);
+ok("prestataire inconnu refusé", (await err(() => q("select mark_order_paid($1,'x',$2,'paypal')", [sp3.orderId, sp3.totalXof]))) === "invalid_provider");
+ok("attach_saspay_session interdit à anon, permis à service_role", await (async () => {
+  const r = (await q(`select has_function_privilege('anon','attach_saspay_session(uuid,text,text)','execute') a,
+    has_function_privilege('anon','mark_order_paid(uuid,text,int,text)','execute') b,
+    has_function_privilege('service_role','attach_saspay_session(uuid,text,text)','execute') s`))[0];
+  return !r.a && !r.b && r.s;
+})());
+
 // --- RLS et droits ----------------------------------------------------------------------------
 const rls = await q("select relrowsecurity from pg_class where relname in ('events','ticket_types','promo_codes','orders','tickets','scan_log')");
 ok("RLS activée sur les 6 tables", rls.length === 6 && rls.every((r) => r.relrowsecurity));

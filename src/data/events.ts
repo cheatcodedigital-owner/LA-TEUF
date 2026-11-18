@@ -13,6 +13,8 @@ export type TeufEvent = {
   venue: string | null;
   city: string;
   country: string;
+  /** Code ISO du pays (paiement SasPay : présélection du pays sur la page de paiement) */
+  countryCode: "TG" | "BJ";
   /** Fuseau du lieu, pour afficher la date et l'heure locales */
   timeZone: string;
   startsAt: string;
@@ -45,6 +47,7 @@ export const events: TeufEvent[] = [
     venue: "KARMA",
     city: "Lomé",
     country: "Togo",
+    countryCode: "TG",
     timeZone: "Africa/Lome",
     // 21 h - 3 h à Lomé (UTC+0)
     startsAt: "2026-11-27T21:00:00Z",
@@ -73,6 +76,7 @@ export const events: TeufEvent[] = [
     venue: "Zone 5 Plage",
     city: "Cotonou",
     country: "Bénin",
+    countryCode: "BJ",
     timeZone: "Africa/Porto-Novo",
     // 16 h - 4 h à Cotonou (UTC+1)
     startsAt: "2026-12-12T15:00:00Z",

@@ -84,6 +84,9 @@ export type PurchaseDetail = {
     buyer_whatsapp: string;
     buyer_country: string;
     kkiapay_transaction_id: string | null;
+    payment_provider: string | null;
+    saspay_session_id: string | null;
+    saspay_transaction_id: string | null;
     created_at: string;
     paid_at: string | null;
     tickets_emailed_at: string | null;
@@ -105,7 +108,7 @@ export async function getPurchase(orderId: string): Promise<PurchaseDetail | nul
   const { data, error } = await db
     .from("orders")
     .select(
-      "id, status, channel, quantity, unit_price_xof, subtotal_xof, discount_xof, total_xof, buyer_name, buyer_email, buyer_whatsapp, buyer_country, kkiapay_transaction_id, created_at, paid_at, tickets_emailed_at, events(slug, name, venue, city, country, starts_at), ticket_types(kind), promo_codes(code), affiliates(slug), tickets(id, nonce, status, scanned_at, scanned_device, created_at)",
+      "id, status, channel, quantity, unit_price_xof, subtotal_xof, discount_xof, total_xof, buyer_name, buyer_email, buyer_whatsapp, buyer_country, kkiapay_transaction_id, payment_provider, saspay_session_id, saspay_transaction_id, created_at, paid_at, tickets_emailed_at, events(slug, name, venue, city, country, starts_at), ticket_types(kind), promo_codes(code), affiliates(slug), tickets(id, nonce, status, scanned_at, scanned_device, created_at)",
     )
     .eq("id", orderId)
     .maybeSingle();

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
-import { useState, useSyncExternalStore, type FormEvent } from "react";
+import { useEffect, useState, useSyncExternalStore, type FormEvent } from "react";
 import { createPortal } from "react-dom";
 import { Flip } from "@/components/ds/flip";
 import { getPathname, Link } from "@/i18n/navigation";
@@ -40,7 +40,7 @@ const getSeconds = () => Math.floor(Date.now() / 1000);
 const getServerSeconds = () => null;
 
 type Saved = Record<string, string>;
-type PayStep = "idle" | "verifying" | "checking" | "ready" | "confirming" | "failed" | "paid" | "refund" | "error";
+type PayStep = "idle" | "verifying" | "checking" | "ready" | "redirecting" | "confirming" | "failed" | "paid" | "refund" | "error";
 
 function Alert({ children }: { children: React.ReactNode }) {
   return (
@@ -121,13 +121,22 @@ function Hold({
   const [failure, setFailure] = useState<PaymentFailure | null>(null);
   const left = now === null ? null : Math.max(0, Math.floor(new Date(order.expiresAt).getTime() / 1000) - now);
 
+  // Retour arrière depuis la page SasPay : la page peut revenir du cache du navigateur avec « Payer » encore désactivé
+  useEffect(() => {
+    const onShow = (e: PageTransitionEvent) => {
+      if (e.persisted) setStep((s) => (s === "redirecting" ? "idle" : s));
+    };
+    window.addEventListener("pageshow", onShow);
+    return () => window.removeEventListener("pageshow", onShow);
+  }, []);
+
   async function checkout(token: string) {
     setStep("checking");
     try {
       const res = await fetch("/api/billetterie/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ orderId: order.orderId, token }),
+        body: JSON.stringify({ orderId: order.orderId, token, locale }),
       });
       const data = (await res.json()) as CheckoutResponse;
       if (data.status === "ready") {
@@ -147,6 +156,13 @@ function Hold({
   async function pay(config: PaymentConfig) {
     setPayError(null);
     if (config.mode === "sample") return confirm("sample");
+    if (config.mode === "saspay") {
+      // Page de paiement hébergée par SasPay. Le bouton reste désactivé jusqu'au départ de la page ; la même session
+      // est réutilisée si l'acheteur revient en arrière (le serveur n'en crée qu'une par commande).
+      setStep("redirecting");
+      window.location.assign(config.checkoutUrl);
+      return;
+    }
     setStep("ready");
     try {
       await openKkiapay(
@@ -232,7 +248,7 @@ function Hold({
   }
 
   const clock = left === null ? "--:--" : `${String(Math.floor(left / 60)).padStart(2, "0")}:${String(left % 60).padStart(2, "0")}`;
-  const busy = step === "verifying" || step === "checking" || step === "confirming" || modifying;
+  const busy = step === "verifying" || step === "checking" || step === "redirecting" || step === "confirming" || modifying;
 
   return (
     <div className="text-deep-indigo">
@@ -293,6 +309,11 @@ function Hold({
           </div>
         )}
         {step === "checking" && <p className="font-body text-[15px]">{t("checking")}</p>}
+        {step === "redirecting" && (
+          <p role="status" className="rounded-[24px] bg-violet-pale px-5 py-4 font-body text-[15px] leading-[145%]">
+            {t("redirecting")}
+          </p>
+        )}
         {step === "confirming" && <ValidatingDialog />}
         {step === "failed" && failure && (
           <ValidatingDialog
@@ -323,7 +344,7 @@ function Hold({
           <p className="font-body text-[13px] leading-[19px]">{t("payHint")}</p>
           <button
             type="button"
-            disabled={step === "checking" || step === "confirming" || modifying}
+            disabled={step === "checking" || step === "redirecting" || step === "confirming" || modifying}
             onClick={modify}
             className="self-center font-label text-[15px] uppercase tracking-[0.04em] text-copper-deep underline underline-offset-4 disabled:opacity-50"
           >

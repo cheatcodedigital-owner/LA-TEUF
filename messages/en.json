@@ -295,7 +295,7 @@
       "not_confirmed": "We could not confirm the payment. If you were charged, contact us with the order reference: your tickets will be issued as soon as it is confirmed."
     },
     "hold": "Reservation in progress",
-    "payHint": "An anti-robot check is requested, then payment opens in Kkiapay's secure window.",
+    "payHint": "An anti-robot check is requested, then payment opens on our payment provider's secure page (Kkiapay or SasPay).",
     "payWaiting": "Payment is open in the Kkiapay window (Mobile Money or card). Your seats are held during the countdown. Window closed? Click “Pay” again.",
     "confirming": "Confirming payment…",
     "confirmingTitle": "Validating your payment",
@@ -327,7 +327,7 @@
     "emailPlaceholder": "Email",
     "whatsappPlaceholder": "WhatsApp, with country code",
     "summaryLine": "{count} × {tier}",
-    "panelHint": "Pay with Mobile Money (Flooz, T-Money, MTN, Moov) or card, via Kkiapay. Your seats are held for {minutes} minutes. Online sales close at noon the day before the night.",
+    "panelHint": "Pay with Mobile Money (Flooz, T-Money, MTN, Moov) or card, via our secure payment provider. Your seats are held for {minutes} minutes. Online sales close at noon the day before the night.",
     "from": "Tickets from",
     "openPanel": "Get your ticket",
     "closePanel": "Close ticketing",
@@ -356,7 +356,8 @@
     "doorBadge": "Only available at the door",
     "drinkIncluded": "Drink included",
     "remainingOnline": "{count, plural, one {# online ticket left} other {# online tickets left}}",
-    "promoEarly": "Early bird tickets only"
+    "promoEarly": "Early bird tickets only",
+    "redirecting": "Taking you to the secure SasPay payment page (Mobile Money or card)…"
   },
   "Cgv": {
     "metaTitle": "Terms of sale",
@@ -394,7 +395,7 @@
       {
         "title": "4. Payment",
         "body": [
-          "Payment is made online by Mobile Money (Flooz, T-Money, MTN, Moov) or by Visa or Mastercard card, through the secure Kkiapay platform. A robot check is required before payment.",
+          "Payment is made online by Mobile Money (Flooz, T-Money, MTN, Moov) or by Visa or Mastercard card, through our payment provider's secure platform (Kkiapay or SasPay). A robot check is required before payment.",
           "If a payment is received when tickets are no longer available, notably after the reservation has expired, it is refunded."
         ]
       },
@@ -489,7 +490,7 @@
       {
         "title": "4. Ticketing and payment",
         "body": [
-          "Online ticket sales are governed by the terms of sale. Mobile Money and card payments are processed by Kkiapay: the organiser does not store any payment data."
+          "Online ticket sales are governed by the terms of sale. Mobile Money and card payments are processed by our payment provider (Kkiapay or SasPay): the organiser does not store any payment data."
         ]
       },
       {
@@ -529,7 +530,7 @@
         "body": [
           "When you order tickets: name, email address, WhatsApp number, country of residence, the content and amount of the order, and the payment transaction identifier.",
           "When you browse: IP address and technical connection data (security, anti-bot check, operating statistics), and a 30-day attribution cookie if you arrive through a partner's link.",
-          "We do not collect card numbers or Mobile Money codes: payment details are entered with Kkiapay."
+          "We do not collect card numbers or Mobile Money codes: payment details are entered with our payment provider (Kkiapay or SasPay)."
         ]
       },
       {
@@ -544,14 +545,14 @@
       {
         "title": "4. Recipients and processors",
         "body": [
-          "Your data is accessible to the LA TEUF team and to the following providers, only to deliver the service: Kkiapay (payment), Supabase (database), Resend (email delivery), Cloudflare Turnstile (anti-bot check) and Vercel (hosting).",
+          "Your data is accessible to the LA TEUF team and to the following providers, only to deliver the service: Kkiapay and SasPay (payment), Supabase (database), Resend (email delivery), Cloudflare Turnstile (anti-bot check) and Vercel (hosting).",
           "Some of these providers are located outside Togo and Benin, notably in the European Union and the United States. We do not sell your data."
         ]
       },
       {
         "title": "5. Retention",
         "body": [
-          "Order data is kept for [To be completed] (proposed: 3 years after the night, then deleted or anonymised). Payment data held by Kkiapay follows their own policy."
+          "Order data is kept for [To be completed] (proposed: 3 years after the night, then deleted or anonymised). Payment data held by Kkiapay or SasPay follows their own policy."
         ]
       },
       {
@@ -680,7 +681,7 @@
         "items": [
           {
             "q": "How can I pay?",
-            "a": "Online, with Mobile Money (Flooz, T-Money, MTN, Moov) or a Visa or Mastercard card, through the secure Kkiapay platform. An anti-bot check is requested just before payment."
+            "a": "Online, with Mobile Money (Flooz, T-Money, MTN, Moov) or a Visa or Mastercard card, through our payment provider's secure platform (Kkiapay or SasPay). An anti-bot check is requested just before payment."
           },
           {
             "q": "How long are my places held?",
@@ -810,5 +811,28 @@
       "LegalNotice": "A question?",
       "Privacy": "A question about your data?"
     }
+  },
+  "PaymentReturn": {
+    "metaTitle": "Payment being confirmed",
+    "processing": {
+      "title": "Payment being <accent>confirmed</accent>",
+      "text": "We're checking your payment with SasPay. As soon as it's confirmed, your tickets are sent by e-mail. Keep this page open for a moment."
+    },
+    "slow": {
+      "title": "Just a <accent>moment</accent>",
+      "text": "Confirmation is taking longer than usual. There's nothing to redo: your tickets will arrive by e-mail once the payment is confirmed. Nothing within an hour? Write to us at {email} with your reference."
+    },
+    "refund": {
+      "title": "No seats <accent>left</accent>",
+      "text": "Your payment came through, but the party sold out in the meantime. You'll be refunded: we'll contact you very soon. Questions? Write to us at {email} with your reference."
+    },
+    "unknown": {
+      "title": "Order <accent>not found</accent>",
+      "text": "We can't find this order. If you paid, your tickets will arrive by e-mail; otherwise write to us at {email}."
+    },
+    "waiting": "Confirming",
+    "reference": "Reference",
+    "back": "Back to tickets",
+    "contact": "Contact us"
   }
 }

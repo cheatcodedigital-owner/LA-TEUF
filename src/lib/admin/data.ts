@@ -54,6 +54,9 @@ type OrderRow = {
   affiliate_commission_xof: number;
   affiliate_ref: string | null;
   kkiapay_transaction_id: string | null;
+  payment_provider: string | null;
+  saspay_session_id: string | null;
+  saspay_transaction_id: string | null;
   expires_at: string | null;
   created_at: string;
   paid_at: string | null;
@@ -64,7 +67,7 @@ type OrderRow = {
 };
 
 const ORDER_COLUMNS =
-  "id, status, channel, quantity, unit_price_xof, subtotal_xof, discount_xof, total_xof, buyer_name, buyer_email, buyer_whatsapp, buyer_country, affiliate_commission_xof, affiliate_ref, kkiapay_transaction_id, expires_at, created_at, paid_at, tickets_emailed_at, ticket_types(kind), promo_codes(code), affiliates(slug)";
+  "id, status, channel, quantity, unit_price_xof, subtotal_xof, discount_xof, total_xof, buyer_name, buyer_email, buyer_whatsapp, buyer_country, affiliate_commission_xof, affiliate_ref, kkiapay_transaction_id, payment_provider, saspay_session_id, saspay_transaction_id, expires_at, created_at, paid_at, tickets_emailed_at, ticket_types(kind), promo_codes(code), affiliates(slug)";
 
 const eventOrders = (eventId: string) =>
   fetchAll<OrderRow>((from, to) =>

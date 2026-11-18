@@ -15,6 +15,8 @@
    - `migrations/0012_event_times_venues.sql` (KARMA à 21 h, Cotonou à Zone 5 Plage)
    - `migrations/0013_cotonou_hours.sql` (Cotonou de 16 h à 4 h)
    - `migrations/0014_door_standard_online_early.sql` (en ligne = early bird jusqu'à la veille midi, standard à la porte, plus de remise de groupe, codes promo sur l'early bird)
+   - `migrations/0015_karma_postponed_sales_closed.sql` (KARMA repoussé au 27 novembre, billetterie fermée)
+   - `migrations/0016_saspay.sql` (second prestataire SasPay : colonnes `payment_provider`, `saspay_*`, `attach_saspay_session`, `mark_order_paid` avec le prestataire). **À appliquer avant de déployer le code qui l'utilise** (l'admin lit ces colonnes).
    - `seed.sql` (événements de départ — early bird 5 000, standard 8 000 FCFA, tables 80 000 → 100 000 FCFA ; **uniquement pour une base vide** : sur une base existante, appliquer la 0009)
 2. Copier `.env.example` en `.env.local` et renseigner `SUPABASE_URL` et `SUPABASE_SERVICE_ROLE_KEY`
    (Project Settings → API). La clé service_role reste côté serveur uniquement.
@@ -48,6 +50,22 @@ Politique du 10/11/2026 (migration 0014, testée par `npm run test:db`) :
   SUCCESS, montant, commande visée) avant `mark_order_paid`, par `POST /api/billetterie/confirm` (navigateur)
   et par le webhook `POST /api/billetterie/kkiapay-webhook` (en-tête `x-kkiapay-secret` = `KKIAPAY_WEBHOOK_SECRET`,
   à déclarer dans le tableau de bord Kkiapay). Les deux chemins sont idempotents. Variables : voir `.env.example`.
+- **Choix du prestataire** : `PAYMENT_PROVIDER=kkiapay` (défaut) ou `saspay`. Sur Vercel, changer la variable puis « Redeploy »
+  (sans changement de code). Les deux webhooks restent actifs pour les paiements commencés avant une bascule.
+- Paiement SasPay (checkout hébergé, `src/lib/ticketing/saspay.ts`) : après l'anti-bot, `POST /api/billetterie/checkout` crée côté
+  serveur une session `POST /checkout-sessions/` (montant `"5000.00"`, XOF, `country` TG ou BJ selon l'édition, `fee_charge_mode: DEDUCTED`
+  — l'acheteur paie le prix affiché, les frais sont retirés du net —, `metadata` = `order_id`, `edition`, `tickets`, `expires_at` = fin de la
+  réservation) et ne renvoie au navigateur que `checkout_url`. **Une seule session par commande** (`attach_saspay_session`, atomique) :
+  un double clic ou un retour arrière réutilise la même. Clé `SASPAY_SECRET_KEY` (sk_test_ → API sandbox, sk_live_ → API live).
+- Billets SasPay émis **uniquement par le webhook** `POST /api/billetterie/saspay-webhook` (événement `transaction.success`) :
+  signature HMAC SHA-256 de `${X-Webhook-Timestamp}.${corps brut}` avec `SASPAY_WEBHOOK_SECRET`, horodatage à ±5 min, comparaison en
+  temps constant ; puis `GET /payments/{id}/verify/` (SUCCESS, XOF, `requested_amount` = total) ; le webhook ne transporte ni metadata
+  ni session, la commande est retrouvée par sa session (`GET /checkout-sessions/{id}/status/` → `transaction_id`) ; enfin
+  `mark_order_paid(..., 'saspay')`, idempotent (un webhook rejoué ne crée aucun billet de plus ; `saspay_transaction_id` unique).
+  5xx si SasPay ou la base est indisponible (SasPay relance 5 fois sur 2 h).
+- Page de retour `/billetterie/[slug]/retour?commande=…` (`return_url`, seulement après un paiement réussi) : lit le statut en base
+  (`GET /api/billetterie/commande`) et n'émet jamais de billet ; payée → page « merci ». Secours si le webhook n'arrive jamais :
+  bouton « Revérifier le paiement » dans `/admin/achats/[id]` (même vérification serveur).
 - Pour simuler une date en mode démo : `TICKETING_SAMPLE_NOW=2026-11-01T12:00:00Z` dans `.env.local`.
 
 ## Tests du schéma

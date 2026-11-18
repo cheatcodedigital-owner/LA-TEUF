@@ -295,7 +295,7 @@
       "not_confirmed": "Nous n'avons pas pu confirmer le paiement. Si tu as été débité, contacte-nous avec la référence de commande : tes billets seront émis dès la confirmation."
     },
     "hold": "Réservation en cours",
-    "payHint": "Un contrôle anti-robot est demandé, puis le paiement s'ouvre dans la fenêtre sécurisée de Kkiapay.",
+    "payHint": "Un contrôle anti-robot est demandé, puis le paiement s'ouvre sur la page sécurisée de notre prestataire de paiement (Kkiapay ou SasPay).",
     "payWaiting": "Le paiement est ouvert dans la fenêtre Kkiapay (Mobile Money ou carte). Tes places restent gardées pendant le compte à rebours. Fenêtre fermée ? Clique de nouveau sur « Payer ».",
     "confirming": "Confirmation du paiement…",
     "confirmingTitle": "Validation de ton paiement",
@@ -327,7 +327,7 @@
     "emailPlaceholder": "E-mail",
     "whatsappPlaceholder": "WhatsApp, avec l'indicatif",
     "summaryLine": "{count} × {tier}",
-    "panelHint": "Paiement Mobile Money (Flooz, T-Money, MTN, Moov) ou carte, via Kkiapay. Tes places sont gardées {minutes} minutes. La vente en ligne ferme la veille de la soirée à midi.",
+    "panelHint": "Paiement Mobile Money (Flooz, T-Money, MTN, Moov) ou carte, via notre prestataire de paiement sécurisé. Tes places sont gardées {minutes} minutes. La vente en ligne ferme la veille de la soirée à midi.",
     "from": "Billets dès",
     "openPanel": "Prendre ton billet",
     "closePanel": "Fermer la billetterie",
@@ -356,7 +356,8 @@
     "doorBadge": "Uniquement disponible à la porte",
     "drinkIncluded": "Consommation incluse",
     "remainingOnline": "{count, plural, one {# billet en ligne restant} other {# billets en ligne restants}}",
-    "promoEarly": "Réservé aux billets early bird"
+    "promoEarly": "Réservé aux billets early bird",
+    "redirecting": "Direction la page de paiement sécurisée SasPay (Mobile Money ou carte)…"
   },
   "Cgv": {
     "metaTitle": "Conditions générales de vente",
@@ -394,7 +395,7 @@
       {
         "title": "4. Paiement",
         "body": [
-          "Le paiement s'effectue en ligne, par Mobile Money (Flooz, T-Money, MTN, Moov) ou par carte Visa ou Mastercard, via la plateforme sécurisée Kkiapay. Un contrôle anti-robot est demandé avant le paiement.",
+          "Le paiement s'effectue en ligne, par Mobile Money (Flooz, T-Money, MTN, Moov) ou par carte Visa ou Mastercard, via la plateforme sécurisée de notre prestataire de paiement (Kkiapay ou SasPay). Un contrôle anti-robot est demandé avant le paiement.",
           "Si un paiement est reçu alors que les places ne sont plus disponibles, notamment après expiration de la réservation, il est remboursé."
         ]
       },
@@ -489,7 +490,7 @@
       {
         "title": "4. Billetterie et paiement",
         "body": [
-          "La vente de billets en ligne est régie par les conditions générales de vente. Les paiements par Mobile Money ou carte bancaire sont traités par Kkiapay : l'organisateur ne conserve aucune donnée de paiement."
+          "La vente de billets en ligne est régie par les conditions générales de vente. Les paiements par Mobile Money ou carte bancaire sont traités par notre prestataire de paiement (Kkiapay ou SasPay) : l'organisateur ne conserve aucune donnée de paiement."
         ]
       },
       {
@@ -529,7 +530,7 @@
         "body": [
           "Lors d'une commande de billets : nom, adresse e-mail, numéro WhatsApp, pays de résidence, contenu et montant de la commande, identifiant de la transaction de paiement.",
           "Lors de la navigation : adresse IP et données techniques de connexion (sécurité, anti-robot, statistiques de fonctionnement), et un cookie d'attribution de 30 jours si vous arrivez par le lien d'un partenaire.",
-          "Nous ne collectons ni numéro de carte bancaire ni code Mobile Money : le paiement est saisi chez Kkiapay."
+          "Nous ne collectons ni numéro de carte bancaire ni code Mobile Money : le paiement est saisi chez notre prestataire de paiement (Kkiapay ou SasPay)."
         ]
       },
       {
@@ -544,14 +545,14 @@
       {
         "title": "4. Destinataires et sous-traitants",
         "body": [
-          "Vos données sont accessibles à l'équipe de LA TEUF et aux prestataires suivants, uniquement pour fournir le service : Kkiapay (paiement), Supabase (base de données), Resend (envoi des e-mails), Cloudflare Turnstile (contrôle anti-robot) et Vercel (hébergement).",
+          "Vos données sont accessibles à l'équipe de LA TEUF et aux prestataires suivants, uniquement pour fournir le service : Kkiapay et SasPay (paiement), Supabase (base de données), Resend (envoi des e-mails), Cloudflare Turnstile (contrôle anti-robot) et Vercel (hébergement).",
           "Certains de ces prestataires sont situés hors du Togo et du Bénin, notamment dans l'Union européenne et aux États-Unis. Nous ne vendons pas vos données."
         ]
       },
       {
         "title": "5. Durée de conservation",
         "body": [
-          "Les données de commande sont conservées [À compléter] (durée proposée : 3 ans après la soirée, puis suppression ou anonymisation). Les données de paiement détenues par Kkiapay suivent leur propre politique."
+          "Les données de commande sont conservées [À compléter] (durée proposée : 3 ans après la soirée, puis suppression ou anonymisation). Les données de paiement détenues par Kkiapay ou SasPay suivent leur propre politique."
         ]
       },
       {
@@ -680,7 +681,7 @@
         "items": [
           {
             "q": "Comment payer ?",
-            "a": "En ligne, par Mobile Money (Flooz, T-Money, MTN, Moov) ou par carte Visa ou Mastercard, via la plateforme sécurisée Kkiapay. Un contrôle anti-robot est demandé juste avant le paiement."
+            "a": "En ligne, par Mobile Money (Flooz, T-Money, MTN, Moov) ou par carte Visa ou Mastercard, via la plateforme sécurisée de notre prestataire de paiement (Kkiapay ou SasPay). Un contrôle anti-robot est demandé juste avant le paiement."
           },
           {
             "q": "Combien de temps mes places sont-elles gardées ?",
@@ -810,5 +811,28 @@
       "LegalNotice": "Une question ?",
       "Privacy": "Une question sur vos données ?"
     }
+  },
+  "PaymentReturn": {
+    "metaTitle": "Paiement en cours de validation",
+    "processing": {
+      "title": "Paiement en cours de <accent>validation</accent>",
+      "text": "On vérifie ton paiement auprès de SasPay. Dès qu'il est confirmé, tes billets partent par e-mail. Garde cette page ouverte quelques instants."
+    },
+    "slow": {
+      "title": "Encore un <accent>instant</accent>",
+      "text": "La validation prend plus de temps que prévu. Tu n'as rien à refaire : tes billets arriveront par e-mail dès que le paiement sera confirmé. Rien reçu d'ici une heure ? Écris-nous à {email} avec ta référence."
+    },
+    "refund": {
+      "title": "Plus de place <accent>disponible</accent>",
+      "text": "Ton paiement est bien arrivé, mais la soirée était complète entre-temps. Tu vas être remboursé : on te contacte très vite. Une question ? Écris-nous à {email} avec ta référence."
+    },
+    "unknown": {
+      "title": "Commande <accent>introuvable</accent>",
+      "text": "On ne retrouve pas cette commande. Si tu as payé, tes billets arrivent par e-mail ; sinon écris-nous à {email}."
+    },
+    "waiting": "Validation en cours",
+    "reference": "Référence",
+    "back": "Retour à la billetterie",
+    "contact": "Nous contacter"
   }
 }

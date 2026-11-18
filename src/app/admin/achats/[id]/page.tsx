@@ -6,9 +6,12 @@ import { getPurchase } from "@/lib/admin/purchases";
 import { requireRole } from "@/lib/admin/session";
 import { isSupabaseConfigured } from "@/lib/ticketing/supabase";
 import { AdminNav } from "../../nav";
-import { resendTickets } from "../actions";
+import { reconcileSaspay, resendTickets } from "../actions";
 import { ORDER_STATUS, TICKET_STATUS, fcfa, when } from "../format";
+import { ReconcileForm } from "../reconcile-form";
 import { ResendForm } from "../resend-form";
+
+const PROVIDER: Record<string, string> = { kkiapay: "Kkiapay", saspay: "SasPay" };
 
 export default function PurchasePage(props: PageProps<"/admin/achats/[id]">) {
   return (
@@ -44,7 +47,9 @@ async function Content({ params }: { params: Promise<{ id: string }> }) {
     ["Tarif", `${kindLabel(o.ticket_types?.kind)} · ${o.quantity} × ${fcfa(o.unit_price_xof)}`],
     ["Total", `${fcfa(o.total_xof)}${o.discount_xof ? ` (remise ${fcfa(o.discount_xof)})` : ""}`],
     ["Canal", o.channel === "onsite" ? "Sur place" : "En ligne"],
-    ["Transaction Kkiapay", o.kkiapay_transaction_id ?? "—"],
+    ["Paiement", PROVIDER[o.payment_provider ?? ""] ?? "—"],
+    ["Transaction", o.saspay_transaction_id ?? o.kkiapay_transaction_id ?? "—"],
+    ...(o.saspay_session_id ? ([["Session SasPay", o.saspay_session_id]] as [string, string][]) : []),
     ["Code promo / influenceur", [o.promo_codes?.code, o.affiliates?.slug].filter(Boolean).join(" · ") || "—"],
     ["E-mail des billets", o.tickets_emailed_at ? `envoyé le ${when(o.tickets_emailed_at)}` : "pas encore envoyé"],
   ];
@@ -99,6 +104,17 @@ async function Content({ params }: { params: Promise<{ id: string }> }) {
           </dl>
         </section>
       </div>
+
+      {o.saspay_session_id && !o.saspay_transaction_id && (
+        <section className="mt-6 rounded-card bg-deep-indigo p-6">
+          <h2 className="font-title text-2xl">Revérifier le paiement SasPay</h2>
+          <p className="mt-1 text-sm text-warm-ivory/70">
+            Si l&apos;acheteur a payé mais que le webhook n&apos;est jamais arrivé : le paiement est revérifié auprès de SasPay, puis les billets
+            sont émis et envoyés (jamais deux fois).
+          </p>
+          <ReconcileForm action={reconcileSaspay} orderId={o.id} />
+        </section>
+      )}
 
       {deliverable && active.length > 0 && (
         <section className="mt-6 rounded-card bg-deep-indigo p-6">

@@ -80,8 +80,17 @@ export type ReserveResponse =
   | { status: "success"; order: OrderSummary; sample: boolean }
   | { status: "error"; code?: ReserveErrorCode; remaining?: number; fieldErrors?: Record<string, true> };
 
-/** Comment l'acheteur paie : widget Kkiapay (clé publique) ou paiement simulé en démo */
-export type PaymentConfig = { mode: "kkiapay"; publicKey: string; sandbox: boolean } | { mode: "sample" };
+/** Prestataire de paiement actif (variable PAYMENT_PROVIDER) */
+export type PaymentProvider = "kkiapay" | "saspay";
+
+/**
+ * Comment l'acheteur paie : widget Kkiapay (clé publique), redirection vers la page de paiement SasPay (session créée
+ * côté serveur, aucune clé côté navigateur) ou paiement simulé en démo
+ */
+export type PaymentConfig =
+  | { mode: "kkiapay"; publicKey: string; sandbox: boolean }
+  | { mode: "saspay"; checkoutUrl: string }
+  | { mode: "sample" };
 
 export type CheckoutResponse =
   | { status: "ready"; totalXof: number; payment: PaymentConfig }
@@ -96,3 +105,9 @@ export type ConfirmResponse =
   | { status: "error"; code: "not_confirmed" | "unavailable" };
 
 export type PaymentFailure = "processing_error" | "insufficient_funds" | "declined" | "unknown";
+
+/**
+ * Réponse de GET /api/billetterie/commande (page de retour SasPay) : statut lu en base, jamais d'émission de billet.
+ * processing : paiement pas encore rapproché (le webhook émet les billets) · refund : payé sans place disponible
+ */
+export type OrderStatusResponse = { status: "paid" | "processing" | "refund" | "unknown" };
