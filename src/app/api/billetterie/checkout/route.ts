@@ -37,7 +37,9 @@ export async function POST(request: NextRequest) {
   const sample = getPaymentConfig();
   if (getPaymentProvider() === "saspay" && sample?.mode !== "sample") {
     const locale = hasLocale(routing.locales, parsed.data.locale) ? parsed.data.locale : routing.defaultLocale;
-    const site = (process.env.SITE_URL || request.nextUrl.origin).replace(/\/$/, "");
+    // SITE_URL saisi sans schéma (« lateufelectronic.com ») : SasPay exige une URL de retour absolue
+    const configured = process.env.SITE_URL?.trim();
+    const site = (configured ? (/^https?:\/\//.test(configured) ? configured : `https://${configured}`) : request.nextUrl.origin).replace(/\/$/, "");
     const returnUrl = (slug: string) =>
       `${site}${getPathname({ href: `/billetterie/${slug}/retour`, locale })}?commande=${encodeURIComponent(parsed.data.orderId)}`;
     const started = await startSaspayCheckout(parsed.data.orderId, returnUrl);
