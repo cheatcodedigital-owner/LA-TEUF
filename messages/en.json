@@ -306,7 +306,7 @@
     "failure": {
       "title": "Payment unsuccessful",
       "processing_error": "An error occurred while processing your payment. The payment did not go through.",
-      "insufficient_funds": "The balance on your Mobile Money account or card is insufficient. Top it up or use another payment method.",
+      "insufficient_funds": "The balance on your Mobile Money account is insufficient. Top it up or use another payment method.",
       "declined": "Your payment was declined by your operator or bank. Check your details or try another payment method.",
       "unknown": "The payment failed or was cancelled.",
       "hint": "Your seats stay held while the countdown runs. Click “Pay” to try again.",
@@ -333,7 +333,7 @@
     "emailPlaceholder": "Email",
     "whatsappPlaceholder": "WhatsApp, with country code",
     "summaryLine": "{count} × {tier}",
-    "panelHint": "Pay with Mobile Money (Flooz, T-Money, MTN, Moov) or card, via our secure payment provider. Your seats are held for {minutes} minutes. Online sales close at noon the day before the night.",
+    "panelHint": "Pay with Mobile Money (Flooz, T-Money, MTN, Moov), via our secure payment provider. Your seats are held for {minutes} minutes. Online sales close at noon the day before the night.",
     "from": "Tickets from",
     "openPanel": "Get your ticket",
     "closePanel": "Close ticketing",
@@ -363,7 +363,7 @@
     "drinkIncluded": "Drink included",
     "remainingOnline": "{count, plural, one {# online ticket left} other {# online tickets left}}",
     "promoEarly": "Early bird tickets only",
-    "redirecting": "Taking you to the secure SasPay payment page (Mobile Money or card)…"
+    "redirecting": "Taking you to the secure SasPay payment page (Mobile Money)…"
   },
   "Cgv": {
     "metaTitle": "Terms of sale",
@@ -401,7 +401,7 @@
       {
         "title": "4. Payment",
         "body": [
-          "Payment is made online by Mobile Money (Flooz, T-Money, MTN, Moov) or by Visa or Mastercard card, through our payment provider's secure platform (Kkiapay or SasPay). A robot check is required before payment.",
+          "Payment is made online by Mobile Money (Flooz, T-Money, MTN, Moov), through our payment provider's secure platform (Kkiapay or SasPay). A robot check is required before payment.",
           "If a payment is received when tickets are no longer available, notably after the reservation has expired, it is refunded."
         ]
       },
@@ -496,7 +496,7 @@
       {
         "title": "4. Ticketing and payment",
         "body": [
-          "Online ticket sales are governed by the terms of sale. Mobile Money and card payments are processed by our payment provider (Kkiapay or SasPay): the organiser does not store any payment data."
+          "Online ticket sales are governed by the terms of sale. Mobile Money payments are processed by our payment provider (Kkiapay or SasPay): the organiser does not store any payment data."
         ]
       },
       {
@@ -687,7 +687,7 @@
         "items": [
           {
             "q": "How can I pay?",
-            "a": "Online, with Mobile Money (Flooz, T-Money, MTN, Moov) or a Visa or Mastercard card, through our payment provider's secure platform (Kkiapay or SasPay). An anti-bot check is requested just before payment."
+            "a": "Online, with Mobile Money (Flooz, T-Money, MTN, Moov), through our payment provider's secure platform (Kkiapay or SasPay). An anti-bot check is requested just before payment."
           },
           {
             "q": "How long are my places held?",
@@ -695,7 +695,7 @@
           },
           {
             "q": "My payment failed, what now?",
-            "a": "Your places stay held during the countdown: click “Pay” to try again, with another payment method if needed. Also check the balance of your Mobile Money account or card."
+            "a": "Your places stay held during the countdown: click “Pay” to try again, with another payment method if needed. Also check the balance of your Mobile Money account."
           },
           {
             "q": "I paid but my time had run out.",
@@ -836,6 +836,7 @@
       "title": "Order <accent>not found</accent>",
       "text": "We can't find this order. If you paid, your tickets will arrive by e-mail; otherwise write to us at {email}."
     },
+    "help": "Mobile Money payment: approve the request on your phone as soon as it shows up, it expires quickly. The prompt won't respond? Open your operator's Mobile Money menu to approve the pending payment, or start the payment again from the ticket page.",
     "waiting": "Confirming",
     "reference": "Reference",
     "back": "Back to tickets",

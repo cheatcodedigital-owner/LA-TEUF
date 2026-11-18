@@ -306,7 +306,7 @@
     "failure": {
       "title": "Paiement non abouti",
       "processing_error": "Une erreur est survenue pendant le traitement de ton paiement. Le paiement n'a pas abouti.",
-      "insufficient_funds": "Le solde de ton compte Mobile Money ou de ta carte est insuffisant. Recharge-le ou utilise un autre moyen de paiement.",
+      "insufficient_funds": "Le solde de ton compte Mobile Money est insuffisant. Recharge-le ou utilise un autre moyen de paiement.",
       "declined": "Ton paiement a été refusé par ton opérateur ou ta banque. Vérifie tes informations ou essaie un autre moyen de paiement.",
       "unknown": "Le paiement a échoué ou a été annulé.",
       "hint": "Tes places restent gardées pendant le compte à rebours. Clique sur « Réessayer » pour relancer le paiement.",
@@ -333,7 +333,7 @@
     "emailPlaceholder": "E-mail",
     "whatsappPlaceholder": "WhatsApp, avec l'indicatif",
     "summaryLine": "{count} × {tier}",
-    "panelHint": "Paiement Mobile Money (Flooz, T-Money, MTN, Moov) ou carte, via notre prestataire de paiement sécurisé. Tes places sont gardées {minutes} minutes. La vente en ligne ferme la veille de la soirée à midi.",
+    "panelHint": "Paiement Mobile Money (Flooz, T-Money, MTN, Moov), via notre prestataire de paiement sécurisé. Tes places sont gardées {minutes} minutes. La vente en ligne ferme la veille de la soirée à midi.",
     "from": "Billets dès",
     "openPanel": "Prendre ton billet",
     "closePanel": "Fermer la billetterie",
@@ -363,7 +363,7 @@
     "drinkIncluded": "Consommation incluse",
     "remainingOnline": "{count, plural, one {# billet en ligne restant} other {# billets en ligne restants}}",
     "promoEarly": "Réservé aux billets early bird",
-    "redirecting": "Direction la page de paiement sécurisée SasPay (Mobile Money ou carte)…"
+    "redirecting": "Direction la page de paiement sécurisée SasPay (Mobile Money)…"
   },
   "Cgv": {
     "metaTitle": "Conditions générales de vente",
@@ -401,7 +401,7 @@
       {
         "title": "4. Paiement",
         "body": [
-          "Le paiement s'effectue en ligne, par Mobile Money (Flooz, T-Money, MTN, Moov) ou par carte Visa ou Mastercard, via la plateforme sécurisée de notre prestataire de paiement (Kkiapay ou SasPay). Un contrôle anti-robot est demandé avant le paiement.",
+          "Le paiement s'effectue en ligne, par Mobile Money (Flooz, T-Money, MTN, Moov), via la plateforme sécurisée de notre prestataire de paiement (Kkiapay ou SasPay). Un contrôle anti-robot est demandé avant le paiement.",
           "Si un paiement est reçu alors que les places ne sont plus disponibles, notamment après expiration de la réservation, il est remboursé."
         ]
       },
@@ -496,7 +496,7 @@
       {
         "title": "4. Billetterie et paiement",
         "body": [
-          "La vente de billets en ligne est régie par les conditions générales de vente. Les paiements par Mobile Money ou carte bancaire sont traités par notre prestataire de paiement (Kkiapay ou SasPay) : l'organisateur ne conserve aucune donnée de paiement."
+          "La vente de billets en ligne est régie par les conditions générales de vente. Les paiements par Mobile Money sont traités par notre prestataire de paiement (Kkiapay ou SasPay) : l'organisateur ne conserve aucune donnée de paiement."
         ]
       },
       {
@@ -687,7 +687,7 @@
         "items": [
           {
             "q": "Comment payer ?",
-            "a": "En ligne, par Mobile Money (Flooz, T-Money, MTN, Moov) ou par carte Visa ou Mastercard, via la plateforme sécurisée de notre prestataire de paiement (Kkiapay ou SasPay). Un contrôle anti-robot est demandé juste avant le paiement."
+            "a": "En ligne, par Mobile Money (Flooz, T-Money, MTN, Moov), via la plateforme sécurisée de notre prestataire de paiement (Kkiapay ou SasPay). Un contrôle anti-robot est demandé juste avant le paiement."
           },
           {
             "q": "Combien de temps mes places sont-elles gardées ?",
@@ -695,7 +695,7 @@
           },
           {
             "q": "Mon paiement a échoué, que faire ?",
-            "a": "Tes places restent gardées pendant le compte à rebours : clique sur « Payer » pour réessayer, avec un autre moyen de paiement si besoin. Vérifie aussi le solde de ton compte Mobile Money ou de ta carte."
+            "a": "Tes places restent gardées pendant le compte à rebours : clique sur « Payer » pour réessayer, avec un autre moyen de paiement si besoin. Vérifie aussi le solde de ton compte Mobile Money."
           },
           {
             "q": "J'ai payé mais mon temps était écoulé.",
@@ -836,6 +836,7 @@
       "title": "Commande <accent>introuvable</accent>",
       "text": "On ne retrouve pas cette commande. Si tu as payé, tes billets arrivent par e-mail ; sinon écris-nous à {email}."
     },
+    "help": "Paiement Mobile Money : valide la demande sur ton téléphone dès qu'elle s'affiche, elle expire vite. La fenêtre ne répond pas ? Ouvre le menu Mobile Money de ton opérateur pour valider le paiement en attente, ou relance le paiement depuis la billetterie.",
     "waiting": "Validation en cours",
     "reference": "Référence",
     "back": "Retour à la billetterie",

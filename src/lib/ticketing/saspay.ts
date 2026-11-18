@@ -76,9 +76,15 @@ export type CheckoutSessionInput = {
   metadata: Record<string, string | number>;
 };
 
-/** POST /checkout-sessions/ : page de paiement hébergée. `fee_charge_mode: DEDUCTED` : l'acheteur paie le prix affiché. */
+/**
+ * POST /checkout-sessions/ : page de paiement hébergée. `fee_charge_mode: DEDUCTED` : l'acheteur paie le prix affiché,
+ * les frais SasPay sont retenus sur notre reversement. SasPay n'applique ce choix que si l'option « Autoriser le choix
+ * du mode de frais par l'API » (ALLOW_CLIENT_OVERRIDE) est active sur le compte, sinon il l'ignore sans erreur et
+ * ajoute les frais au montant débité. Une session qui ne revient pas en DEDUCTED est donc annulée et refusée :
+ * mieux vaut une vente bloquée (visible dans les journaux) qu'un acheteur qui paie plus que le prix affiché.
+ */
 export async function createCheckoutSession(input: CheckoutSessionInput) {
-  const res = await call<{ id?: unknown; checkout_url?: unknown }>("/checkout-sessions/", {
+  const res = await call<{ id?: unknown; checkout_url?: unknown; fee_charge_mode?: unknown }>("/checkout-sessions/", {
     method: "POST",
     body: {
       amount: toDecimal(input.amountXof),
@@ -95,8 +101,15 @@ export async function createCheckoutSession(input: CheckoutSessionInput) {
     },
   });
   if (!res.ok) return null;
-  const { id, checkout_url } = res.data;
+  const { id, checkout_url, fee_charge_mode } = res.data;
   if (typeof id !== "string" || typeof checkout_url !== "string" || !/^https:\/\//.test(checkout_url)) return null;
+  if (fee_charge_mode !== "DEDUCTED") {
+    console.error("[ticketing] saspay : frais à la charge de l'acheteur, session refusée (activer ALLOW_CLIENT_OVERRIDE)", {
+      fee_charge_mode: typeof fee_charge_mode === "string" ? fee_charge_mode : null,
+    });
+    await cancelCheckoutSession(id);
+    return null;
+  }
   return { id, checkoutUrl: checkout_url };
 }
 
@@ -130,15 +143,25 @@ export type VerifiedPayment = { status: "SUCCESS" | "PENDING" | "FAILED" | "CANC
  * `null` : vérification impossible (réseau, 5xx, 429) ; `UNKNOWN` : paiement introuvable ou réponse inattendue.
  */
 export async function verifyPayment(paymentId: string): Promise<VerifiedPayment | null> {
-  const res = await call<{ status?: unknown; requested_amount?: unknown; currency?: unknown }>(
-    `/payments/${encodeURIComponent(paymentId)}/verify/`,
-  );
+  const res = await call<{
+    status?: unknown;
+    requested_amount?: unknown;
+    debited_amount?: unknown;
+    fee_charge_mode?: unknown;
+    currency?: unknown;
+  }>(`/payments/${encodeURIComponent(paymentId)}/verify/`);
   if (!res.ok) {
     if (res.status === 404 || res.status === 403 || res.status === 400) return { status: "UNKNOWN", amountXof: Number.NaN, currency: null };
     return null;
   }
   const s = res.data.status;
   const status = s === "SUCCESS" || s === "PENDING" || s === "FAILED" || s === "CANCELLED" ? s : "UNKNOWN";
+  // Filet de sécurité : l'acheteur a été débité de plus que le prix (frais ajoutés). Le billet reste dû, on le signale.
+  const debited = fromDecimal(res.data.debited_amount);
+  const requested = fromDecimal(res.data.requested_amount);
+  if (status === "SUCCESS" && Number.isFinite(debited) && Number.isFinite(requested) && debited > requested) {
+    console.error("[ticketing] saspay : frais payés par l'acheteur", { requested, debited, fee_charge_mode: res.data.fee_charge_mode ?? null });
+  }
   return {
     status,
     amountXof: fromDecimal(res.data.requested_amount),

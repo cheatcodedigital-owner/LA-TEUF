@@ -69,6 +69,11 @@ export function PaymentReturn({ slug, locale }: { slug: string; locale: string }
           {t("waiting")}
         </p>
       )}
+      {(view === "processing" || view === "slow") && (
+        <p className="rounded-card border border-violet-pale/40 px-5 py-4 font-body text-[14px] leading-[160%] md:text-[15px]">
+          {t("help")}
+        </p>
+      )}
       {reference && (
         <p className="font-body text-[14px]">
           {t("reference")} <span className="font-label tracking-[0.06em]">{reference}</span>
