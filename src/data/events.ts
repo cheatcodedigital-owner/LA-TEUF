@@ -25,9 +25,9 @@ export type TeufEvent = {
   tables?: number;
   /** Prix du billet le moins cher (FCFA), null si les tarifs ne sont pas annoncés */
   priceFrom: number | null;
-  /** Visuel de la carte date (4:3 sur mobile) */
+  /** Visuel de la carte date : bannière de la soirée (1872 × 876), affichée entière sur mobile */
   image: string;
-  /** Photo du bloc « La soirée » de la page de l'événement */
+  /** Visuel du bloc « La soirée » de la page de l'événement (affiché au format bannière 1872 × 876) */
   aboutImage: string;
   /** Logo du lieu dans le hero de l'accueil */
   logo?: string;
@@ -43,7 +43,7 @@ export type TeufEvent = {
 export const events: TeufEvent[] = [
   {
     slug: "la-teuf-karma",
-    name: "LA TEUF au KARMA",
+    name: "THE CROSSOVER au KARMA",
     venue: "KARMA",
     city: "Lomé",
     country: "Togo",
@@ -52,13 +52,12 @@ export const events: TeufEvent[] = [
     // 21 h - 3 h à Lomé (UTC+0)
     startsAt: "2026-11-27T21:00:00Z",
     endsAt: "2026-11-28T03:00:00Z",
-    // Billetterie provisoirement fermée (date d'ouverture à annoncer) : repasser à "en-vente" à l'ouverture
-    status: "bientot",
+    status: "en-vente",
     capacity: 100,
     tables: 4,
     priceFrom: 5000,
-    image: "/images/events/karma.jpg",
-    aboutImage: "/images/events/karma-soiree.jpg",
+    image: "/images/events/the-crossover.jpg",
+    aboutImage: "/images/events/the-crossover.jpg",
     logo: "/images/events/karma-logo.png",
     sticker: { src: "/stickers/dj-karma.png", rotate: 6 },
     tint: "ivoire",
@@ -72,7 +71,7 @@ export const events: TeufEvent[] = [
   },
   {
     slug: "la-teuf-cotonou",
-    name: "LA TEUF · Cotonou",
+    name: "BEYOND THE HORIZON à Zone 5 Plage",
     venue: "Zone 5 Plage",
     city: "Cotonou",
     country: "Bénin",
@@ -84,8 +83,8 @@ export const events: TeufEvent[] = [
     status: "bientot",
     capacity: 100,
     priceFrom: null,
-    image: "/images/events/cotonou.jpg",
-    aboutImage: "/images/events/cotonou.jpg",
+    image: "/images/events/beyond-the-horizon.jpg",
+    aboutImage: "/images/events/beyond-the-horizon.jpg",
     sticker: { src: "/stickers/palmiers.png", rotate: -8 },
     tint: "peche",
     lineup: [],

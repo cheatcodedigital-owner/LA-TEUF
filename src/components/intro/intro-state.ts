@@ -3,6 +3,8 @@
 // Une actualisation de la page recharge le module, donc l'intro se rejoue.
 
 type IntroState = {
+  /** Écran de chargement terminé (médias de la page prêts) : l'intro et les animations peuvent démarrer */
+  loaded: boolean;
   /** Overlay terminé : tout ce qui s'affiche ensuite (changement de langue, retour sur l'accueil)
    *  apparaît d'emblée, sans rejouer l'intro ni les animations du hero */
   played: boolean;
@@ -10,7 +12,7 @@ type IntroState = {
   delay: string | null;
 };
 
-let state: IntroState = { played: false, delay: null };
+let state: IntroState = { loaded: false, played: false, delay: null };
 const listeners = new Set<() => void>();
 
 export const introStore = {
@@ -28,4 +30,23 @@ export const introStore = {
   },
 };
 
-const SERVER_STATE: IntroState = { played: false, delay: null };
+const SERVER_STATE: IntroState = { loaded: false, played: false, delay: null };
+
+/** Lance `fn` une fois l'écran de chargement terminé (tout de suite s'il l'est déjà) ; renvoie l'annulation */
+export function whenLoaded(fn: () => void): () => void {
+  if (state.loaded) {
+    fn();
+    return () => {};
+  }
+  let done = false;
+  const unsubscribe = introStore.subscribe(() => {
+    if (done || !state.loaded) return;
+    done = true;
+    unsubscribe();
+    fn();
+  });
+  return () => {
+    done = true;
+    unsubscribe();
+  };
+}

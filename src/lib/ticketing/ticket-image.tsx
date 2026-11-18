@@ -74,7 +74,7 @@ export async function renderTicketPng(opts: {
           <img src={logo} width={122} height={120} alt="" />
         </div>
 
-        <div style={{ display: "flex", marginTop: 40, fontFamily: "Dizzy", fontSize: 84, lineHeight: 1.05, color: IVORY }}>{event.name}</div>
+        <div style={{ display: "flex", marginTop: 40, fontFamily: "Dizzy", fontSize: event.name.length > 16 ? 68 : 84, lineHeight: 1.05, color: IVORY }}>{event.name}</div>
         <div style={{ display: "flex", marginTop: 24, fontFamily: "Anton", fontSize: 44, letterSpacing: 2, color: COPPER, textTransform: "uppercase" }}>
           {longDate(new Date(event.starts_at))}
         </div>

@@ -87,11 +87,11 @@
     "items": {
       "la-teuf-karma": {
         "description": "LA TEUF s'installe au KARMA, à Lomé. DJs et instrumentistes live, scénographie soignée autour du trou de serrure, jeux de lumière : une soirée chaleureuse et décontractée pour sortir de ta routine, dans le respect de chacun.",
-        "card": "Karma",
+        "card": "THE CROSSOVER",
         "teaser": "Édition rooftop qui introduit la connexion entre les DJs électroniques de la scène togolaise et béninoise",
         "hoverTitle": "Une nouvelle expérience électronique qui fait vibrer les frontières !",
         "hoverText": "2 scènes, une seule piste, une même énergie pour célébrer la musique électronique et la connexion entre Lomé et Cotonou.",
-        "imageAlt": "La cabine DJ LA TEUF dans la fumée bleue",
+        "imageAlt": "Visuel de THE CROSSOVER, LA TEUF au KARMA rooftop, Lomé, vendredi 27 novembre, 21 h - 3 h",
         "aboutTitle": "LA TEUF : de Lomé à Cotonou",
         "aboutLead": "Une nouvelle expérience électronique qui fait vibrer les frontières !",
         "about": [
@@ -99,21 +99,21 @@
           "2 scènes, une seule piste, une même énergie pour célébrer la musique électronique et la connexion entre Lomé et Cotonou.",
           "Prépare-toi à vivre LA TEUF ! 🔊"
         ],
-        "aboutImageAlt": "La cabine DJ LA TEUF sous les projecteurs bleus"
+        "aboutImageAlt": "Visuel de THE CROSSOVER, LA TEUF au KARMA rooftop, Lomé, vendredi 27 novembre, 21 h - 3 h"
       },
       "la-teuf-cotonou": {
-        "description": "LA TEUF traverse la frontière pour une édition à Cotonou, à Zone 5 Plage. Le line-up sera annoncé prochainement.",
-        "card": "Zone 5 Plage",
+        "description": "BEYOND THE HORIZON : LA TEUF traverse la frontière pour une édition à Cotonou, à Zone 5 Plage. Le line-up sera annoncé prochainement.",
+        "card": "BEYOND THE HORIZON",
         "teaser": "Line-up et tarifs annoncés bientôt. Rejoins le groupe WhatsApp pour être prévenu en premier.",
         "hoverTitle": "LA TEUF traverse la frontière",
         "hoverText": "Une première édition à Cotonou, au bord de la plage. Le line-up sera annoncé prochainement.",
-        "imageAlt": "Une teufeuse sur la terrasse d'une soirée LA TEUF",
+        "imageAlt": "Visuel de BEYOND THE HORIZON, LA TEUF à Zone 5 Plage, Cotonou, samedi 12 décembre",
         "aboutTitle": "LA TEUF traverse la frontière",
         "aboutLead": "Une première édition à Cotonou, au bord de la plage.",
         "about": [
           "Rendez-vous à Zone 5 Plage. Le line-up et les tarifs seront annoncés prochainement : rejoins le groupe WhatsApp pour être prévenu en premier."
         ],
-        "aboutImageAlt": "Une teufeuse sur la terrasse d'une soirée LA TEUF"
+        "aboutImageAlt": "Visuel de BEYOND THE HORIZON, LA TEUF à Zone 5 Plage, Cotonou, samedi 12 décembre"
       }
     },
     "close": "Fermer",
@@ -223,8 +223,8 @@
     "sampleNotice": "Mode démo : Supabase n'est pas configuré, rien n'est réellement réservé.",
     "unavailableTitle": "Billetterie indisponible",
     "unavailableText": "La billetterie est momentanément indisponible. Réessaie dans un instant.",
-    "soonTitle": "Billetterie fermée",
-    "soonText": "La billetterie de cette soirée est provisoirement fermée. La date d'ouverture sera annoncée très vite sur nos réseaux et dans le groupe WhatsApp.",
+    "soonTitle": "Billets bientôt",
+    "soonText": "Les billets de cette soirée ouvrent bientôt.",
     "endedTitle": "Soirée terminée",
     "endedText": "Cette soirée est terminée.",
     "soldOutTitle": "Complet",
@@ -321,8 +321,11 @@
     "tableSeats": "Salon de {seats} personnes",
     "priceRises": "Passe à {price} dès le {date}",
     "tableNoPromo": "Les codes promo ne s'appliquent pas aux tables.",
-    "quantityTables": "Nombre de tables",
-    "tableHint": "Chaque table donne {seats} billets individuels (un par personne), envoyés à l'adresse e-mail de la réservation.",
+    "quantityTables": "Nombre de salons",
+    "tableHint": "Chaque salon accueille {seats} personnes.",
+    "tableWhatsappNote": "Les salons ne se paient pas en ligne : réserve directement avec l'équipe sur WhatsApp. On te confirme la disponibilité, le paiement et l'entrée de tes invités.",
+    "tableWhatsappCta": "Réserver sur WhatsApp",
+    "tableWhatsappMessage": "Bonjour LA TEUF ! Je vous écris pour une réservation de salon (6 personnes) pour la soirée {event} au {venue}, le {date}. Nombre de salons souhaités : {count}. Pouvez-vous me confirmer la disponibilité et les modalités de paiement ? Merci !",
     "panelTitle": "Prends ton billet",
     "quantityMax": "Quantité (max {max})",
     "promoPlaceholder": "Code promo",
@@ -365,7 +368,7 @@
   "Cgv": {
     "metaTitle": "Conditions générales de vente",
     "title": "Conditions générales de vente",
-    "updated": "Dernière mise à jour : 13 novembre 2026",
+    "updated": "Dernière mise à jour : 18 novembre 2026",
     "sections": [
       {
         "title": "1. Organisateur et objet",
@@ -378,10 +381,10 @@
       {
         "title": "2. Billets et tarifs",
         "body": [
-          "Les prix sont indiqués en francs CFA (FCFA), consommation incluse. Pour l'édition du KARMA (27 novembre 2026), la vente en ligne est provisoirement fermée ; sa date d'ouverture sera annoncée sur nos réseaux. Le nombre de billets individuels est limité à 100 par soirée.",
+          "Les prix sont indiqués en francs CFA (FCFA), consommation incluse. Pour l'édition du KARMA (27 novembre 2026), la vente en ligne est ouverte jusqu'au 26 novembre à 12 h (heure de Lomé). Le nombre de billets individuels est limité à 100 par soirée.",
           "Early bird (vente en ligne) : 5 000 FCFA, consommation incluse. Ces billets sont en quantité limitée selon la taille du lieu (70 pour le KARMA) et en vente jusqu'à épuisement, au plus tard jusqu'à la veille de la soirée à midi (26 novembre à 12 h, heure de Lomé), heure de fermeture de la vente en ligne.",
           "Standard : 8 000 FCFA, consommation incluse, vendu uniquement à la porte le jour de la soirée, dans la limite des places disponibles. Il n'est pas vendu en ligne.",
-          "Tables : 4 tables (salons) de 6 personnes sont proposées en plus des 100 billets, à 80 000 FCFA la table jusqu'au 17 novembre, puis 100 000 FCFA la table du 18 au 27 novembre. Une table donne 6 billets individuels.",
+          "Tables : 4 tables (salons) de 6 personnes sont proposées en plus des 100 billets, à 100 000 FCFA la table. Elles ne sont pas vendues en ligne : la réservation se fait directement auprès de l'organisateur sur WhatsApp (+228 91 95 01 93), qui en confirme la disponibilité et les modalités de paiement.",
           "Une commande comprend 10 billets au maximum.",
           "Aucune remise de groupe n'est appliquée.",
           "Les codes promo s'appliquent uniquement aux billets early bird ; ils ne s'appliquent pas aux tables."
@@ -605,7 +608,7 @@
           },
           {
             "q": "Quelle est la prochaine soirée ?",
-            "a": "LA TEUF au KARMA, à Lomé (Togo), le 27 novembre 2026. La suivante a lieu à Cotonou (Bénin) le 12 décembre 2026 : à Zone 5 Plage : le line-up sera annoncé prochainement. Toutes les dates sont dans la page Événements."
+            "a": "THE CROSSOVER, LA TEUF au KARMA, à Lomé (Togo), le 27 novembre 2026. La suivante, BEYOND THE HORIZON, a lieu à Cotonou (Bénin) le 12 décembre 2026, à Zone 5 Plage : le line-up sera annoncé prochainement. Toutes les dates sont dans la page Événements."
           },
           {
             "q": "Qui joue ?",
@@ -626,7 +629,7 @@
         "items": [
           {
             "q": "Quand ouvre la vente des billets du KARMA ?",
-            "a": "La billetterie est provisoirement fermée : la date d'ouverture sera annoncée très vite sur nos réseaux et dans le groupe WhatsApp. Une fois ouverte, la vente en ligne se fait sur la page Billetterie de la soirée et ferme la veille de la soirée à midi (le 26 novembre à 12 h, heure de Lomé). Les tables restent réservables en ligne jusqu'à l'heure de la soirée."
+            "a": "La billetterie est ouverte ! Les billets early bird se prennent sur la page Billetterie de la soirée, jusqu'à la veille de la soirée à midi (le 26 novembre à 12 h, heure de Lomé). Les tables (salons) se réservent sur WhatsApp, depuis la même page."
           },
           {
             "q": "Quels sont les tarifs ?",
@@ -659,15 +662,15 @@
         "items": [
           {
             "q": "Qu'est-ce qu'une table ?",
-            "a": "Un salon réservé pour 6 personnes à l'édition du KARMA. Il y en a 4 en tout, en plus des 100 billets individuels."
+            "a": "Un salon réservé pour 6 personnes à l'édition du KARMA. Il y en a 4 en tout, en plus des 100 billets individuels. Les salons ne se paient pas en ligne : sur la page Billetterie, choisis « Table » puis « Réserver sur WhatsApp » pour écrire directement à l'équipe (+228 91 95 01 93), qui te confirme la disponibilité et le paiement."
           },
           {
             "q": "Combien coûte une table ?",
-            "a": "80 000 FCFA la table jusqu'au 17 novembre, puis 100 000 FCFA du 18 au 27 novembre. Réserve tôt pour profiter du meilleur prix."
+            "a": "100 000 FCFA la table (salon de 6 personnes)."
           },
           {
-            "q": "Comment sont envoyés les billets d'une table ?",
-            "a": "Une table donne 6 billets individuels, un par personne, avec chacun son QR code. Ils arrivent tous à l'adresse e-mail de la réservation : transmets-les à tes invités."
+            "q": "Comment réserver une table ?",
+            "a": "Sur la page Billetterie de la soirée, choisis « Table », indique le nombre de salons, puis clique sur « Réserver sur WhatsApp » : un message pré-rempli s'ouvre vers le +228 91 95 01 93. L'équipe te confirme la disponibilité, le paiement et l'entrée de tes invités."
           },
           {
             "q": "Les codes promo marchent-ils sur les tables ?",
@@ -675,7 +678,7 @@
           },
           {
             "q": "J'ai une question sur le salon ou son emplacement.",
-            "a": "Écris-nous via la page Contact ou appelle-nous avant de réserver : nous te répondons avec plaisir."
+            "a": "Écris-nous sur WhatsApp au +228 91 95 01 93, via la page Contact, ou appelle-nous : nous te répondons avec plaisir."
           }
         ]
       },
@@ -837,5 +840,8 @@
     "reference": "Référence",
     "back": "Retour à la billetterie",
     "contact": "Nous contacter"
+  },
+  "Loader": {
+    "label": "Chargement de l'expérience"
   }
 }

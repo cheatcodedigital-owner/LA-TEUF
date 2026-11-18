@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { introStore } from "./intro-state";
 import { startPortal } from "./portal-gl";
 
@@ -20,9 +20,11 @@ export function PortalIntro() {
   const [finished, setFinished] = useState(introStore.get().played);
   const [ready, setReady] = useState(false);
   const [leaving, setLeaving] = useState(false);
+  // L'écran de chargement passe d'abord : le tunnel démarre quand les médias sont prêts
+  const loaded = useSyncExternalStore(introStore.subscribe, () => introStore.get().loaded, () => false);
 
   useEffect(() => {
-    if (introStore.get().played) return;
+    if (introStore.get().played || !loaded) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -62,7 +64,7 @@ export function PortalIntro() {
       stopRef.current = null;
       document.body.style.overflow = "";
     };
-  }, []);
+  }, [loaded]);
 
   function skip() {
     stopRef.current?.();

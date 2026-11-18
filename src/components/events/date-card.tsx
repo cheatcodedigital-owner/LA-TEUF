@@ -29,12 +29,12 @@ export async function DateCard({ event: e, reverse = false }: { event: TeufEvent
   const item = (key: string) => t(`items.${e.slug}.${key}`);
 
   return (
-    <article data-card-reveal="wrap" className={`flex flex-col gap-3 lg:h-[440px] ${reverse ? "lg:flex-row-reverse" : "lg:flex-row"}`}>
+    <article data-card-reveal="wrap" className={`flex flex-col gap-3 xl:h-[440px] ${reverse ? "xl:flex-row-reverse" : "xl:flex-row"}`}>
       <div
         data-card-reveal="card"
-        className="group relative aspect-[4/3] overflow-hidden rounded-[24px] border border-cosmic-black transition-[box-shadow,border-color] duration-300 hover:border-ultraviolet hover:shadow-glow lg:aspect-auto lg:min-w-0 lg:grow-[1.15] lg:basis-0"
+        className="group relative aspect-[1872/876] overflow-hidden rounded-[24px] border border-cosmic-black transition-[box-shadow,border-color] duration-300 hover:border-ultraviolet hover:shadow-glow xl:aspect-auto xl:min-w-0 xl:grow-[1.6] xl:basis-0"
       >
-        <Image src={e.image} alt={item("imageAlt")} fill sizes="(min-width: 1024px) 720px, 100vw" className="object-cover" />
+        <Image src={e.image} alt={item("imageAlt")} fill sizes="(min-width: 1280px) 900px, 100vw" className="object-cover" />
         <div className="absolute inset-0 hidden flex-col justify-between bg-cosmic-black/82 px-7 pb-6 pt-[72px] text-warm-ivory opacity-0 transition-[opacity,translate] duration-300 [translate:0_12px] group-hover:opacity-100 group-hover:[translate:0_0] motion-reduce:translate-none motion-reduce:transition-opacity lg:flex">
           <div className="flex max-w-[560px] flex-col gap-3">
             <p className="font-title text-[24px] leading-[105%]">{item("hoverTitle")}</p>
@@ -73,7 +73,7 @@ export async function DateCard({ event: e, reverse = false }: { event: TeufEvent
 
       <div
         data-card-reveal="card"
-        className={`relative flex flex-col justify-between gap-3.5 rounded-[24px] border border-cosmic-black p-5 text-deep-indigo md:gap-6 md:p-8 lg:grow lg:basis-0 ${tintBg[e.tint]}`}
+        className={`relative flex flex-col justify-between gap-3.5 rounded-[24px] border border-cosmic-black p-5 text-deep-indigo md:gap-6 md:p-8 xl:grow xl:basis-0 ${tintBg[e.tint]}`}
       >
         {/* Mobile : lieu à droite de la date ; grand écran : lieu sous la date */}
         <div className="flex items-baseline justify-between gap-3 md:flex-col md:items-start md:justify-start md:gap-1.5">
@@ -83,7 +83,7 @@ export async function DateCard({ event: e, reverse = false }: { event: TeufEvent
           </p>
         </div>
         <div className="flex flex-col gap-3.5">
-          <h3 className="font-label text-[48px] leading-[95%] tracking-[-0.02em] md:text-[56px] lg:text-[72px]">{item("card")}</h3>
+          <h3 className="font-label text-[48px] leading-[95%] tracking-[-0.02em] md:text-[56px] lg:text-[72px] xl:text-[56px]">{item("card")}</h3>
           <p className="hidden max-w-[560px] font-label text-[17px] uppercase leading-[150%] md:block">{item("teaser")}</p>
         </div>
         <div className="flex flex-col gap-3.5 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
@@ -111,7 +111,7 @@ export async function DateCard({ event: e, reverse = false }: { event: TeufEvent
           rotate={e.sticker.rotate}
           width={480}
           height={480}
-          className={`hidden lg:block ${onSale ? "right-6 top-3 size-[190px]" : "right-4 top-7 size-[140px]"}`}
+          className={`hidden lg:block xl:right-4 xl:top-3 xl:size-[110px] ${onSale ? "right-6 top-3 size-[190px]" : "right-4 top-7 size-[140px]"}`}
         />
       </div>
     </article>

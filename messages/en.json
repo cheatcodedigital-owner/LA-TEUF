@@ -87,11 +87,11 @@
     "items": {
       "la-teuf-karma": {
         "description": "LA TEUF takes over KARMA in Lomé. DJs and live musicians, carefully crafted staging around the keyhole, light shows: a warm, relaxed night to break out of your routine, with respect for everyone.",
-        "card": "Karma",
+        "card": "THE CROSSOVER",
         "teaser": "A rooftop edition bringing together electronic DJs from the Togolese and Beninese scenes",
         "hoverTitle": "A new electronic experience that makes borders vibrate!",
         "hoverText": "2 stages, one dancefloor, the same energy to celebrate electronic music and the connection between Lomé and Cotonou.",
-        "imageAlt": "The LA TEUF DJ booth in blue smoke",
+        "imageAlt": "THE CROSSOVER visual, LA TEUF at KARMA rooftop, Lomé, Friday 27 November, 9 PM - 3 AM",
         "aboutTitle": "LA TEUF: from Lomé to Cotonou",
         "aboutLead": "A new electronic experience that makes borders vibrate!",
         "about": [
@@ -99,21 +99,21 @@
           "2 stages, one dancefloor, the same energy to celebrate electronic music and the connection between Lomé and Cotonou.",
           "Get ready to live LA TEUF! 🔊"
         ],
-        "aboutImageAlt": "The LA TEUF DJ booth under blue spotlights"
+        "aboutImageAlt": "THE CROSSOVER visual, LA TEUF at KARMA rooftop, Lomé, Friday 27 November, 9 PM - 3 AM"
       },
       "la-teuf-cotonou": {
-        "description": "LA TEUF crosses the border for an edition in Cotonou, at Zone 5 Plage. The line-up will be announced soon.",
-        "card": "Zone 5 Plage",
+        "description": "BEYOND THE HORIZON: LA TEUF crosses the border for an edition in Cotonou, at Zone 5 Plage. The line-up will be announced soon.",
+        "card": "BEYOND THE HORIZON",
         "teaser": "Line-up and prices coming soon. Join the WhatsApp group to hear first.",
         "hoverTitle": "LA TEUF crosses the border",
         "hoverText": "A first edition in Cotonou, by the beach. The line-up will be announced soon.",
-        "imageAlt": "A partygoer on the terrace of a LA TEUF night",
+        "imageAlt": "BEYOND THE HORIZON visual, LA TEUF at Zone 5 Plage, Cotonou, Saturday 12 December",
         "aboutTitle": "LA TEUF crosses the border",
         "aboutLead": "A first edition in Cotonou, by the beach.",
         "about": [
           "See you at Zone 5 Plage. Line-up and prices will be announced soon: join the WhatsApp group to hear first."
         ],
-        "aboutImageAlt": "A partygoer on the terrace of a LA TEUF night"
+        "aboutImageAlt": "BEYOND THE HORIZON visual, LA TEUF at Zone 5 Plage, Cotonou, Saturday 12 December"
       }
     },
     "close": "Close",
@@ -223,8 +223,8 @@
     "sampleNotice": "Demo mode: Supabase is not configured, nothing is actually reserved.",
     "unavailableTitle": "Ticketing unavailable",
     "unavailableText": "Ticketing is temporarily unavailable. Please try again in a moment.",
-    "soonTitle": "Ticket sales closed",
-    "soonText": "Ticket sales for this night are temporarily closed. The opening date will be announced very soon on our socials and in the WhatsApp group.",
+    "soonTitle": "Tickets soon",
+    "soonText": "Tickets for this night open soon.",
     "endedTitle": "Night is over",
     "endedText": "This night is over.",
     "soldOutTitle": "Sold out",
@@ -321,8 +321,11 @@
     "tableSeats": "Lounge for {seats} people",
     "priceRises": "Goes up to {price} on {date}",
     "tableNoPromo": "Promo codes do not apply to tables.",
-    "quantityTables": "Number of tables",
-    "tableHint": "Each table comes with {seats} individual tickets (one per guest), sent to the booking email address.",
+    "quantityTables": "Number of lounges",
+    "tableHint": "Each lounge seats {seats} people.",
+    "tableWhatsappNote": "Lounges are not paid online: book directly with the team on WhatsApp. We confirm availability, payment and entry for your guests.",
+    "tableWhatsappCta": "Book on WhatsApp",
+    "tableWhatsappMessage": "Hello LA TEUF! I am writing to book a lounge (6 people) for the {event} night at {venue}, on {date}. Number of lounges: {count}. Could you confirm availability and how to pay? Thank you!",
     "panelTitle": "Get your ticket",
     "quantityMax": "Quantity (max {max})",
     "promoPlaceholder": "Promo code",
@@ -365,7 +368,7 @@
   "Cgv": {
     "metaTitle": "Terms of sale",
     "title": "Terms of sale",
-    "updated": "Last updated: November 13, 2026",
+    "updated": "Last updated: November 18, 2026",
     "sections": [
       {
         "title": "1. Organizer and purpose",
@@ -378,10 +381,10 @@
       {
         "title": "2. Tickets and prices",
         "body": [
-          "Prices are in CFA francs (FCFA), drink included. For the KARMA night (27 November 2026), online sales are temporarily closed; the opening date will be announced on our socials. Individual tickets are limited to 100 per night.",
+          "Prices are in CFA francs (FCFA), drink included. For the KARMA night (27 November 2026), online sales are open until 26 November at 12 PM (Lomé time). Individual tickets are limited to 100 per night.",
           "Early bird (online): 5,000 FCFA, drink included. These tickets are limited according to the size of the venue (70 for KARMA) and on sale until sold out, at the latest until noon the day before the night (26 November at 12 PM, Lomé time), when online sales close.",
           "Standard: 8,000 FCFA, drink included, sold only at the door on the day of the night, while places last. It is not sold online.",
-          "Tables: 4 lounges for 6 people are offered on top of the 100 tickets, at 80,000 FCFA per table until 17 November, then 100,000 FCFA per table from 18 to 27 November. A table comes with 6 individual tickets.",
+          "Tables: 4 lounges for 6 people are offered on top of the 100 tickets, at 100,000 FCFA per table. They are not sold online: bookings are made directly with the organizer on WhatsApp (+228 91 95 01 93), who confirms availability and payment terms.",
           "An order includes at most 10 tickets.",
           "No group discount is applied.",
           "Promo codes only apply to early bird tickets; they do not apply to tables."
@@ -605,7 +608,7 @@
           },
           {
             "q": "When is the next night?",
-            "a": "LA TEUF at KARMA, in Lomé (Togo), on 27 November 2026. The next one is in Cotonou (Benin) on 12 December 2026: at Zone 5 Plage: the line-up will be announced soon. All dates are on the Events page."
+            "a": "THE CROSSOVER, LA TEUF at KARMA, in Lomé (Togo), on 27 November 2026. The next one, BEYOND THE HORIZON, is in Cotonou (Benin) on 12 December 2026, at Zone 5 Plage: the line-up will be announced soon. All dates are on the Events page."
           },
           {
             "q": "Who is playing?",
@@ -626,7 +629,7 @@
         "items": [
           {
             "q": "When do KARMA ticket sales open?",
-            "a": "Ticket sales are temporarily closed: the opening date will be announced very soon on our socials and in the WhatsApp group. Once open, tickets are sold on the night's Tickets page until noon the day before the night (26 November at 12 PM, Lomé time). Tables can be booked online until the start of the night."
+            "a": "Ticket sales are open! Early bird tickets are sold on the night's Tickets page until noon the day before the night (26 November at 12 PM, Lomé time). Tables (lounges) are booked on WhatsApp, from the same page."
           },
           {
             "q": "What are the prices?",
@@ -659,15 +662,15 @@
         "items": [
           {
             "q": "What is a table?",
-            "a": "A reserved lounge for 6 people at the KARMA night. There are 4 in total, on top of the 100 individual tickets."
+            "a": "A reserved lounge for 6 people at the KARMA night. There are 4 in total, on top of the 100 individual tickets. Lounges are not paid online: on the Tickets page, pick “Table” then “Book on WhatsApp” to write directly to the team (+228 91 95 01 93), who confirm availability and payment."
           },
           {
             "q": "How much is a table?",
-            "a": "80,000 FCFA per table until 17 November, then 100,000 FCFA from 18 to 27 November. Book early for the best price."
+            "a": "100,000 FCFA per table (a lounge for 6 people)."
           },
           {
-            "q": "How are the tickets of a table sent?",
-            "a": "A table comes with 6 individual tickets, one per person, each with its own QR code. They all arrive at the booking email address: pass them on to your guests."
+            "q": "How do I book a table?",
+            "a": "On the night's Tickets page, pick “Table”, choose the number of lounges, then click “Book on WhatsApp”: a pre-filled message opens to +228 91 95 01 93. The team confirms availability, payment and entry for your guests."
           },
           {
             "q": "Do promo codes work on tables?",
@@ -675,7 +678,7 @@
           },
           {
             "q": "I have a question about the lounge or its location.",
-            "a": "Write to us on the Contact page or call us before booking: we will gladly answer."
+            "a": "Message us on WhatsApp at +228 91 95 01 93, use the Contact page, or call us: we will gladly answer."
           }
         ]
       },
@@ -837,5 +840,8 @@
     "reference": "Reference",
     "back": "Back to tickets",
     "contact": "Contact us"
+  },
+  "Loader": {
+    "label": "Loading the experience"
   }
 }

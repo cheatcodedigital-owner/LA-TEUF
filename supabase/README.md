@@ -18,6 +18,8 @@
    - `migrations/0015_karma_postponed_sales_closed.sql` (KARMA repoussé au 27 novembre, billetterie fermée)
    - `migrations/0016_saspay.sql` (second prestataire SasPay : colonnes `payment_provider`, `saspay_*`, `attach_saspay_session`, `mark_order_paid` avec le prestataire). **À appliquer avant de déployer le code qui l'utilise** (l'admin lit ces colonnes).
    - `migrations/0017_rate_limits.sql` (audit de sécurité du 18/11/2026 : table `rate_limits` et fonctions `rate_limit_hit` / `rate_limit_count` / `rate_limit_clear`, compteurs partagés entre instances Vercel ; `active_holds`, réservations actives par e-mail ou WhatsApp). Sans elle, le code se replie sur des compteurs en mémoire et saute le plafond de réservations actives.
+   - `migrations/0018_karma_sales_open_tables_whatsapp.sql` (18/11/2026 : billetterie du KARMA rouverte ; salons réservés sur WhatsApp, plus en ligne)
+   - `migrations/0019_event_names.sql` (18/11/2026 : noms des soirées repris des visuels, THE CROSSOVER au KARMA et BEYOND THE HORIZON à Zone 5 Plage, pour les e-mails, billets et l'admin)
    - `seed.sql` (événements de départ — early bird 5 000, standard 8 000 FCFA, tables 80 000 → 100 000 FCFA ; **uniquement pour une base vide** : sur une base existante, appliquer la 0009)
 2. Copier `.env.example` en `.env.local` et renseigner `SUPABASE_URL` et `SUPABASE_SERVICE_ROLE_KEY`
    (Project Settings → API). La clé service_role reste côté serveur uniquement.
@@ -26,6 +28,8 @@
 
 ## Règles de vente
 Politique du 10/11/2026 (migration 0014, testée par `npm run test:db`) :
+- **18/11/2026 (migration 0018)** : billetterie du KARMA (THE CROSSOVER) **rouverte**. Les **tables (salons) ne se vendent plus en ligne** :
+  toujours affichées, elles se réservent sur WhatsApp (+228 91 95 01 93, message pré-rédigé dans le formulaire) ; `reserve()` refuse le tarif `table`.
 - **13/11/2026 (migration 0015)** : soirée du KARMA repoussée au **27 novembre 2026** (21 h) et **billetterie provisoirement fermée**
   (`events.status = 'soon'` : `create_order` renvoie `sales_closed`, la page affiche « Billetterie fermée »). Pour rouvrir :
   `update events set status = 'on_sale' where slug = 'la-teuf-karma';` et repasser `status: "en-vente"` dans `src/data/events.ts`.

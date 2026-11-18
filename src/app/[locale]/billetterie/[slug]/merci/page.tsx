@@ -5,6 +5,7 @@ import { getFormatter, getTranslations, setRequestLocale } from "next-intl/serve
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { Band } from "@/components/ds/band";
+import { splitEventName } from "@/components/ds/links";
 import { Reveals } from "@/components/ds/slush-motion";
 import { Sticker } from "@/components/ds/sticker";
 import { AddToCalendar } from "@/components/ticketing/add-to-calendar";
@@ -38,7 +39,7 @@ async function Thanks({ params }: { params: PageProps<"/[locale]/billetterie/[sl
   const hour = (d: Date) => format.dateTime(d, { hour: "numeric", timeZone: event.timeZone }).replace(/^0(?=\d)/, "");
   const time = event.endsAt ? `${hour(start)} – ${hour(new Date(event.endsAt))}` : hour(start);
   const place = `${event.venue ? `${event.venue}, ` : ""}${event.city}, ${event.country}`;
-  const [first, ...rest] = event.name.split(" au ");
+  const [first, second] = splitEventName(event.name);
 
   return (
     <>
@@ -69,10 +70,10 @@ async function Thanks({ params }: { params: PageProps<"/[locale]/billetterie/[sl
               <Image src="/brand/logo-badge.svg" alt="" width={48} height={48} unoptimized className="size-12" />
               <p className="font-title text-[44px] leading-[90%] md:text-[52px]">
                 {first}
-                {rest.length > 0 && (
+                {second && (
                   <>
                     <br />
-                    au {rest.join(" au ")}
+                    {second}
                   </>
                 )}
               </p>

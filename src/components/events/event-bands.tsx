@@ -2,6 +2,7 @@ import Image from "next/image";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { Band } from "@/components/ds/band";
 import { ArrowUpRight } from "@/components/ds/icons";
+import { splitEventName } from "@/components/ds/links";
 import { Sticker } from "@/components/ds/sticker";
 import { DjCard } from "@/components/djs/dj-card";
 import { djs } from "@/data/djs";
@@ -20,7 +21,7 @@ export async function EventHeader({ event: e }: { event: TeufEvent }) {
   // « 03 h » → « 3 h »
   const hour = (d: Date) => format.dateTime(d, { hour: "numeric", timeZone: tz }).replace(/^0(?=\d)/, "");
   const time = e.endsAt ? `${hour(start)} – ${hour(new Date(e.endsAt))}` : hour(start);
-  const [first, ...rest] = e.name.split(" au ");
+  const [first, second] = splitEventName(e.name);
 
   const facts = [
     { label: t("header.date"), value: date },
@@ -57,10 +58,10 @@ export async function EventHeader({ event: e }: { event: TeufEvent }) {
       </div>
       <h1 data-anim-slant className="font-title text-[64px] leading-[88%] tracking-[-0.03em] md:text-[clamp(96px,10.4vw,150px)]">
         {first}
-        {rest.length > 0 && (
+        {second && (
           <>
             <br />
-            au {rest.join(" au ")}
+            {second}
           </>
         )}
       </h1>
@@ -81,9 +82,10 @@ export async function EventAbout({ event: e }: { event: TeufEvent }) {
   const t = await getTranslations(`Events.items.${e.slug}`);
   const paragraphs = t.raw("about") as string[];
   return (
-    <Band duo="ivoire" className="flex flex-col gap-6 p-5 md:flex-row md:gap-10 md:p-10">
-      <div data-reveal-up className="relative aspect-[4/3] shrink-0 overflow-hidden rounded-[24px] border border-cosmic-black md:aspect-auto md:w-[300px] md:self-stretch lg:w-[340px]">
-        <Image src={e.aboutImage} alt={t("aboutImageAlt")} fill sizes="(min-width: 768px) 340px, 100vw" className="object-cover" />
+    <Band duo="ivoire" className="flex flex-col gap-6 p-5 md:gap-8 md:p-10">
+      {/* Bannière de la soirée en entier, au-dessus du texte */}
+      <div data-reveal-up className="relative aspect-[1872/876] shrink-0 overflow-hidden rounded-[24px] border border-cosmic-black">
+        <Image src={e.aboutImage} alt={t("aboutImageAlt")} fill sizes="(min-width: 1024px) 760px, 100vw" className="object-cover" />
       </div>
       <div className="flex min-w-0 flex-1 flex-col gap-5 md:gap-6">
         <h2 data-heading-reveal className="font-title text-[32px] leading-[96%] md:text-[40px]">

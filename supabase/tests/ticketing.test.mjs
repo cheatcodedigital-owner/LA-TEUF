@@ -58,11 +58,11 @@ ok("seed : 4 tables de 6 personnes à 80000 (100000 dès le 18 novembre)", seede
 ok("seed : capacité générale 100", (await q("select capacity from events where slug='la-teuf-karma'"))[0].capacity === 100);
 ok("plus de remise de groupe automatique", (await q("select _group_discount_pct('standard', 10) as p"))[0].p === 0);
 
-// --- Billetterie provisoirement fermée (migration 0015) --------------------------------------
-ok("seed : billetterie du KARMA fermée (status soon)", (await q("select status from events where slug='la-teuf-karma'"))[0].status === "soon");
+// --- Billetterie (migration 0018 : rouverte ; un statut « soon » refuse toute réservation) ----------
+ok("seed : billetterie du KARMA ouverte (status on_sale)", (await q("select status from events where slug='la-teuf-karma'"))[0].status === "on_sale");
+await q("update events set status = 'soon' where slug = 'la-teuf-karma'");
 ok("billetterie fermée : achat refusé (sales_closed)",
   (await err(async () => order((await q("select id from ticket_types where kind='early_bird'"))[0].id, 1))) === "sales_closed");
-// La suite teste les règles de vente une fois la billetterie rouverte
 await q("update events set status = 'on_sale' where slug = 'la-teuf-karma'");
 
 // --- Phase 1 : avant l'ouverture (J-25) -----------------------------------------------------

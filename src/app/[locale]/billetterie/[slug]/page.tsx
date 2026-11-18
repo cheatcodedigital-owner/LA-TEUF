@@ -73,6 +73,19 @@ async function Sales({
   }
 
   const { sales, sample } = result;
+  // Message WhatsApp d'un salon : nom de la soirée (celui de la carte date), lieu et date locale
+  const local = events.find((e) => e.slug === sales.event.slug);
+  const te = await getTranslations("Events");
+  const tableContact = {
+    event: te(`items.${sales.event.slug}.card`),
+    venue: sales.event.venue ?? sales.event.city,
+    date: format.dateTime(new Date(sales.event.startsAt), {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      timeZone: local?.timeZone ?? "UTC",
+    }),
+  };
   const onSale = sales.tiers.filter((x) => x.onSale);
   const early = sales.tiers.find((x) => x.kind === "early_bird");
   const from = onSale.length ? format.number(Math.min(...onSale.map((x) => x.priceXof))) + " FCFA" : null;
@@ -84,7 +97,13 @@ async function Sales({
           {t("remainingOnline", { count: early.remaining })}
         </p>
       )}
-      <TicketForm slug={sales.event.slug} tiers={sales.tiers} sample={sample} initialPromo={initialPromo} />
+      <TicketForm
+        slug={sales.event.slug}
+        tiers={sales.tiers}
+        sample={sample}
+        initialPromo={initialPromo}
+        tableContact={tableContact}
+      />
     </PurchaseShell>
   );
 }

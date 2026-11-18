@@ -111,6 +111,14 @@ function sampleSales(slug: string): EventSales | null {
   };
 }
 
+/** Vrai si le tarif est un salon (table), vendu hors ligne */
+async function isTableType(ticketTypeId: string): Promise<boolean> {
+  if (sampleMode()) return ticketTypeId === "00000000-0000-4000-8000-000000000003";
+  if (!isSupabaseConfigured()) return false;
+  const { data } = await getAdminClient().from("ticket_types").select("kind").eq("id", ticketTypeId).maybeSingle();
+  return data?.kind === "table";
+}
+
 export async function getEventSales(slug: string): Promise<SalesResult> {
   if (sampleMode()) {
     const sales = sampleSales(slug);
@@ -132,6 +140,8 @@ export async function getEventSales(slug: string): Promise<SalesResult> {
 /** `affiliateRef` : valeur du cookie d'attribution (`slug` ou `slug:campagne`), déjà posé par /r/<slug>. */
 export async function reserve(input: ReservationInput, affiliateRef?: string | null): Promise<ReserveResult> {
   if (closedOnSite(input.slug)) return { ok: false, code: "sales_closed" };
+  // Salons : réservation sur WhatsApp uniquement, jamais en ligne (le formulaire n'envoie plus de table)
+  if (await isTableType(input.ticketTypeId)) return { ok: false, code: "type_unavailable" };
   if (sampleMode()) {
     const sales = sampleSales(input.slug);
     const tier = sales?.tiers.find((t) => t.id === input.ticketTypeId && t.onSale);

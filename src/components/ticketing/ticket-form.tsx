@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useRef, useState, useSyncExternalStore, type FormEvent } from "react";
 import { createPortal } from "react-dom";
 import { Flip } from "@/components/ds/flip";
+import { CONTACT_PHONE } from "@/components/layout/nav-items";
 import { getPathname, Link } from "@/i18n/navigation";
 import { COUNTRIES, HOLD_MINUTES, MAX_PER_ORDER, TURNSTILE_TEST_SITE_KEY } from "@/lib/ticketing/config";
 import { formatXof } from "@/lib/ticketing/format";
@@ -340,7 +341,22 @@ function Hold({
 
 type CheckoutErrors = { antibot: true; not_payable: true; unavailable: true; failed: true; not_confirmed: true };
 
-export function TicketForm({ slug, tiers, sample, initialPromo }: { slug: string; tiers: Tier[]; sample: boolean; initialPromo?: string }) {
+/** Soirée citée dans le message WhatsApp de réservation d'un salon */
+export type TableContact = { event: string; venue: string; date: string };
+
+export function TicketForm({
+  slug,
+  tiers,
+  sample,
+  initialPromo,
+  tableContact,
+}: {
+  slug: string;
+  tiers: Tier[];
+  sample: boolean;
+  initialPromo?: string;
+  tableContact: TableContact;
+}) {
   const t = useTranslations("Ticketing");
   const locale = useLocale();
   const [response, setResponse] = useState<ReserveResponse | null>(null);
@@ -368,6 +384,10 @@ export function TicketForm({ slug, tiers, sample, initialPromo }: { slug: string
   const tableSelected = tier?.kind === "table";
   // Codes promo : early bird uniquement
   const noPromo = tier?.kind !== "early_bird";
+  // Salon : lien WhatsApp vers l'équipe, message pré-rédigé avec la soirée et le nombre de salons
+  const whatsappHref = `https://wa.me/${CONTACT_PHONE.tel.replace(/\D/g, "")}?text=${encodeURIComponent(
+    t("tableWhatsappMessage", { ...tableContact, count: qty }),
+  )}`;
 
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -535,7 +555,6 @@ export function TicketForm({ slug, tiers, sample, initialPromo }: { slug: string
             </label>
           );
         })}
-        {tableSelected && <p className="px-[18px] font-body text-[13px] leading-[18px] text-copper-deep">{t("tableNoPromo")}</p>}
       </fieldset>
 
       {!anyOnSale ? (
@@ -574,117 +593,130 @@ export function TicketForm({ slug, tiers, sample, initialPromo }: { slug: string
             {tableSelected && <p className="px-[22px] font-body text-[13px] leading-[18px]">{t("tableHint", { seats: tier?.seats ?? 1 })}</p>}
           </div>
 
-          <div className="flex flex-col gap-3.5">
-            <p className={label}>{t("you")}</p>
-            <div>
-              <label htmlFor="name" className={fieldLabel}>{t("name")}</label>
-              <input id="name" name="name" autoComplete="name" defaultValue={saved.name} className={input} aria-invalid={errors?.name} required />
+          {tableSelected ? (
+            // Salons : plus de paiement en ligne, la réservation se fait avec l'équipe sur WhatsApp (message pré-rédigé)
+            <div className="flex flex-col gap-4 border-t border-cosmic-black pt-[18px]">
+              <p className="font-body text-[15px] leading-[150%]">{t("tableWhatsappNote")}</p>
+              <Flip href={whatsappHref} external tone="copper" size={cta} className="w-full">
+                {t("tableWhatsappCta")}
+              </Flip>
+              <p className="text-center font-body text-[13px] leading-[19px]">{CONTACT_PHONE.display}</p>
             </div>
-            <div>
-              <label htmlFor="email" className={fieldLabel}>{t("email")}</label>
-              <input id="email" name="email" type="email" autoComplete="email" defaultValue={saved.email} className={input} aria-invalid={errors?.email} required />
-            </div>
-            <div>
-              <label htmlFor="whatsapp" className={fieldLabel}>{t("whatsapp")}</label>
-              <input
-                id="whatsapp"
-                name="whatsapp"
-                type="tel"
-                autoComplete="tel"
-                placeholder="+228 90 00 00 00"
-                defaultValue={saved.whatsapp}
-                className={input}
-                aria-invalid={errors?.whatsapp}
-                aria-describedby="whatsapp-hint"
-                required
-              />
-              <p id="whatsapp-hint" className="mt-1.5 px-[22px] font-body text-[13px] leading-[18px]">{t("whatsappHint")}</p>
-            </div>
-            <div className="relative">
-              <label htmlFor="country" className={fieldLabel}>{t("country")}</label>
-              <select id="country" name="country" defaultValue={saved.country ?? "TG"} className={`${input} appearance-none pr-12`} aria-invalid={errors?.country}>
-                {COUNTRIES.map((c) => (
-                  <option key={c} value={c}>
-                    {c === "OTHER" ? t("countryOther") : countryNames.of(c)}
-                  </option>
-                ))}
-              </select>
-              <svg viewBox="0 0 14 14" className="pointer-events-none absolute bottom-[19px] right-[22px] size-3.5" aria-hidden>
-                <path d="M3 5l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </div>
-            <div>
-              <label htmlFor="promo" className={fieldLabel}>{t("promo")}</label>
-              <input
-                id="promo"
-                name="promo"
-                autoCapitalize="characters"
-                defaultValue={saved.promo}
-                disabled={noPromo}
-                placeholder={noPromo ? t("promoEarly") : t("promoPlaceholder")}
-                className={`${input} uppercase placeholder:normal-case`}
-                aria-invalid={errors?.promo}
-              />
-            </div>
-          </div>
-
-          <label className="flex cursor-pointer items-start gap-3">
-            <input type="checkbox" name="terms" defaultChecked={saved.terms === "on"} className="peer sr-only" aria-invalid={errors?.terms} />
-            <span
-              aria-hidden
-              className="mt-px flex size-6 shrink-0 items-center justify-center rounded-full border border-cosmic-black text-transparent peer-checked:bg-cosmic-black peer-checked:text-warm-ivory peer-focus-visible:outline-2 peer-focus-visible:outline-offset-3 peer-focus-visible:outline-solar-copper"
-            >
-              <svg viewBox="0 0 12 12" className="size-3">
-                <path d="M2.5 6.2l2.3 2.3 4.7-5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </span>
-            <span className={`font-body text-[15px] leading-[20px] ${errors?.terms ? "text-copper-deep" : ""}`}>
-              {t.rich("terms", {
-                link: (chunks) => (
-                  <Link href="/cgv" target="_blank" className="underline underline-offset-4">
-                    {chunks}
-                  </Link>
-                ),
-              })}
-            </span>
-          </label>
-
-          {error && <Alert>{error.code ? t(`errors.${error.code}`, { count: error.remaining ?? 0 }) : t("errors.form")}</Alert>}
-
-          <dl className="flex flex-col gap-2.5 border-t border-cosmic-black pt-[18px]">
-            {tier && (
-              <div className="flex justify-between gap-4 font-body text-[15px] leading-5">
-                <dt>{t("summaryLine", { count: qty, tier: t(`tierKinds.${tier.kind}`) })}</dt>
-                <dd className="font-label text-[17px]">{formatXof(subtotal, locale)}</dd>
+          ) : (
+            <>
+              <div className="flex flex-col gap-3.5">
+                <p className={label}>{t("you")}</p>
+                <div>
+                  <label htmlFor="name" className={fieldLabel}>{t("name")}</label>
+                  <input id="name" name="name" autoComplete="name" defaultValue={saved.name} className={input} aria-invalid={errors?.name} required />
+                </div>
+                <div>
+                  <label htmlFor="email" className={fieldLabel}>{t("email")}</label>
+                  <input id="email" name="email" type="email" autoComplete="email" defaultValue={saved.email} className={input} aria-invalid={errors?.email} required />
+                </div>
+                <div>
+                  <label htmlFor="whatsapp" className={fieldLabel}>{t("whatsapp")}</label>
+                  <input
+                    id="whatsapp"
+                    name="whatsapp"
+                    type="tel"
+                    autoComplete="tel"
+                    placeholder="+228 90 00 00 00"
+                    defaultValue={saved.whatsapp}
+                    className={input}
+                    aria-invalid={errors?.whatsapp}
+                    aria-describedby="whatsapp-hint"
+                    required
+                  />
+                  <p id="whatsapp-hint" className="mt-1.5 px-[22px] font-body text-[13px] leading-[18px]">{t("whatsappHint")}</p>
+                </div>
+                <div className="relative">
+                  <label htmlFor="country" className={fieldLabel}>{t("country")}</label>
+                  <select id="country" name="country" defaultValue={saved.country ?? "TG"} className={`${input} appearance-none pr-12`} aria-invalid={errors?.country}>
+                    {COUNTRIES.map((c) => (
+                      <option key={c} value={c}>
+                        {c === "OTHER" ? t("countryOther") : countryNames.of(c)}
+                      </option>
+                    ))}
+                  </select>
+                  <svg viewBox="0 0 14 14" className="pointer-events-none absolute bottom-[19px] right-[22px] size-3.5" aria-hidden>
+                    <path d="M3 5l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </div>
+                <div>
+                  <label htmlFor="promo" className={fieldLabel}>{t("promo")}</label>
+                  <input
+                    id="promo"
+                    name="promo"
+                    autoCapitalize="characters"
+                    defaultValue={saved.promo}
+                    disabled={noPromo}
+                    placeholder={noPromo ? t("promoEarly") : t("promoPlaceholder")}
+                    className={`${input} uppercase placeholder:normal-case`}
+                    aria-invalid={errors?.promo}
+                  />
+                </div>
               </div>
-            )}
-            <div className="flex items-baseline justify-between gap-4">
-              <dt className="font-label text-[16px] uppercase tracking-[0.06em] text-cosmic-black">{t("total")}</dt>
-              <dd className="font-label text-[36px] leading-[44px] text-cosmic-black md:text-[40px]">{formatXof(subtotal, locale)}</dd>
-            </div>
-          </dl>
 
-          <div className="flex flex-col gap-4">
-            {verifying && SITE_KEY && (
-              <div className="flex flex-col gap-2">
-                <p className={label}>{t("verifyTitle")}</p>
-                <p className="font-body text-[14px] leading-[150%]">{t("verifyText")}</p>
-                <Turnstile
-                  siteKey={SITE_KEY}
-                  locale={locale}
-                  onToken={send}
-                  onError={() => {
-                    setVerifying(false);
-                    setResponse({ status: "error", code: "antibot" });
-                  }}
-                />
+              <label className="flex cursor-pointer items-start gap-3">
+                <input type="checkbox" name="terms" defaultChecked={saved.terms === "on"} className="peer sr-only" aria-invalid={errors?.terms} />
+                <span
+                  aria-hidden
+                  className="mt-px flex size-6 shrink-0 items-center justify-center rounded-full border border-cosmic-black text-transparent peer-checked:bg-cosmic-black peer-checked:text-warm-ivory peer-focus-visible:outline-2 peer-focus-visible:outline-offset-3 peer-focus-visible:outline-solar-copper"
+                >
+                  <svg viewBox="0 0 12 12" className="size-3">
+                    <path d="M2.5 6.2l2.3 2.3 4.7-5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </span>
+                <span className={`font-body text-[15px] leading-[20px] ${errors?.terms ? "text-copper-deep" : ""}`}>
+                  {t.rich("terms", {
+                    link: (chunks) => (
+                      <Link href="/cgv" target="_blank" className="underline underline-offset-4">
+                        {chunks}
+                      </Link>
+                    ),
+                  })}
+                </span>
+              </label>
+
+              {error && <Alert>{error.code ? t(`errors.${error.code}`, { count: error.remaining ?? 0 }) : t("errors.form")}</Alert>}
+
+              <dl className="flex flex-col gap-2.5 border-t border-cosmic-black pt-[18px]">
+                {tier && (
+                  <div className="flex justify-between gap-4 font-body text-[15px] leading-5">
+                    <dt>{t("summaryLine", { count: qty, tier: t(`tierKinds.${tier.kind}`) })}</dt>
+                    <dd className="font-label text-[17px]">{formatXof(subtotal, locale)}</dd>
+                  </div>
+                )}
+                <div className="flex items-baseline justify-between gap-4">
+                  <dt className="font-label text-[16px] uppercase tracking-[0.06em] text-cosmic-black">{t("total")}</dt>
+                  <dd className="font-label text-[36px] leading-[44px] text-cosmic-black md:text-[40px]">{formatXof(subtotal, locale)}</dd>
+                </div>
+              </dl>
+
+              <div className="flex flex-col gap-4">
+                {verifying && SITE_KEY && (
+                  <div className="flex flex-col gap-2">
+                    <p className={label}>{t("verifyTitle")}</p>
+                    <p className="font-body text-[14px] leading-[150%]">{t("verifyText")}</p>
+                    <Turnstile
+                      siteKey={SITE_KEY}
+                      locale={locale}
+                      onToken={send}
+                      onError={() => {
+                        setVerifying(false);
+                        setResponse({ status: "error", code: "antibot" });
+                      }}
+                    />
+                  </div>
+                )}
+                <Flip type="submit" tone="copper" size={cta} className="w-full" disabled={pending || verifying || !tier}>
+                  {pending || verifying ? t("submitting") : t("submit")}
+                </Flip>
+                <p className="text-center font-body text-[13px] leading-[19px]">{t("panelHint", { minutes: HOLD_MINUTES })}</p>
               </div>
-            )}
-            <Flip type="submit" tone="copper" size={cta} className="w-full" disabled={pending || verifying || !tier}>
-              {pending || verifying ? t("submitting") : t("submit")}
-            </Flip>
-            <p className="text-center font-body text-[13px] leading-[19px]">{t("panelHint", { minutes: HOLD_MINUTES })}</p>
-          </div>
+            </>
+          )}
         </>
       )}
     </form>

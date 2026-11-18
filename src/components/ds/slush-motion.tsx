@@ -5,8 +5,9 @@ import { CustomEase } from "gsap/CustomEase";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import Lenis from "lenis";
-import { useEffect } from "react";
-import { introStore } from "@/components/intro/intro-state";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef } from "react";
+import { introStore, whenLoaded } from "@/components/intro/intro-state";
 
 /*
  * Mouvements repris de slush.app (leur script public, mêmes valeurs), DESIGN.md §9 :
@@ -43,6 +44,36 @@ export const getLenis = () => (window as LenisWindow).__lenis;
 
 /** Défilement doux (Lenis) : un seul pour toute la visite, dans SiteChrome */
 export function SmoothScroll() {
+  const pathname = usePathname();
+  const first = useRef(true);
+  // Retour arrière / avant : le navigateur restaure la position, on ne remonte pas
+  const fromHistory = useRef(false);
+
+  useEffect(() => {
+    const onPop = () => {
+      fromHistory.current = true;
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
+
+  // Nouvelle page : on l'ouvre en haut. Lenis garde sinon la position de la page précédente,
+  // et Next.js ne remonte que jusqu'au début du contenu qui change (sous la navigation).
+  useEffect(() => {
+    if (first.current) {
+      first.current = false;
+      return;
+    }
+    if (fromHistory.current) {
+      fromHistory.current = false;
+      return;
+    }
+    if (window.location.hash) return;
+    const lenis = getLenis();
+    if (lenis) lenis.scrollTo(0, { immediate: true, force: true });
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, [pathname]);
+
   useEffect(() => {
     registerSlush();
     if (prefersReducedMotion()) return;
@@ -52,9 +83,10 @@ export function SmoothScroll() {
     const raf = (time: number) => lenis.raf(time * 1000);
     gsap.ticker.add(raf);
     gsap.ticker.lagSmoothing(0);
-    // Pendant l'intro du portail, la page ne défile pas (l'intro bloque déjà le défilement natif)
+    // Pendant le chargement et l'intro du portail, la page ne défile pas
     const syncIntro = () => {
-      if (!introStore.get().played && document.getElementById("portal-intro")) lenis.stop();
+      const { loaded, played } = introStore.get();
+      if (!loaded || (!played && document.getElementById("portal-intro"))) lenis.stop();
       else lenis.start();
     };
     syncIntro();
@@ -107,7 +139,13 @@ export function Reveals() {
     let ctx: gsap.Context | undefined;
     let cancelled = false;
     let stopIntroWait = () => {};
+    let stopLoadWait = () => {};
+    // Les animations attendent la fin de l'écran de chargement (et les polices, pour SplitText)
     document.fonts.ready.then(() => {
+      if (cancelled) return;
+      stopLoadWait = whenLoaded(start);
+    });
+    const start = () => {
       if (cancelled) return;
       ctx = gsap.context(() => {
         // Hero : lettres du titre puis éléments en cascade
@@ -193,10 +231,11 @@ export function Reveals() {
       });
       // Les polices changent la hauteur des sections : on recalcule les déclencheurs
       ScrollTrigger.refresh();
-    });
+    };
 
     return () => {
       cancelled = true;
+      stopLoadWait();
       stopIntroWait();
       ctx?.revert();
       splits.forEach((s) => s.revert());
