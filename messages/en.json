@@ -95,7 +95,7 @@
         "aboutTitle": "LA TEUF: from Lomé to Cotonou",
         "aboutLead": "A new electronic experience that makes borders vibrate!",
         "about": [
-          "On Friday 27 November 2026, meet us at KARMA from 9 PM to 3 AM for a night of House, Afro House, Afro Tech and SA Tech with Shayn, AK2M, Jaguar and Famouz.",
+          "On Friday 27 November 2026, meet us at KARMA from 9 PM to 3 AM for a night of House, Afro House, Afro Tech and SA Tech with Shayn, AK2M and Jaguar.",
           "2 stages, one dancefloor, the same energy to celebrate electronic music and the connection between Lomé and Cotonou.",
           "Get ready to live LA TEUF! 🔊"
         ],
@@ -408,7 +408,7 @@
       {
         "title": "5. Electronic tickets",
         "body": [
-          "After payment, each place produces an electronic ticket with a unique QR code, sent by email and WhatsApp to the details provided. The buyer checks that this information is correct.",
+          "After payment, each place produces an electronic ticket with a unique QR code, sent by email to the address provided. The buyer checks that this address is correct.",
           "The QR code is single-use: only the first scan at the entrance is accepted. The buyer must not share or copy the ticket; the organizer is not responsible for the use of a QR code shared by the buyer.",
           "If a ticket is not received, the buyer contacts the organizer."
         ]
@@ -456,7 +456,7 @@
     "allEvents": "All events",
     "badge": "Payment confirmed",
     "heading": "You're part of <accent>the party</accent>",
-    "text": "Your tickets are confirmed and sent by email and WhatsApp. The whole LA TEUF team is waiting for you at {venue}.",
+    "text": "Your tickets are confirmed and sent by email. The whole LA TEUF team is waiting for you at {venue}.",
     "ticketQr": "Your QR code is in the confirmation email",
     "ticketHint": "Show it at the entrance. Single use.",
     "ticketDate": "Date",
@@ -708,7 +708,7 @@
         "items": [
           {
             "q": "How do I receive my tickets?",
-            "a": "After payment, each place gets an electronic ticket with a unique QR code, sent by email and WhatsApp to the details you gave. Double-check them when booking."
+            "a": "After payment, each place gets an electronic ticket with a unique QR code, sent by email to the address you gave. Double-check it when booking."
           },
           {
             "q": "I did not receive my ticket.",

@@ -41,7 +41,8 @@ Réussite : le visiteur passe d'un lien social à un billet payé, avec un QR un
 - Statuts d'événement : `Bientôt`, `En vente`, `Complet`, `Terminé`.
 - Pages existantes : accueil, événements, billetterie, DJs, galerie, FAQ, contact, CGV, mentions légales, confidentialité.
 - Prévu, pas encore construit : boutique T-shirts (livraison Togo et Bénin ou retrait en soirée), newsletter e-mail + WhatsApp avec consentement explicite.
-- Non tranchés : frais de service, flux Instagram intégré, envoi du billet par WhatsApp.
+- Non tranchés : frais de service, flux Instagram intégré.
+- Billet envoyé par e-mail uniquement (QR par place) ; l'envoi sur WhatsApp viendra dans une mise à jour ultérieure.
 - Pas de message de prévention sur le site (décision prise).
 
 ## Brand Commitments

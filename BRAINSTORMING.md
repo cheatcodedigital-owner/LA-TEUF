@@ -136,7 +136,7 @@ Simple et claire ✅ : barre fixe discrète (Événements · DJs · Galerie · B
 2. Saisie : nom, email, numéro WhatsApp, pays
 3. Code promo (optionnel)
 4. Paiement via **Kkiapay** : Mobile Money (Flooz, T-Money, MTN, Moov) ou carte Visa/Mastercard
-5. Confirmation à l'écran, puis envoi du billet **par email et par WhatsApp**, avec **un QR unique par place**
+5. Confirmation à l'écran, puis envoi du billet **par email** (WhatsApp : mise à jour ultérieure), avec **un QR unique par place**
 
 **Règles métier**
 - Prix en **FCFA (XOF)** ; Togo et Bénin utilisent la même monnaie.

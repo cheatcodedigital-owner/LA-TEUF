@@ -136,7 +136,7 @@ export async function EventLineup({ event: e }: { event: TeufEvent }) {
           </Link>
         </div>
       </div>
-      <div data-card-reveal="wrap" className="grid grid-cols-2 gap-3 md:grid-cols-4">
+      <div data-card-reveal="wrap" className={`grid grid-cols-2 gap-3 ${cards.length === 3 ? "md:grid-cols-3" : "md:grid-cols-4"}`}>
         {cards.map((c, i) => (
           <DjCard
             key={c.name}

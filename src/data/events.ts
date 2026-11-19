@@ -66,7 +66,6 @@ export const events: TeufEvent[] = [
       { name: "Shayn", photo: "/images/lineup/dj-shayn.png", tint: "copper-pale" },
       { name: "AK2M", photo: "/images/lineup/dj-ak2m.png", tint: "violet-pale" },
       { name: "Jaguar", photo: "/images/lineup/dj-jaguar.png", tint: "solar-copper" },
-      { name: "Famouz", photo: "/images/lineup/dj-famouz.png", tint: "warm-ivory" },
     ],
   },
   {

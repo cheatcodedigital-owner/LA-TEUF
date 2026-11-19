@@ -95,7 +95,7 @@
         "aboutTitle": "LA TEUF : de Lomé à Cotonou",
         "aboutLead": "Une nouvelle expérience électronique qui fait vibrer les frontières !",
         "about": [
-          "Le vendredi 27 novembre 2026, rendez-vous au KARMA, de 21 h à 3 h, pour une nuit de House, Afro House, Afro Tech et SA Tech avec Shayn, AK2M, Jaguar et Famouz.",
+          "Le vendredi 27 novembre 2026, rendez-vous au KARMA, de 21 h à 3 h, pour une nuit de House, Afro House, Afro Tech et SA Tech avec Shayn, AK2M et Jaguar.",
           "2 scènes, une seule piste, une même énergie pour célébrer la musique électronique et la connexion entre Lomé et Cotonou.",
           "Prépare-toi à vivre LA TEUF ! 🔊"
         ],
@@ -408,7 +408,7 @@
       {
         "title": "5. Billets électroniques",
         "body": [
-          "Après paiement, chaque place donne lieu à un billet électronique portant un QR code unique, envoyé par email et par WhatsApp aux coordonnées indiquées. L'acheteur vérifie l'exactitude de ces informations.",
+          "Après paiement, chaque place donne lieu à un billet électronique portant un QR code unique, envoyé par e-mail à l'adresse indiquée. L'acheteur vérifie l'exactitude de ces informations.",
           "Le QR code est à usage unique : seul le premier passage à l'entrée est accepté. L'acheteur veille à ne pas partager ni copier son billet ; l'organisateur n'est pas responsable de l'utilisation d'un QR code diffusé par l'acheteur.",
           "En cas de non-réception du billet, l'acheteur contacte l'organisateur."
         ]
@@ -456,7 +456,7 @@
     "allEvents": "Tous les événements",
     "badge": "Paiement confirmé",
     "heading": "Tu fais partie de <accent>la fête</accent>",
-    "text": "Tes billets sont confirmés et envoyés par e-mail et sur WhatsApp. Toute l'équipe de LA TEUF t'attend au {venue}.",
+    "text": "Tes billets sont confirmés et envoyés par e-mail. Toute l'équipe de LA TEUF t'attend au {venue}.",
     "ticketQr": "Ton QR code est dans l'e-mail de confirmation",
     "ticketHint": "Présente-le à l'entrée. Usage unique.",
     "ticketDate": "Date",
@@ -708,7 +708,7 @@
         "items": [
           {
             "q": "Comment je reçois mes billets ?",
-            "a": "Après le paiement, chaque place donne un billet électronique avec un QR code unique, envoyé par e-mail et par WhatsApp aux coordonnées indiquées. Vérifie bien ces informations en réservant."
+            "a": "Après le paiement, chaque place donne un billet électronique avec un QR code unique, envoyé par e-mail à l'adresse indiquée. Vérifie bien ton e-mail en réservant."
           },
           {
             "q": "Je n'ai pas reçu mon billet.",

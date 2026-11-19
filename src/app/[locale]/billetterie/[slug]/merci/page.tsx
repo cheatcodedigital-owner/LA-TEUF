@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/billette
 }
 
 // Billet confirmé (maquette « Billet confirmé — merci ») : bande Violet, rappel calendrier et billet façon Wallet.
-// La page ne connaît pas la commande : le vrai QR code est dans l'e-mail (et sur WhatsApp).
+// La page ne connaît pas la commande : le vrai QR code est dans l'e-mail (seul canal d'envoi pour l'instant).
 async function Thanks({ params }: { params: PageProps<"/[locale]/billetterie/[slug]/merci">["params"] }) {
   const { locale, slug } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
