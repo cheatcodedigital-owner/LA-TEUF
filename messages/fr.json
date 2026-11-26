@@ -333,7 +333,7 @@
     "emailPlaceholder": "E-mail",
     "whatsappPlaceholder": "WhatsApp, avec l'indicatif",
     "summaryLine": "{count} × {tier}",
-    "panelHint": "Paiement Mobile Money (Flooz, T-Money, MTN, Moov), via notre prestataire de paiement sécurisé. Tes places sont gardées {minutes} minutes. La vente en ligne ferme la veille de la soirée à midi.",
+    "panelHint": "Paiement Mobile Money (Flooz, T-Money, MTN, Moov), via notre prestataire de paiement sécurisé. Tes places sont gardées {minutes} minutes. La vente en ligne ferme la veille de la soirée à minuit.",
     "from": "Billets dès",
     "openPanel": "Prendre ton billet",
     "closePanel": "Fermer la billetterie",
@@ -381,8 +381,8 @@
       {
         "title": "2. Billets et tarifs",
         "body": [
-          "Les prix sont indiqués en francs CFA (FCFA), consommation incluse. Pour l'édition du KARMA (27 novembre 2026), la vente en ligne est ouverte jusqu'au 26 novembre à 12 h (heure de Lomé). Le nombre de billets individuels est limité à 100 par soirée.",
-          "Early bird (vente en ligne) : 5 000 FCFA, consommation incluse. Ces billets sont en quantité limitée selon la taille du lieu (70 pour le KARMA) et en vente jusqu'à épuisement, au plus tard jusqu'à la veille de la soirée à midi (26 novembre à 12 h, heure de Lomé), heure de fermeture de la vente en ligne.",
+          "Les prix sont indiqués en francs CFA (FCFA), consommation incluse. Pour l'édition du KARMA (27 novembre 2026), la vente en ligne est ouverte jusqu'au 26 novembre à minuit (heure de Lomé). Le nombre de billets individuels est limité à 100 par soirée.",
+          "Early bird (vente en ligne) : 5 000 FCFA, consommation incluse. Ces billets sont en quantité limitée selon la taille du lieu (70 pour le KARMA) et en vente jusqu'à épuisement, au plus tard jusqu'à la veille de la soirée à minuit (26 novembre à minuit, heure de Lomé), heure de fermeture de la vente en ligne.",
           "Standard : 8 000 FCFA, consommation incluse, vendu uniquement à la porte le jour de la soirée, dans la limite des places disponibles. Il n'est pas vendu en ligne.",
           "Tables : 4 tables (salons) de 6 personnes sont proposées en plus des 100 billets, à 100 000 FCFA la table. Elles ne sont pas vendues en ligne : la réservation se fait directement auprès de l'organisateur sur WhatsApp (+228 91 95 01 93), qui en confirme la disponibilité et les modalités de paiement.",
           "Une commande comprend 10 billets au maximum.",
@@ -629,7 +629,7 @@
         "items": [
           {
             "q": "Quand ouvre la vente des billets du KARMA ?",
-            "a": "La billetterie est ouverte ! Les billets early bird se prennent sur la page Billetterie de la soirée, jusqu'à la veille de la soirée à midi (le 26 novembre à 12 h, heure de Lomé). Les tables (salons) se réservent sur WhatsApp, depuis la même page."
+            "a": "La billetterie est ouverte ! Les billets early bird se prennent sur la page Billetterie de la soirée, jusqu'à la veille de la soirée à minuit (le 26 novembre à minuit, heure de Lomé). Les tables (salons) se réservent sur WhatsApp, depuis la même page."
           },
           {
             "q": "Quels sont les tarifs ?",
@@ -637,7 +637,7 @@
           },
           {
             "q": "Combien de billets early bird sont disponibles ?",
-            "a": "Les early birds sont en quantité limitée, selon la taille du lieu : 70 billets en ligne pour le KARMA. Une fois épuisés, ou après midi la veille de la soirée, les billets se prennent à la porte au tarif standard, dans la limite des places disponibles."
+            "a": "Les early birds sont en quantité limitée, selon la taille du lieu : 70 billets en ligne pour le KARMA. Une fois épuisés, ou après minuit la veille de la soirée, les billets se prennent à la porte au tarif standard, dans la limite des places disponibles."
           },
           {
             "q": "Y a-t-il des réductions pour les groupes ?",
@@ -653,7 +653,7 @@
           },
           {
             "q": "Peut-on acheter sur place le jour de la soirée ?",
-            "a": "Oui : les billets standard (8 000 FCFA, consommation incluse) sont vendus uniquement à la porte le jour de la soirée, dans la limite des places disponibles. Pour avoir ta place au meilleur prix, prends un early bird en ligne avant la veille à midi."
+            "a": "Oui : les billets standard (8 000 FCFA, consommation incluse) sont vendus uniquement à la porte le jour de la soirée, dans la limite des places disponibles. Pour avoir ta place au meilleur prix, prends un early bird en ligne avant la veille à minuit."
           }
         ]
       },
@@ -795,7 +795,7 @@
     "ticketsBand": {
       "title": "Early bird à<br></br>{price} FCFA",
       "cta": "Prendre mes billets",
-      "note": "Consommation incluse. Billets en ligne en quantité limitée, jusqu'à la veille de la soirée à midi."
+      "note": "Consommation incluse. Billets en ligne en quantité limitée, jusqu'à la veille de la soirée à minuit."
     },
     "community": {
       "title": "Rejoins la <accent>communauté</accent>",
@@ -844,5 +844,13 @@
   },
   "Loader": {
     "label": "Chargement de l'expérience"
+  },
+  "ClosingAlert": {
+    "title": "La billetterie ferme à <accent>minuit</accent>",
+    "countdown": "Plus que {hours} h {minutes} min",
+    "text": "Dernier jour pour prendre ton billet early bird pour {name} : 5 000 FCFA, consommation incluse. La vente en ligne ferme ce soir à minuit (heure de Lomé) ; ensuite, les billets se prennent à la porte, à 8 000 FCFA.",
+    "cta": "Prendre mon billet",
+    "later": "Plus tard",
+    "close": "Fermer"
   }
 }

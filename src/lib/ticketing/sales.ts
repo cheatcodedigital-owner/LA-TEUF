@@ -48,7 +48,7 @@ function sampleSales(slug: string): EventSales | null {
   const e = sampleEvents.find((x) => x.slug === slug);
   if (!e) return null;
 
-  // Mêmes règles que le seed : ventes dès le 9 novembre (J-11) ; early bird jusqu'à épuisement ou la veille à midi ;
+  // Mêmes règles que le seed : ventes dès le 9 novembre (J-11) ; early bird jusqu'à épuisement ou la veille à minuit ;
   // standard à la porte uniquement (jamais en ligne) ; tables jusqu'à l'événement (100 000 dès le 18 novembre, J-2).
   const start = new Date(e.startsAt);
   const dayJ = Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate());
@@ -85,7 +85,7 @@ function sampleSales(slug: string): EventSales | null {
     soldOut: false,
     tiers: [
       // ⚠️ Prix d'exemple, visibles uniquement en développement sans Supabase (early bird 5000 ×70, standard 8000 ×30, 4 tables à 80000)
-      make("00000000-0000-4000-8000-000000000001", "early_bird", 5000, 70, dayJ - 11 * DAY, dayJ - DAY / 2),
+      make("00000000-0000-4000-8000-000000000001", "early_bird", 5000, 70, dayJ - 11 * DAY, dayJ),
       {
         ...make("00000000-0000-4000-8000-000000000002", "standard", 8000, 30, dayJ, dayJ),
         state: "door",

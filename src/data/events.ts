@@ -20,6 +20,9 @@ export type TeufEvent = {
   startsAt: string;
   endsAt?: string;
   status: EventStatus;
+  /** Fin de la vente en ligne (copie de `ticket_types.sales_end` de l'early bird, qui fait foi) : le pop-up d'alerte
+   *  `ClosingAlert` s'affiche dans les 24 h qui précèdent */
+  onlineSalesEnd?: string;
   capacity: number;
   /** Tables (salons) vendues en plus de la capacité */
   tables?: number;
@@ -53,6 +56,8 @@ export const events: TeufEvent[] = [
     startsAt: "2026-11-27T21:00:00Z",
     endsAt: "2026-11-28T03:00:00Z",
     status: "en-vente",
+    // Vente en ligne jusqu'à minuit la veille (migration 0020)
+    onlineSalesEnd: "2026-11-27T00:00:00Z",
     capacity: 100,
     tables: 4,
     priceFrom: 5000,

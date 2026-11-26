@@ -14,12 +14,13 @@
    - `migrations/0010_standard_after_early.sql` (standard ouvert seulement quand l'early bird est épuisé, early bird/standard fermés le jour J)
    - `migrations/0012_event_times_venues.sql` (KARMA à 21 h, Cotonou à Zone 5 Plage)
    - `migrations/0013_cotonou_hours.sql` (Cotonou de 16 h à 4 h)
-   - `migrations/0014_door_standard_online_early.sql` (en ligne = early bird jusqu'à la veille midi, standard à la porte, plus de remise de groupe, codes promo sur l'early bird)
+   - `migrations/0014_door_standard_online_early.sql` (en ligne = early bird jusqu'à la veille midi — minuit depuis la 0020, standard à la porte, plus de remise de groupe, codes promo sur l'early bird)
    - `migrations/0015_karma_postponed_sales_closed.sql` (KARMA repoussé au 27 novembre, billetterie fermée)
    - `migrations/0016_saspay.sql` (second prestataire SasPay : colonnes `payment_provider`, `saspay_*`, `attach_saspay_session`, `mark_order_paid` avec le prestataire). **À appliquer avant de déployer le code qui l'utilise** (l'admin lit ces colonnes).
    - `migrations/0017_rate_limits.sql` (audit de sécurité du 18/11/2026 : table `rate_limits` et fonctions `rate_limit_hit` / `rate_limit_count` / `rate_limit_clear`, compteurs partagés entre instances Vercel ; `active_holds`, réservations actives par e-mail ou WhatsApp). Sans elle, le code se replie sur des compteurs en mémoire et saute le plafond de réservations actives.
    - `migrations/0018_karma_sales_open_tables_whatsapp.sql` (18/11/2026 : billetterie du KARMA rouverte ; salons réservés sur WhatsApp, plus en ligne)
    - `migrations/0019_event_names.sql` (18/11/2026 : noms des soirées repris des visuels, THE CROSSOVER au KARMA et BEYOND THE HORIZON à Zone 5 Plage, pour les e-mails, billets et l'admin)
+   - `migrations/0020_karma_early_until_midnight.sql` (26/11/2026 : early bird en ligne prolongé jusqu'à minuit la veille, au lieu de midi)
    - `seed.sql` (événements de départ — early bird 5 000, standard 8 000 FCFA, tables 80 000 → 100 000 FCFA ; **uniquement pour une base vide** : sur une base existante, appliquer la 0009)
 2. Copier `.env.example` en `.env.local` et renseigner `SUPABASE_URL` et `SUPABASE_SERVICE_ROLE_KEY`
    (Project Settings → API). La clé service_role reste côté serveur uniquement.
@@ -28,14 +29,16 @@
 
 ## Règles de vente
 Politique du 10/11/2026 (migration 0014, testée par `npm run test:db`) :
+- **26/11/2026 (migration 0020)** : la vente en ligne ferme désormais **la veille de la soirée à minuit** (KARMA : 27 novembre 00:00 UTC),
+  et non plus à midi. Un pop-up d'alerte (`src/components/ds/closing-alert.tsx`) prévient les visiteurs le jour de la fermeture.
 - **18/11/2026 (migration 0018)** : billetterie du KARMA (THE CROSSOVER) **rouverte**. Les **tables (salons) ne se vendent plus en ligne** :
   toujours affichées, elles se réservent sur WhatsApp (+228 91 95 01 93, message pré-rédigé dans le formulaire) ; `reserve()` refuse le tarif `table`.
 - **13/11/2026 (migration 0015)** : soirée du KARMA repoussée au **27 novembre 2026** (21 h) et **billetterie provisoirement fermée**
   (`events.status = 'soon'` : `create_order` renvoie `sales_closed`, la page affiche « Billetterie fermée »). Pour rouvrir :
   `update events set status = 'on_sale' where slug = 'la-teuf-karma';` et repasser `status: "en-vente"` dans `src/data/events.ts`.
 - **Billets en ligne = early bird uniquement** : 5 000 FCFA, consommation incluse, en quantité limitée selon la taille du lieu
-  (KARMA : **70**). En vente dès le **9 novembre** (KARMA) jusqu'à épuisement, et **au plus tard jusqu'à la veille de la soirée à midi**
-  (heure locale ; KARMA : 26 novembre 12:00 UTC = 12 h à Lomé), via `ticket_types.sales_end`.
+  (KARMA : **70**). En vente dès le **9 novembre** (KARMA) jusqu'à épuisement, et **au plus tard jusqu'à la veille de la soirée à minuit**
+  (heure locale ; KARMA : 27 novembre 00:00 UTC = minuit à Lomé, dans la nuit du 26 au 27), via `ticket_types.sales_end`.
 - **Standard** : 8 000 FCFA, consommation incluse, **vendu uniquement à la porte le jour de la soirée** (`ticket_types.door_only = true`).
   Il reste affiché sur la billetterie (état `door` renvoyé par `_tiers`) mais n'est jamais réservable en ligne. Capacité générale : 100
   (70 en ligne + la porte) ; les ventes à la porte se saisissent dans l'admin.
@@ -47,7 +50,7 @@ Politique du 10/11/2026 (migration 0014, testée par `npm run test:db`) :
   nominatifs (`ticket_types.seats`), émis par `mark_order_paid` (un QR par personne, tous envoyés à l'e-mail de la réservation). Pas de code
   promo sur les tables. Pour modifier prix, dates ou quota : `update ticket_types` (colonnes `price_xof`, `price_after_xof`, `price_step_at`, `quota`).
 - 10 billets (ou tables) maximum par commande.
-- Nouvelle soirée : early bird avec `sales_end` = veille à midi (heure locale), standard avec `door_only = true`, quota early bird selon le lieu.
+- Nouvelle soirée : early bird avec `sales_end` = veille à minuit (heure locale), standard avec `door_only = true`, quota early bird selon le lieu.
 - Anti-blocage des places (une réservation tient les places sans paiement) : au clic sur « Réserver », anti-bot Cloudflare
   Turnstile vérifié par `POST /api/billetterie/reserve` (variables `NEXT_PUBLIC_TURNSTILE_SITE_KEY` et `TURNSTILE_SECRET_KEY`,
   clés de test utilisées automatiquement en développement), 20 réservations par IP et par 10 minutes (large : IP partagées

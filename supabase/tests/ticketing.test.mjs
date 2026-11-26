@@ -23,7 +23,7 @@ const order = async (type, qty, over = {}) => {
 };
 
 // Place l'événement à `days` jours d'aujourd'hui et recale les fenêtres comme le seed : early bird dès J-21 jusqu'à
-// la veille à midi, standard à la porte uniquement (sans date), tables dès J-21 jusqu'à l'heure de la soirée,
+// la veille à minuit, standard à la porte uniquement (sans date), tables dès J-21 jusqu'à l'heure de la soirée,
 // changement de prix des tables à J-2
 async function setEventIn(days) {
   await q("update events set starts_at = now() + make_interval(days => $1) where slug = 'la-teuf-karma'", [days]);
@@ -31,7 +31,7 @@ async function setEventIn(days) {
       sales_start = case tt.kind when 'standard' then null else e.starts_at - interval '21 days' end,
       sales_end   = case tt.kind
         when 'table' then e.starts_at
-        when 'early_bird' then (date_trunc('day', e.starts_at at time zone 'UTC') at time zone 'UTC') - interval '12 hours'
+        when 'early_bird' then (date_trunc('day', e.starts_at at time zone 'UTC') at time zone 'UTC')
       end,
       price_step_at = case tt.kind when 'table' then e.starts_at - interval '2 days' end
     from events e where e.id = tt.event_id and e.slug = 'la-teuf-karma'`);
@@ -50,7 +50,7 @@ const resetOrders = async () => {
 // --- Seed : règles de vente ----------------------------------------------------------------
 const seeded = await q("select kind, price_xof, quota, sort, door_only, sales_start, sales_end from ticket_types order by sort");
 ok("seed : early bird 5000 ×70 en ligne", seeded[0].kind === "early_bird" && seeded[0].quota === 70 && seeded[0].price_xof === 5000 && !seeded[0].door_only);
-ok("seed : vente en ligne fermée la veille à midi (26 novembre 12:00 à Lomé)", new Date(seeded[0].sales_end).toISOString() === "2026-11-26T12:00:00.000Z", String(seeded[0].sales_end));
+ok("seed : vente en ligne fermée la veille à minuit (27 novembre 00:00 à Lomé)", new Date(seeded[0].sales_end).toISOString() === "2026-11-27T00:00:00.000Z", String(seeded[0].sales_end));
 ok("seed : standard 8000, à la porte uniquement, sans date", seeded[1].kind === "standard" && seeded[1].price_xof === 8000 && seeded[1].door_only === true && seeded[1].sales_start === null && seeded[1].sales_end === null);
 ok("seed : 4 tables de 6 personnes à 80000 (100000 dès le 18 novembre)", seeded[2].kind === "table" && seeded[2].quota === 4 && seeded[2].price_xof === 80000
   && (await q("select seats, price_after_xof from ticket_types where kind='table'"))[0].seats === 6
@@ -116,13 +116,13 @@ for (let i = 0; i < 6; i++) await order(early.id, 10);
 await order(early.id, 5);
 ok("not_enough : 6 demandés pour 5 restants", (await err(() => order(early.id, 6))) === "not_enough");
 
-// --- Veille de la soirée à midi : fin de la vente en ligne -------------------------------------
+// --- Veille de la soirée à minuit : fin de la vente en ligne -------------------------------------
 await resetOrders();
 await q("update ticket_types set sales_end = now() - interval '1 minute' where kind = 'early_bird'");
 s = await sales();
-ok("après midi la veille : early bird fermé", tier(s, "early_bird").state === "closed" && !tier(s, "early_bird").onSale, JSON.stringify(tier(s, "early_bird")));
-ok("après midi la veille : achat early bird refusé", (await err(() => order(tier(s, "early_bird").id, 1))) === "type_unavailable");
-ok("après midi la veille : standard toujours à la porte, tables encore en vente", tier(s, "standard").state === "door" && tier(s, "table").onSale === true, JSON.stringify(s.tiers));
+ok("après minuit la veille : early bird fermé", tier(s, "early_bird").state === "closed" && !tier(s, "early_bird").onSale, JSON.stringify(tier(s, "early_bird")));
+ok("après minuit la veille : achat early bird refusé", (await err(() => order(tier(s, "early_bird").id, 1))) === "type_unavailable");
+ok("après minuit la veille : standard toujours à la porte, tables encore en vente", tier(s, "standard").state === "door" && tier(s, "table").onSale === true, JSON.stringify(s.tiers));
 await setEventIn(15);
 await resetOrders();
 

@@ -1,3 +1,4 @@
+import { ClosingAlert } from "./closing-alert";
 import { SiteFooter } from "./site-footer";
 import { SiteHeader } from "./site-header";
 import { SiteLoader } from "./site-loader";
@@ -15,6 +16,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
   return (
     <>
       <SiteLoader />
+      <ClosingAlert />
       <SmoothScroll />
       <SiteHeader />
       {/* overflow-x clip : les cartes arrivent de côté sans créer de défilement horizontal (et sans casser le sticky) */}
