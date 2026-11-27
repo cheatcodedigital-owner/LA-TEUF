@@ -56,8 +56,8 @@ export const events: TeufEvent[] = [
     startsAt: "2026-11-27T21:00:00Z",
     endsAt: "2026-11-28T03:00:00Z",
     status: "en-vente",
-    // Vente en ligne jusqu'à minuit la veille (migration 0020)
-    onlineSalesEnd: "2026-11-27T00:00:00Z",
+    // Vente en ligne jusqu'à 20 h le jour de la soirée (migration 0021)
+    onlineSalesEnd: "2026-11-27T20:00:00Z",
     capacity: 100,
     tables: 4,
     priceFrom: 5000,

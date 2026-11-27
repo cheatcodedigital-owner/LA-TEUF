@@ -8,7 +8,7 @@ import { Flip } from "./flip";
 import { eventOnSale, ticketsHref } from "./links";
 import { copperWord } from "./page-header";
 
-/* Pop-up « la billetterie ferme à minuit » : affiché dans les 24 h qui précèdent la fin de la vente en ligne
+/* Pop-up « la billetterie ferme à … » (heure dans ClosingAlert.title) : affiché dans les 24 h qui précèdent la fin de la vente en ligne
    (`onlineSalesEnd` dans src/data/events.ts), une fois par session, après l'écran de chargement
    (et après l'intro du portail sur l'accueil). La base reste seule juge de la fermeture réelle. */
 

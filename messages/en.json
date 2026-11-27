@@ -333,7 +333,7 @@
     "emailPlaceholder": "Email",
     "whatsappPlaceholder": "WhatsApp, with country code",
     "summaryLine": "{count} × {tier}",
-    "panelHint": "Pay with Mobile Money (Flooz, T-Money, MTN, Moov), via our secure payment provider. Your seats are held for {minutes} minutes. Online sales close at midnight the day before the night.",
+    "panelHint": "Pay with Mobile Money (Flooz, T-Money, MTN, Moov), via our secure payment provider. Your seats are held for {minutes} minutes. Online sales close at 8 PM on the day of the night.",
     "from": "Tickets from",
     "openPanel": "Get your ticket",
     "closePanel": "Close ticketing",
@@ -381,8 +381,8 @@
       {
         "title": "2. Tickets and prices",
         "body": [
-          "Prices are in CFA francs (FCFA), drink included. For the KARMA night (27 November 2026), online sales are open until 26 November at midnight (Lomé time). Individual tickets are limited to 100 per night.",
-          "Early bird (online): 5,000 FCFA, drink included. These tickets are limited according to the size of the venue (70 for KARMA) and on sale until sold out, at the latest until midnight the day before the night (26 November at midnight, Lomé time), when online sales close.",
+          "Prices are in CFA francs (FCFA), drink included. For the KARMA night (27 November 2026), online sales are open until 27 November at 8 PM (Lomé time). Individual tickets are limited to 100 per night.",
+          "Early bird (online): 5,000 FCFA, drink included. These tickets are limited according to the size of the venue (70 for KARMA) and on sale until sold out, at the latest until 8 PM on the day of the night (27 November at 8 PM, Lomé time), when online sales close.",
           "Standard: 8,000 FCFA, drink included, sold only at the door on the day of the night, while places last. It is not sold online.",
           "Tables: 4 lounges for 6 people are offered on top of the 100 tickets, at 100,000 FCFA per table. They are not sold online: bookings are made directly with the organizer on WhatsApp (+228 91 95 01 93), who confirms availability and payment terms.",
           "An order includes at most 10 tickets.",
@@ -629,7 +629,7 @@
         "items": [
           {
             "q": "When do KARMA ticket sales open?",
-            "a": "Ticket sales are open! Early bird tickets are sold on the night's Tickets page until midnight the day before the night (26 November at midnight, Lomé time). Tables (lounges) are booked on WhatsApp, from the same page."
+            "a": "Ticket sales are open! Early bird tickets are sold on the night's Tickets page until 8 PM on the day of the night (27 November at 8 PM, Lomé time). Tables (lounges) are booked on WhatsApp, from the same page."
           },
           {
             "q": "What are the prices?",
@@ -637,7 +637,7 @@
           },
           {
             "q": "How many early bird tickets are available?",
-            "a": "Early birds are limited, depending on the size of the venue: 70 online tickets for KARMA. Once they sell out, or after midnight the day before the night, tickets are sold at the door at the standard price, while places last."
+            "a": "Early birds are limited, depending on the size of the venue: 70 online tickets for KARMA. Once they sell out, or after 8 PM on the day of the night, tickets are sold at the door at the standard price, while places last."
           },
           {
             "q": "Are there group discounts?",
@@ -653,7 +653,7 @@
           },
           {
             "q": "Can I buy tickets on the day of the night?",
-            "a": "Yes: standard tickets (8,000 FCFA, drink included) are sold only at the door on the day of the night, while places last. To get your spot at the best price, grab an early bird online before midnight the day before."
+            "a": "Yes: standard tickets (8,000 FCFA, drink included) are sold only at the door on the day of the night, while places last. To get your spot at the best price, grab an early bird online before 8 PM on the day of the night."
           }
         ]
       },
@@ -795,7 +795,7 @@
     "ticketsBand": {
       "title": "Early bird at<br></br>{price} FCFA",
       "cta": "Get my tickets",
-      "note": "Drink included. Limited online tickets, until midnight the day before the night."
+      "note": "Drink included. Limited online tickets, until 8 PM on the day of the night."
     },
     "community": {
       "title": "Join the <accent>community</accent>",
@@ -846,9 +846,9 @@
     "label": "Loading the experience"
   },
   "ClosingAlert": {
-    "title": "Ticket sales close at <accent>midnight</accent>",
+    "title": "Ticket sales close at <accent>8 PM</accent>",
     "countdown": "Only {hours} h {minutes} min left",
-    "text": "Last day to grab your early bird ticket for {name}: 5,000 FCFA, drink included. Online sales close tonight at midnight (Lomé time); after that, tickets are sold at the door for 8,000 FCFA.",
+    "text": "Last hours to grab your early bird ticket for {name}: 5,000 FCFA, drink included. Online sales close tonight at 8 PM (Lomé time); after that, tickets are sold at the door for 8,000 FCFA.",
     "cta": "Get my ticket",
     "later": "Later",
     "close": "Close"

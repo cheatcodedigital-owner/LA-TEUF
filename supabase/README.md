@@ -21,6 +21,7 @@
    - `migrations/0018_karma_sales_open_tables_whatsapp.sql` (18/11/2026 : billetterie du KARMA rouverte ; salons réservés sur WhatsApp, plus en ligne)
    - `migrations/0019_event_names.sql` (18/11/2026 : noms des soirées repris des visuels, THE CROSSOVER au KARMA et BEYOND THE HORIZON à Zone 5 Plage, pour les e-mails, billets et l'admin)
    - `migrations/0020_karma_early_until_midnight.sql` (26/11/2026 : early bird en ligne prolongé jusqu'à minuit la veille, au lieu de midi)
+   - `migrations/0021_karma_early_until_20h.sql` (27/11/2026 : early bird du KARMA rouvert le jour même jusqu'à 20 h)
    - `seed.sql` (événements de départ — early bird 5 000, standard 8 000 FCFA, tables 80 000 → 100 000 FCFA ; **uniquement pour une base vide** : sur une base existante, appliquer la 0009)
 2. Copier `.env.example` en `.env.local` et renseigner `SUPABASE_URL` et `SUPABASE_SERVICE_ROLE_KEY`
    (Project Settings → API). La clé service_role reste côté serveur uniquement.
@@ -29,6 +30,8 @@
 
 ## Règles de vente
 Politique du 10/11/2026 (migration 0014, testée par `npm run test:db`) :
+- **27/11/2026 (migration 0021)** : exception pour le KARMA, vente en ligne rouverte le jour même **jusqu'à 20 h** (27 novembre 20:00 UTC) ;
+  pop-up et textes du site (FAQ, CGV, panneau) disent « le jour de la soirée à 20 h ». À revoir avant d'ouvrir une autre soirée.
 - **26/11/2026 (migration 0020)** : la vente en ligne ferme désormais **la veille de la soirée à minuit** (KARMA : 27 novembre 00:00 UTC),
   et non plus à midi. Un pop-up d'alerte (`src/components/ds/closing-alert.tsx`) prévient les visiteurs le jour de la fermeture.
 - **18/11/2026 (migration 0018)** : billetterie du KARMA (THE CROSSOVER) **rouverte**. Les **tables (salons) ne se vendent plus en ligne** :
